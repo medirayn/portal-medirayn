@@ -3861,7 +3861,7 @@ function generarPDF(id) {
     ? `En la fecha y hora que se indica acudimos a visitar al <strong>${nombreTrabajador}</strong>, quien se encontraba en su domicilio y respondió a todas nuestras consultas.`
     : `En la fecha y hora que se indica acudimos a visitar al <strong>${nombreTrabajador}</strong>, sin embargo no fue posible contactar a la persona. ${v(inf.quien_atendio) !== '—' ? 'Atendió: ' + v(inf.quien_atendio) + '.' : ''}`;
 
-  const logoSrc =  + logo_src + ;
+  const logoSrc = document.getElementById('_logo-pdf-src')?.src || '';
 
   const html = `<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
