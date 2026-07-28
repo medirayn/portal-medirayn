@@ -2266,9 +2266,14 @@
 
 <script>
 // ═══════════════════════════════════════════
-// SUPABASE — se inicializa en DOMContentLoaded
+// SUPABASE INIT — inmediato al cargar el script
 // ═══════════════════════════════════════════
-let _sb = null;
+const SUPABASE_URL  = 'https://squxfxtehybcbvwnwxyp.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxdXhmeHRlaHliY2J2d253eHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODM1NjgsImV4cCI6MjEwMDc1OTU2OH0.lfe0uPeJRTkbGC7UbrmLVYzizXO2e5lC24tyOHB-L3o';
+
+// Inicializar Supabase directamente — el CDN ya cargó (está en <head>)
+// y el <script> está al final del <body>, así que window.supabase existe
+let _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ═══════════════════════════════════════════
 // ESTADO GLOBAL
@@ -3941,7 +3946,41 @@ function generarPDF(id) {
   setTimeout(() => win.print(), 600);
 }
 
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+(async function init() {
+  // Exponer todas las funciones globalmente para los onclick del HTML
+  const fns = {
+    doLogin, doLogout, submitRequest, assignMedic, updateStatus,
+    medicAccept, medicReject, medicStartVisit, medicArrived,
+    openNewRequest, closeModal, selectService, openPanel, closePanel,
+    openVisitDetail, closeVisitDetail, openVisitForm, closeVisitForm,
+    finalizarVisita, mostrarInformePreliminar, closeInforme,
+    aprobarInforme, aprobarInformeDirecto, corregirInforme, generarPDF,
+    navigateTo, filterTable, filterByStatus, filterAdminByServicio,
+    filterHistorial, clearHistorialFilters, switchMedicTab,
+    showRejectReason, selectRadio, toggleField, toggleDetailField,
+    handleFiles, handleDrop, removeFile, handleVfFiles, handleVfDrop,
+    removeVfFile, markArrived, openMaps, updateVisitDateField,
+    getDefaultVisitDate, showToast,
+  };
+  Object.entries(fns).forEach(([k,v]) => { window[k] = v; });
 
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+
+  // Verificar sesión activa
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session?.user) await iniciarSesionConPerfil(session.user);
+  } catch(e) { console.error('Session check:', e); }
+
+  // Escuchar expiración de sesión
+  _sb.auth.onAuthStateChange(async (event) => {
+    if (event === 'SIGNED_OUT') doLogout();
+  });
+})();
 </script>
 </body>
 </html>
