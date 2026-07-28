@@ -1,0 +1,4317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIRAYN — Portal de Auditorías Médicas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --navy: #0F1F3D;
+    --navy-mid: #1A3260;
+    --navy-light: #243B6E;
+    --teal: #0EA5E9;
+    --teal-dark: #0284C7;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --surface: #F8FAFC;
+    --surface-2: #F1F5F9;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text-mid: #475569;
+    --text-light: #94A3B8;
+    --white: #FFFFFF;
+    --sidebar-w: 240px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ─── LOGIN ─────────────────────────────────────── */
+  #login-screen {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .login-hero {
+    width: 42%;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 60%, #0EA5E920 100%);
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-hero::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,165,233,0.15);
+    top: -80px; right: -120px;
+  }
+
+  .login-hero::after {
+    content: '';
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,165,233,0.1);
+    bottom: 60px; left: -60px;
+  }
+
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    z-index: 1;
+  }
+
+  .hero-logo-icon {
+    width: 38px; height: 38px;
+    background: var(--teal);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .hero-copy {
+    z-index: 1;
+  }
+
+  .hero-copy h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+
+  .hero-copy p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 320px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 24px;
+    z-index: 1;
+  }
+
+  .hero-stat {
+    color: white;
+  }
+
+  .hero-stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+
+  .hero-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .login-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    padding: 48px;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .login-box h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .login-box .subtitle {
+    color: var(--text-mid);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+
+  .role-picker {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .role-btn {
+    padding: 10px 6px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .role-btn:hover { border-color: var(--teal); }
+
+  .role-btn.active {
+    border-color: var(--teal);
+    background: #EFF9FF;
+  }
+
+  .role-btn-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+  .role-btn-label { font-size: 11px; font-weight: 500; color: var(--text-mid); }
+  .role-btn.active .role-btn-label { color: var(--teal-dark); }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-group input:focus { border-color: var(--teal); background: white; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+
+  .btn-primary:hover { background: var(--navy-light); }
+
+  .login-hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  /* ─── APP SHELL ──────────────────────────────────── */
+  #app-shell {
+    display: none;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--navy);
+    min-height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo-icon {
+    width: 32px; height: 32px;
+    background: var(--teal);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .sidebar-role-badge {
+    margin: 12px 16px;
+    padding: 6px 10px;
+    background: rgba(14,165,233,0.12);
+    border: 1px solid rgba(14,165,233,0.2);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  .nav-section-label {
+    padding: 12px 20px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    margin: 1px 0;
+  }
+
+  .nav-item:hover { color: white; background: rgba(255,255,255,0.05); }
+
+  .nav-item.active {
+    color: white;
+    background: rgba(14,165,233,0.12);
+    border-left-color: var(--teal);
+  }
+
+  .nav-item-icon { font-size: 15px; width: 20px; text-align: center; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--red);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+
+  /* Ops pulse */
+  .ops-pulse {
+    margin: 12px 16px;
+    padding: 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .ops-pulse-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .pulse-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .pulse-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .pulse-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .pulse-dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .pulse-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+  .pulse-label { font-size: 11px; color: rgba(255,255,255,0.55); flex: 1; }
+  .pulse-count { font-size: 12px; font-weight: 600; color: white; }
+
+  .sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--navy-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    border: 1.5px solid rgba(14,165,233,0.3);
+  }
+
+  .user-info { flex: 1; }
+  .user-name { font-size: 12px; font-weight: 600; color: white; }
+  .user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .logout-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.15s;
+  }
+  .logout-btn:hover { color: white; }
+
+  /* ─── MAIN ───────────────────────────────────────── */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-title { font-size: 16px; font-weight: 700; color: var(--navy); flex: 1; }
+  .topbar-sub { font-size: 12px; color: var(--text-mid); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    border: none;
+  }
+
+  .btn-navy { background: var(--navy); color: white; }
+  .btn-navy:hover { background: var(--navy-light); }
+  .btn-teal { background: var(--teal); color: white; }
+  .btn-teal:hover { background: var(--teal-dark); }
+  .btn-outline { background: white; color: var(--text); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+  .btn-ghost { background: none; color: var(--text-mid); border: none; }
+  .btn-ghost:hover { color: var(--teal); background: #EFF9FF; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-danger { background: #FEF2F2; color: var(--red); border: 1px solid #FECACA; }
+
+  .page { display: none; padding: 24px 28px; }
+  .page.active { display: block; }
+
+  /* ─── KPI CARDS ──────────────────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent, var(--teal));
+    border-radius: 10px 10px 0 0;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-delta {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--red); }
+
+  .kpi-icon {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-size: 22px;
+    opacity: 0.15;
+  }
+
+  /* ─── TABLE ──────────────────────────────────────── */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+  }
+
+  .card-body { padding: 0; }
+
+  .search-bar {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    width: 200px;
+    transition: border-color 0.15s;
+  }
+
+  .search-bar:focus { border-color: var(--teal); }
+
+  .select-filter {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    background: white;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+
+  tbody td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .req-id {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy-mid);
+    background: var(--surface-2);
+    padding: 3px 7px;
+    border-radius: 5px;
+  }
+
+  .worker-cell { font-weight: 500; }
+  .worker-dni { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+
+  /* ─── BADGES ─────────────────────────────────────── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .badge-pending  { background: #FFF7ED; color: #C2410C; }
+  .badge-assigned { background: #EFF6FF; color: #1D4ED8; }
+  .badge-route    { background: #FEFCE8; color: #A16207; }
+  .badge-done     { background: #F0FDF4; color: #166534; }
+  .badge-report   { background: #F0FDF4; color: #166534; }
+  .badge-visit    { background: #EFF6FF; color: #1D4ED8; }
+  .badge-audit    { background: #FDF4FF; color: #7E22CE; }
+  .badge-rejected { background: #FEF2F2; color: #B91C1C; }
+  .badge-review   { background: #F5F3FF; color: #6D28D9; }
+
+  /* ─── PRINT / PDF ────────────────────────────────── */
+  #pdf-print-area { display: none; }
+
+  @media print {
+    body > *:not(#pdf-print-area) { display: none !important; }
+    #pdf-print-area { display: block !important; font-family: Arial, sans-serif; font-size: 11pt; color: #0F172A; margin: 0; padding: 0; }
+    .pdf-page { width: 100%; max-width: 740px; margin: 0 auto; padding: 28px 36px; }
+    .pdf-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0F1F3D; padding-bottom: 12px; margin-bottom: 16px; }
+    .pdf-logo-medirayn { font-size: 17pt; font-weight: 800; color: #0F1F3D; letter-spacing: 0.04em; }
+    .pdf-logo-medirayn span { display: block; font-size: 7pt; font-weight: 400; color: #64748B; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+    .pdf-logo-cliente { text-align: right; font-size: 13pt; font-weight: 700; color: #0F1F3D; }
+    .pdf-logo-cliente span { display: block; font-size: 7pt; font-weight: 400; color: #64748B; margin-top: 2px; }
+    .pdf-confidencial { background: #0F1F3D; color: white; font-size: 7pt; text-align: center; padding: 4px 8px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; border-radius: 3px; }
+    .pdf-doc-title { text-align: center; font-size: 13pt; font-weight: 800; color: #0F1F3D; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+    .pdf-doc-subtitle { text-align: center; font-size: 8pt; color: #64748B; margin-bottom: 16px; }
+    .pdf-meta-bar { display: flex; justify-content: space-between; background: #F1F5F9; border-radius: 5px; padding: 7px 12px; margin-bottom: 16px; font-size: 8pt; color: #475569; }
+    .pdf-meta-bar strong { color: #0F1F3D; }
+    .pdf-section { margin-bottom: 14px; }
+    .pdf-section-title { font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748B; border-bottom: 1px solid #E2E8F0; padding-bottom: 4px; margin-bottom: 8px; }
+    .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 20px; }
+    .pdf-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+    .pdf-field-label { font-size: 7pt; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px; }
+    .pdf-field-value { font-size: 9.5pt; color: #0F172A; font-weight: 500; border-bottom: 1px solid #E2E8F0; padding-bottom: 2px; min-height: 15px; }
+    .pdf-field-full { grid-column: 1 / -1; }
+    .pdf-conclusion { background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 5px; padding: 10px 14px; margin: 12px 0; }
+    .pdf-conclusion.alerta { background: #FFF7ED; border-color: #FED7AA; }
+    .pdf-conclusion-label { font-size: 7pt; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+    .pdf-conclusion.alerta .pdf-conclusion-label { color: #92400E; }
+    .pdf-conclusion-text { font-size: 9.5pt; color: #0F172A; line-height: 1.5; }
+    .pdf-firma-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 28px; padding-top: 14px; border-top: 1px solid #E2E8F0; }
+    .pdf-firma-box { text-align: center; }
+    .pdf-firma-line { border-top: 1.5px solid #0F1F3D; margin: 36px 10px 5px; }
+    .pdf-firma-nombre { font-size: 8.5pt; font-weight: 700; color: #0F1F3D; }
+    .pdf-firma-cargo { font-size: 7pt; color: #64748B; }
+    .pdf-footer { margin-top: 20px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 7pt; color: #94A3B8; }
+  }
+
+  /* ─── INFORME PRELIMINAR ─────────────────────────── */
+  .informe-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,31,61,0.55);
+    backdrop-filter: blur(2px);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .informe-overlay.open { display: flex; }
+
+  .informe-sheet {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(15,31,61,0.25);
+  }
+
+  .informe-header {
+    background: var(--navy);
+    color: white;
+    padding: 20px 24px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .informe-header-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .informe-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .informe-subtitle { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+  .informe-body { padding: 20px 24px; }
+
+  .informe-section { margin-bottom: 18px; }
+  .informe-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .informe-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .informe-field { }
+  .informe-label { font-size: 10px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+  .informe-value { font-size: 13px; color: var(--text); font-weight: 500; }
+  .informe-value.full { grid-column: 1 / -1; }
+
+  .informe-alert {
+    background: #FFF7ED;
+    border: 1px solid #FED7AA;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #92400E;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .informe-fotos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .informe-foto-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+
+  .informe-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    background: var(--surface);
+    border-radius: 0 0 12px 12px;
+  }
+
+  .btn-aprobar {
+    flex: 1;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-aprobar:hover { background: #059669; }
+
+  .btn-corregir {
+    flex: 1;
+    background: white;
+    color: var(--amber);
+    border: 1.5px solid #FCD34D;
+    border-radius: 8px;
+    padding: 11px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-corregir:hover { background: #FFFBEB; }
+
+  /* ─── SERVICE TYPE ───────────────────────────────── */
+  .service-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+
+  .service-visit { background: #EFF6FF; color: #1D4ED8; }
+  .service-audit { background: #FDF4FF; color: #7E22CE; }
+
+  /* ─── MODAL ──────────────────────────────────────── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,31,61,0.5);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: 12px;
+    width: 560px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(15,31,61,0.25);
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--navy); flex: 1; }
+  .modal-close {
+    background: none; border: none; font-size: 20px;
+    color: var(--text-light); cursor: pointer; padding: 4px;
+    line-height: 1;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-body { padding: 20px 24px; }
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-row.full { grid-template-columns: 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+
+  .field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .field input, .field select, .field textarea {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--teal);
+    background: white;
+  }
+
+  .field textarea { resize: vertical; min-height: 70px; }
+
+  .service-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .service-option {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .service-option:hover { border-color: var(--teal); }
+  .service-option.selected { border-color: var(--teal); background: #EFF9FF; }
+
+  .service-option-icon { font-size: 24px; margin-bottom: 6px; }
+  .service-option-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .service-option-desc { font-size: 11px; color: var(--text-mid); margin-top: 3px; }
+
+  .section-divider {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 8px 0 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+
+  /* ─── DETAIL PANEL ───────────────────────────────── */
+  .detail-panel {
+    display: none;
+    position: fixed;
+    top: 0; right: 0;
+    width: 440px;
+    height: 100vh;
+    background: white;
+    border-left: 1px solid var(--border);
+    z-index: 150;
+    overflow-y: auto;
+    box-shadow: -10px 0 40px rgba(15,31,61,0.1);
+    flex-direction: column;
+  }
+
+  .detail-panel.open { display: flex; }
+
+  .panel-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .panel-id { font-family: monospace; font-size: 12px; color: var(--text-mid); margin-bottom: 4px; }
+  .panel-name { font-size: 18px; font-weight: 700; color: var(--navy); }
+  .panel-company { font-size: 13px; color: var(--text-mid); margin-top: 2px; }
+
+  .panel-close {
+    margin-left: auto;
+    background: none; border: none;
+    font-size: 20px; color: var(--text-light);
+    cursor: pointer; padding: 4px;
+  }
+  .panel-close:hover { color: var(--text); }
+
+  .panel-body { padding: 20px 24px; flex: 1; }
+
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -17px; top: 5px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--teal);
+  }
+
+  .timeline-item.past::before { background: var(--border); box-shadow: 0 0 0 1px var(--border); }
+
+  .timeline-time { font-size: 10px; color: var(--text-light); margin-bottom: 2px; }
+  .timeline-text { font-size: 13px; color: var(--text); }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .info-item { }
+  .info-label { font-size: 10px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .info-value { font-size: 13px; color: var(--text); font-weight: 500; }
+
+  .assign-box {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+
+  .assign-title { font-size: 12px; font-weight: 600; color: var(--text-mid); margin-bottom: 10px; }
+
+  /* ─── MEDIC TABS ─────────────────────────────────── */
+  .medic-tab {
+    padding: 7px 14px;
+    border-radius: 8px 8px 0 0;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .medic-tab:hover { background: rgba(255,255,255,0.14); color: white; }
+
+  .medic-tab.active {
+    background: var(--surface);
+    color: var(--navy);
+  }
+
+  .tab-count {
+    background: rgba(255,255,255,0.2);
+    color: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  .medic-tab.active .tab-count {
+    background: var(--teal);
+    color: white;
+  }
+
+  /* ─── VISIT LIST ──────────────────────────────────── */
+  .visit-list-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+
+  .visit-list-item:hover {
+    border-color: var(--teal);
+    box-shadow: 0 2px 12px rgba(14,165,233,0.1);
+  }
+
+  .visit-list-item.past { opacity: 0.75; }
+
+  .vli-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .vli-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .vli-icon.home { background: #EFF6FF; }
+  .vli-icon.hospital { background: #FDF4FF; }
+  .vli-icon.done { background: #F0FDF4; }
+
+  .vli-info { flex: 1; min-width: 0; }
+  .vli-name { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+  .vli-meta { font-size: 12px; color: var(--text-mid); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .vli-meta-sep { color: var(--border); }
+
+  .vli-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .vli-date { font-size: 11px; color: var(--text-light); font-weight: 500; }
+
+  .vli-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .vli-address {
+    font-size: 12px;
+    color: var(--text-mid);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .section-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-group-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── VISIT DETAIL MODAL ─────────────────────────── */
+  .visit-detail-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,31,61,0.45);
+    backdrop-filter: blur(2px);
+    z-index: 300;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .visit-detail-modal.open { display: flex; }
+
+  .vdm-sheet {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    max-width: 640px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(15,31,61,0.2);
+    animation: slideUpSheet 0.25s ease;
+  }
+
+  @keyframes slideUpSheet {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .vdm-handle {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+  }
+
+  .vdm-header {
+    padding: 16px 24px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .vdm-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .vdm-body { padding: 18px 24px 24px; }
+
+  .vdm-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .vdm-field { }
+  .vdm-label { font-size: 10px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .vdm-value { font-size: 13px; color: var(--text); font-weight: 500; }
+
+  .vdm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* Flujo de estados médico */
+  .vdm-flow {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .vdm-flow-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .vdm-flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--border);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .flow-step.done { background: var(--green); color: white; }
+  .flow-step.current { background: var(--navy); color: white; }
+  .flow-step-arrow { color: var(--text-light); font-size: 12px; }
+
+  .btn-accept {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    flex: 1;
+    transition: background 0.15s;
+  }
+  .btn-accept:hover { background: #059669; }
+
+  .btn-reject {
+    background: #FEF2F2;
+    color: var(--red);
+    border: 1.5px solid #FECACA;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-reject:hover { background: #FEE2E2; }
+
+  .btn-start-visit {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-start-visit:hover { background: var(--teal-dark); }
+
+  .btn-arrived {
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-arrived:hover { background: var(--navy-light); }
+
+  .reject-reason {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: white;
+    outline: none;
+    margin-bottom: 8px;
+    display: none;
+  }
+  .reject-reason:focus { border-color: var(--red); }
+
+  /* ─── VISIT FORM MODAL ───────────────────────────── */
+  .visit-form-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,31,61,0.55);
+    backdrop-filter: blur(2px);
+    z-index: 400;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .visit-form-overlay.open { display: flex; }
+
+  .vf-sheet {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    max-width: 640px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(15,31,61,0.25);
+    animation: slideUpSheet 0.25s ease;
+  }
+
+  .vf-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+
+  .vf-header {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; background: white; z-index: 10;
+  }
+
+  .vf-header-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .vf-title { font-size: 15px; font-weight: 700; color: var(--navy); flex: 1; }
+  .vf-subtitle { font-size: 12px; color: var(--text-mid); margin-top: 1px; }
+
+  .vf-body { padding: 18px 24px 8px; }
+
+  .vf-section { margin-bottom: 20px; }
+  .vf-section-title {
+    font-size: 11px; font-weight: 700; color: var(--text-light);
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+
+  .vf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .vf-row.full { grid-template-columns: 1fr; }
+  .vf-field { display: flex; flex-direction: column; gap: 4px; }
+  .vf-label { font-size: 11px; font-weight: 600; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .vf-input, .vf-select, .vf-textarea {
+    padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 7px;
+    font-size: 13px; font-family: inherit; color: var(--text);
+    background: var(--surface); outline: none; transition: border-color 0.15s;
+  }
+  .vf-input:focus, .vf-select:focus, .vf-textarea:focus { border-color: var(--teal); background: white; }
+  .vf-textarea { resize: vertical; min-height: 70px; }
+
+  .vf-radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .vf-radio {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 7px;
+    cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-mid);
+    transition: all 0.15s; user-select: none;
+  }
+  .vf-radio:hover { border-color: var(--teal); color: var(--teal); }
+  .vf-radio.selected { border-color: var(--teal); background: #EFF9FF; color: var(--teal-dark); font-weight: 600; }
+
+  .vf-upload-zone {
+    border: 2px dashed var(--border); border-radius: 8px; padding: 18px;
+    text-align: center; cursor: pointer; transition: all 0.15s; background: var(--surface);
+  }
+  .vf-upload-zone:hover { border-color: var(--teal); background: #EFF9FF; }
+
+  .vf-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+  .vf-preview-item {
+    position: relative; width: 72px; height: 72px;
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border); background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .vf-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+  .vf-preview-remove {
+    position: absolute; top: 2px; right: 2px;
+    width: 18px; height: 18px; background: rgba(15,31,61,0.7);
+    color: white; border: none; border-radius: 50%; font-size: 11px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .vf-footer {
+    position: sticky; bottom: 0; background: white;
+    border-top: 1px solid var(--border); padding: 14px 24px; display: flex; gap: 10px;
+  }
+
+  .btn-finish {
+    flex: 1; background: var(--green); color: white; border: none;
+    border-radius: 8px; padding: 13px; font-size: 14px; font-weight: 700;
+    font-family: inherit; cursor: pointer; transition: background 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-finish:hover { background: #059669; }
+  .medic-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 20px 28px;
+    color: white;
+  }
+
+  .medic-greeting { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .medic-name { font-size: 20px; font-weight: 700; }
+  .medic-status-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .status-active { background: rgba(16,185,129,0.15); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.3); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .visit-cards { padding: 20px 28px; }
+  .visit-card-label { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+
+  .visit-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .visit-card-top {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .visit-type-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .visit-type-icon.home { background: #EFF6FF; }
+  .visit-type-icon.hospital { background: #FDF4FF; }
+
+  .visit-worker { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .visit-company { font-size: 12px; color: var(--text-mid); }
+  .visit-time { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--text-mid); }
+
+  .visit-card-detail {
+    background: var(--surface);
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .visit-address {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-mid);
+    margin-bottom: 10px;
+  }
+
+  .visit-actions { display: flex; gap: 8px; }
+
+  /* ─── TOAST ──────────────────────────────────────── */
+  #toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--navy);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(15,31,61,0.25);
+    max-width: 320px;
+  }
+
+  #toast.show { display: flex; animation: slideUp 0.25s ease; }
+
+  @keyframes slideUp {
+    from { transform: translateY(16px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* ─── EMPTY STATE ────────────────────────────────── */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-light);
+  }
+
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 15px; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; }
+
+  /* ─── MISC ───────────────────────────────────────── */
+  .page-header { margin-bottom: 24px; }
+  .page-title { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: var(--text-mid); }
+
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .section-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .select-assign {
+    padding: 7px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: white;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  .select-assign:focus { border-color: var(--teal); }
+</style>
+<!-- Supabase JS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     LOGIN
+════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-hero">
+    <div class="hero-logo">
+      <div class="hero-logo-icon">🏥</div>
+      MEDIRAYN
+    </div>
+    <div class="hero-copy">
+      <h1>Gestión inteligente de auditorías médicas corporativas</h1>
+      <p>Verifica descansos médicos, reduce el ausentismo y protege la productividad de tu empresa con control total en tiempo real.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">-34%</div>
+        <div class="hero-stat-label">Ausentismo promedio</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">48h</div>
+        <div class="hero-stat-label">Tiempo de respuesta</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">15</div>
+        <div class="hero-stat-label">Años de experiencia</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-form-side">
+    <div class="login-box">
+      <h2>Bienvenido de vuelta</h2>
+      <p class="subtitle">Ingresa a tu portal corporativo MEDIRAYN</p>
+
+      <div id="login-error" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:13px;color:#B91C1C;margin-bottom:16px;"></div>
+
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="correo@medirayn.com">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" id="login-btn" onclick="doLogin()">Iniciar sesión →</button>
+      <p class="login-hint">Acceso con tu cuenta corporativa MEDIRAYN</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APP SHELL
+════════════════════════════════════════ -->
+<div id="app-shell" style="display:flex;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🏥</div>
+      MEDIRAYN
+    </div>
+    <div class="sidebar-role-badge" id="role-badge">Portal Empresa</div>
+
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <!-- Injected by JS -->
+    </nav>
+
+    <!-- Ops pulse — solo admin -->
+    <div class="ops-pulse" id="ops-pulse" style="display:none">
+      <div class="ops-pulse-title">Operaciones hoy</div>
+      <div class="pulse-row">
+        <div class="pulse-dot green"></div>
+        <span class="pulse-label">Completadas</span>
+        <span class="pulse-count">18</span>
+      </div>
+      <div class="pulse-row">
+        <div class="pulse-dot amber"></div>
+        <span class="pulse-label">En ruta</span>
+        <span class="pulse-count">8</span>
+      </div>
+      <div class="pulse-row">
+        <div class="pulse-dot red"></div>
+        <span class="pulse-label">Sin asignar</span>
+        <span class="pulse-count">5</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="user-avatar">TC</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">—</div>
+          <div class="user-role" id="user-role">Empresa cliente</div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()" title="Cerrar sesión">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- ── EMPRESA: DASHBOARD ── -->
+    <div id="page-empresa-dashboard" class="page">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Panel de control</div>
+          <div class="topbar-sub">Resumen de tus solicitudes de auditoría médica</div>
+        </div>
+        <button class="btn btn-navy" onclick="openNewRequest()">＋ Nueva solicitud</button>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="kpi-grid">
+          <div class="kpi-card" style="--accent:#F59E0B">
+            <div class="kpi-label">Solicitudes activas</div>
+            <div class="kpi-value" id="kpi-active">0</div>
+            <div class="kpi-delta">Últimos 30 días</div>
+            <div class="kpi-icon">📋</div>
+          </div>
+          <div class="kpi-card" style="--accent:#10B981">
+            <div class="kpi-label">Informes listos</div>
+            <div class="kpi-value" id="kpi-reports">0</div>
+            <div class="kpi-delta up">↑ disponibles para descarga</div>
+            <div class="kpi-icon">📄</div>
+          </div>
+          <div class="kpi-card" style="--accent:#EF4444">
+            <div class="kpi-label">Tasa de ausentismo</div>
+            <div class="kpi-value">3.2<span style="font-size:16px;font-weight:500">%</span></div>
+            <div class="kpi-delta down">↑ +0.4% vs mes anterior</div>
+            <div class="kpi-icon">📉</div>
+          </div>
+          <div class="kpi-card" style="--accent:#0EA5E9">
+            <div class="kpi-label">Días perdidos</div>
+            <div class="kpi-value">47</div>
+            <div class="kpi-delta">Este mes</div>
+            <div class="kpi-icon">📅</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Solicitudes recientes</div>
+            <input class="search-bar" placeholder="Buscar trabajador..." oninput="filterTable(this.value)">
+            <select class="select-filter" onchange="filterByStatus(this.value)">
+              <option value="">Todos los estados</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Asignado">Asignado</option>
+              <option value="Aceptado">Aceptado</option>
+              <option value="Médico en ruta">En ruta</option>
+              <option value="En sitio">En sitio</option>
+              <option value="Informe listo">Informe listo</option>
+              <option value="Rechazado">Rechazado</option>
+            </select>
+          </div>
+          <table id="empresa-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Trabajador</th>
+                <th>Servicio</th>
+                <th>Dirección / Centro</th>
+                <th>Fecha DM</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="empresa-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ADMIN: DASHBOARD ── -->
+    <div id="page-admin-dashboard" class="page">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Centro de Control MEDIRAYN</div>
+          <div class="topbar-sub">Gestión global de operaciones y asignaciones</div>
+        </div>
+        <select class="select-filter" onchange="filterByStatus(this.value)">
+          <option value="">Todos los estados</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Asignado">Asignado</option>
+          <option value="Aceptado">Aceptado</option>
+          <option value="Médico en ruta">En ruta</option>
+          <option value="En sitio">En sitio</option>
+          <option value="Informe listo">Informe listo</option>
+          <option value="Rechazado">Rechazado</option>
+        </select>
+        <button class="btn btn-navy" onclick="openNewRequest()">＋ Nueva solicitud</button>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="kpi-grid">
+          <div class="kpi-card" style="--accent:#EF4444">
+            <div class="kpi-label">Sin asignar</div>
+            <div class="kpi-value" id="admin-kpi-pending">0</div>
+            <div class="kpi-delta down">Requieren acción</div>
+            <div class="kpi-icon">⚠️</div>
+          </div>
+          <div class="kpi-card" style="--accent:#F59E0B">
+            <div class="kpi-label">Médicos en ruta</div>
+            <div class="kpi-value">8</div>
+            <div class="kpi-delta">Ahora mismo</div>
+            <div class="kpi-icon">🚗</div>
+          </div>
+          <div class="kpi-card" style="--accent:#0EA5E9">
+            <div class="kpi-label">Visitas hoy</div>
+            <div class="kpi-value">24</div>
+            <div class="kpi-delta up">↑ +3 vs ayer</div>
+            <div class="kpi-icon">📍</div>
+          </div>
+          <div class="kpi-card" style="--accent:#10B981">
+            <div class="kpi-label">Informes generados</div>
+            <div class="kpi-value">18</div>
+            <div class="kpi-delta">Este mes</div>
+            <div class="kpi-icon">✅</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Bandeja de operaciones</div>
+            <input class="search-bar" placeholder="Buscar..." oninput="filterTable(this.value)">
+          </div>
+          <table id="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Empresa</th>
+                <th>Trabajador</th>
+                <th>Servicio</th>
+                <th>Fecha DM</th>
+                <th>Estado</th>
+                <th>Médico asignado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MEDICO: DASHBOARD ── -->
+    <div id="page-medico-dashboard" class="page">
+      <div class="medic-header">
+        <div class="medic-greeting">Hoy, <span id="medic-date"></span></div>
+        <div class="medic-name">Dr. Carlos López</div>
+        <div class="medic-status-row">
+          <div class="status-pill status-active">
+            <span class="status-dot"></span>
+            En turno
+          </div>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5);margin-left:4px" id="medic-visit-count"></span>
+        </div>
+        <!-- tabs -->
+        <div style="display:flex;gap:4px;margin-top:16px;">
+          <button class="medic-tab active" id="tab-hoy" onclick="switchMedicTab('hoy')">Hoy <span class="tab-count" id="tc-hoy"></span></button>
+          <button class="medic-tab" id="tab-anteriores" onclick="switchMedicTab('anteriores')">Anteriores <span class="tab-count" id="tc-anteriores"></span></button>
+          <button class="medic-tab" id="tab-futuras" onclick="switchMedicTab('futuras')">Futuras <span class="tab-count" id="tc-futuras"></span></button>
+        </div>
+      </div>
+
+      <div id="medic-tab-hoy" class="medic-tab-panel" style="padding:20px 28px;"></div>
+      <div id="medic-tab-anteriores" class="medic-tab-panel" style="padding:20px 28px;display:none;"></div>
+      <div id="medic-tab-futuras" class="medic-tab-panel" style="padding:20px 28px;display:none;"></div>
+    </div>
+
+    <!-- ── HISTORIAL (empresa y admin) ── -->
+    <div id="page-historial" class="page">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Historial de solicitudes</div>
+          <div class="topbar-sub">Registro completo de auditorías médicas</div>
+        </div>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="card">
+          <div class="card-header" style="flex-wrap:wrap;gap:8px;">
+            <div class="card-title">Todas las solicitudes</div>
+            <input class="search-bar" placeholder="Buscar trabajador o ID..." oninput="filterHistorial('text', this.value)" style="width:180px;">
+            <select class="select-filter" id="hist-filter-empresa" onchange="filterHistorial('empresa', this.value)" style="display:none">
+              <option value="">Todas las empresas</option>
+            </select>
+            <select class="select-filter" id="hist-filter-medico" onchange="filterHistorial('medico', this.value)">
+              <option value="">Todos los médicos</option>
+            </select>
+            <select class="select-filter" id="hist-filter-servicio" onchange="filterHistorial('servicio', this.value)">
+              <option value="">Tipo de servicio</option>
+              <option value="visita">🏠 Domiciliaria</option>
+              <option value="auditoria">🏥 Hospitalaria</option>
+            </select>
+            <select class="select-filter" id="hist-filter-estado" onchange="filterHistorial('estado', this.value)">
+              <option value="">Todos los estados</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Asignado">Asignado</option>
+              <option value="Aceptado">Aceptado</option>
+              <option value="Médico en ruta">En ruta</option>
+              <option value="En sitio">En sitio</option>
+              <option value="Informe listo">Informe listo</option>
+              <option value="Rechazado">Rechazado</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="clearHistorialFilters()">✕ Limpiar</button>
+          </div>
+          <div id="historial-count" style="padding:8px 16px;font-size:12px;color:var(--text-light);border-bottom:1px solid var(--border);background:var(--surface-2);"></div>
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Trabajador</th><th>Empresa</th><th>Servicio</th><th>Inicio DM</th><th>Estado</th><th>Acción</th></tr>
+            </thead>
+            <tbody id="historial-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MÉDICO: HISTORIAL ── -->
+    <div id="page-medico-historial" class="page">
+      <div class="topbar">
+        <div class="topbar-title">Mi historial de visitas</div>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="card">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Trabajador</th><th>Empresa</th><th>Tipo</th><th>Fecha</th><th>Estado</th></tr>
+            </thead>
+            <tbody id="medico-historial-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ════════════════════════════════════════
+     MODAL: NUEVA SOLICITUD
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-new-request">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nueva solicitud de auditoría</div>
+      <button class="modal-close" onclick="closeModal('modal-new-request')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="section-divider">Tipo de servicio</div>
+      <div class="service-selector">
+        <div class="service-option selected" id="opt-visit" onclick="selectService('visita', this)">
+          <div class="service-option-icon">🏠</div>
+          <div class="service-option-title">Visita domiciliaria</div>
+          <div class="service-option-desc">Verificación del cumplimiento del DM</div>
+        </div>
+        <div class="service-option" id="opt-audit" onclick="selectService('auditoria', this)">
+          <div class="service-option-icon">🏥</div>
+          <div class="service-option-title">Auditoría de descanso médico</div>
+          <div class="service-option-desc">Verificación de autenticidad del DM</div>
+        </div>
+      </div>
+
+      <div id="field-empresa-admin" class="form-row full" style="display:none">
+        <div class="field">
+          <label>Empresa cliente <span style="color:var(--red)">*</span></label>
+          <select id="f-empresa">
+            <option value="">— Seleccionar empresa —</option>
+
+            <option value="Industrias ABC">Industrias ABC</option>
+            <option value="Minera del Sur">Minera del Sur</option>
+            <option value="Constructora Lima">Constructora Lima</option>
+            <option value="Logística Perú">Logística Perú</option>
+            <option value="LATAM Airlines">LATAM Airlines</option>
+            <option value="DP World">DP World</option>
+            <option value="QROMA">QROMA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-divider">Datos del trabajador</div>
+      <div class="form-row">
+        <div class="field">
+          <label>Nombres y apellidos</label>
+          <input type="text" id="f-nombre" placeholder="Ej. Juan Carlos Pérez">
+        </div>
+        <div class="field">
+          <label>DNI o BP</label>
+          <input type="text" id="f-dni" placeholder="Documento de identidad" maxlength="12">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Área / Cargo</label>
+          <input type="text" id="f-area" placeholder="Ej. Logística">
+        </div>
+        <div class="field">
+          <label>Teléfono de referencia</label>
+          <input type="text" id="f-tel" placeholder="9XXXXXXXX">
+        </div>
+      </div>
+
+      <div class="section-divider">Descanso médico</div>
+      <div class="form-row">
+        <div class="field">
+          <label>Fecha inicio DM</label>
+          <input type="date" id="f-fecha-ini">
+        </div>
+        <div class="field">
+          <label>Fecha fin DM</label>
+          <input type="date" id="f-fecha-fin">
+        </div>
+      </div>
+
+      <div id="field-domicilio" class="form-row full">
+        <div class="field">
+          <label>Dirección del domicilio</label>
+          <input type="text" id="f-direccion" placeholder="Av. Javier Prado Este 456, San Isidro">
+        </div>
+      </div>
+
+      <div id="field-hospital" class="form-row full" style="display:none">
+        <div class="field">
+          <label>Centro de salud / Hospital</label>
+          <input type="text" id="f-hospital" placeholder="Ej. Hospital Rebagliati, EsSalud">
+        </div>
+      </div>
+
+      <div class="section-divider">Programación y documentos</div>
+      <div class="form-row">
+        <div class="field" style="grid-column:1/-1">
+          <label>Fecha a realizar la visita</label>
+          <input type="date" id="f-fecha-visita">
+          <div style="font-size:11px;color:var(--amber);margin-top:5px;display:flex;align-items:flex-start;gap:5px;">
+            <span>⚠️</span>
+            <span>Las solicitudes enviadas después de las 2:00 p.m. serán programadas para el día siguiente.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <div class="field">
+          <label>Documentos adjuntos <span style="font-size:11px;color:var(--text-light);font-weight:400;text-transform:none">(DM, certificado, foto del domicilio — máx. 5 archivos)</span></label>
+          <div id="upload-zone" onclick="document.getElementById('f-imagenes').click()"
+            style="border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all 0.15s;background:var(--surface);"
+            ondragover="event.preventDefault();this.style.borderColor='var(--teal)';this.style.background='#EFF9FF'"
+            ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--surface)'"
+            ondrop="handleDrop(event)">
+            <div style="font-size:24px;margin-bottom:6px">📎</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text-mid)">Arrastra archivos aquí o <span style="color:var(--teal)">selecciona</span></div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:4px">JPG, PNG, PDF — máx. 5 MB por archivo</div>
+          </div>
+          <input type="file" id="f-imagenes" accept="image/*,.pdf" multiple style="display:none" onchange="handleFiles(this.files)">
+          <div id="file-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <div class="field">
+          <label>Observaciones adicionales</label>
+          <textarea id="f-obs" placeholder="Información relevante para el auditor..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-new-request')">Cancelar</button>
+      <button class="btn btn-navy" onclick="submitRequest()">Enviar solicitud →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     DETAIL PANEL
+════════════════════════════════════════ -->
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-id" id="panel-req-id">REQ-001</div>
+      <div class="panel-name" id="panel-worker">—</div>
+      <div class="panel-company" id="panel-company-name">—</div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">×</button>
+  </div>
+  <div class="panel-body" id="panel-body">
+  </div>
+</div>
+
+<!-- PDF PRINT AREA -->
+<div id="pdf-print-area"></div>
+
+<!-- INFORME PRELIMINAR (solo médico) -->
+<div class="informe-overlay" id="informe-overlay">
+  <div class="informe-sheet">
+    <div class="informe-header">
+      <div class="informe-header-icon" id="inf-icon">📋</div>
+      <div>
+        <div class="informe-title" id="inf-title">Informe preliminar</div>
+        <div class="informe-subtitle" id="inf-subtitle"></div>
+      </div>
+      <button onclick="closeInforme()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.5);font-size:22px;cursor:pointer;padding:4px;line-height:1;">×</button>
+    </div>
+    <div class="informe-body" id="inf-body"></div>
+    <div class="informe-footer" id="informe-footer">
+      <!-- generado dinámicamente según rol -->
+    </div>
+  </div>
+</div>
+
+<!-- VISIT FORM MODAL (médico — llenado en campo) -->
+<div class="visit-form-overlay" id="visit-form-overlay">
+  <div class="vf-sheet">
+    <div class="vf-handle"></div>
+    <div class="vf-header">
+      <div class="vf-header-icon" id="vf-header-icon">📋</div>
+      <div>
+        <div class="vf-title" id="vf-title">Registro de visita</div>
+        <div class="vf-subtitle" id="vf-subtitle"></div>
+      </div>
+      <button onclick="closeVisitForm()" style="background:none;border:none;font-size:20px;color:var(--text-light);cursor:pointer;padding:4px;">×</button>
+    </div>
+    <div class="vf-body" id="vf-body"></div>
+    <div class="vf-footer">
+      <button class="btn btn-outline" onclick="closeVisitForm()">Cancelar</button>
+      <button class="btn-finish" id="vf-finish-btn" onclick="finalizarVisita()">✓ Finalizar y enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- VISIT DETAIL MODAL (médico) -->
+<div class="visit-detail-modal" id="visit-detail-modal" onclick="if(event.target===this)closeVisitDetail()">
+  <div class="vdm-sheet">
+    <div class="vdm-handle"></div>
+    <div class="vdm-header">
+      <div class="vdm-icon" id="vdm-icon">🏠</div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text-light);margin-bottom:3px" id="vdm-id"></div>
+        <div style="font-size:17px;font-weight:700;color:var(--navy)" id="vdm-nombre"></div>
+        <div style="font-size:13px;color:var(--text-mid);margin-top:2px" id="vdm-empresa"></div>
+      </div>
+      <div id="vdm-badge"></div>
+      <button onclick="closeVisitDetail()" style="background:none;border:none;font-size:20px;color:var(--text-light);cursor:pointer;padding:4px;margin-left:4px;">×</button>
+    </div>
+    <div class="vdm-body">
+      <div class="vdm-info-grid" id="vdm-grid"></div>
+      <div class="vdm-actions" id="vdm-actions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">✓ <span id="toast-msg">Solicitud enviada</span></div>
+
+<script>
+// ═══════════════════════════════════════════
+// SUPABASE — se inicializa en DOMContentLoaded
+// ═══════════════════════════════════════════
+let _sb = null;
+
+// ═══════════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════════
+let currentRole   = 'empresa';
+let currentProfile = null;   // { id, rol, nombre, empresa_id, empresa }
+let selectedService = 'visita';
+let currentFilter = '';
+let currentStatusFilter = '';
+let histFilters = { text:'', empresa:'', medico:'', servicio:'', estado:'' };
+
+// Médicos y empresas cargados desde Supabase (admin)
+let MEDICS_DB   = [];  // [{ id, nombre, cmp }]
+let EMPRESAS_DB = [];  // [{ id, nombre }]
+
+// Suscripción realtime
+let _realtimeChannel = null;
+
+// Empresas cargadas desde Supabase en EMPRESAS_DB
+
+let requests = []; // poblado desde Supabase
+
+// ═══════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+async function doLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error');
+  const btn      = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+  if (!email || !password) {
+    errEl.textContent = 'Ingresa tu correo y contraseña.';
+    errEl.style.display = 'block'; return;
+  }
+
+  btn.textContent = 'Ingresando...';
+  btn.disabled = true;
+
+  const { data, error } = await _sb.auth.signInWithPassword({ email, password });
+
+  btn.textContent = 'Iniciar sesión →';
+  btn.disabled = false;
+
+  if (error) {
+    errEl.textContent = error.message.includes('Invalid') ? 'Correo o contraseña incorrectos.' : error.message;
+    errEl.style.display = 'block'; return;
+  }
+
+  await iniciarSesionConPerfil(data.user);
+}
+
+async function iniciarSesionConPerfil(user) {
+  // Obtener perfil con rol y empresa
+  const { data: profile, error } = await _sb
+    .from('user_profiles')
+    .select('*, empresa:empresa_id(id, nombre)')
+    .eq('id', user.id)
+    .single();
+
+  if (error || !profile) {
+    document.getElementById('login-error').textContent = 'No se encontró tu perfil. Contacta al administrador.';
+    document.getElementById('login-error').style.display = 'block';
+    await _sb.auth.signOut(); return;
+  }
+
+  currentProfile = profile;
+  currentRole    = profile.rol;
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-shell').style.display   = 'flex';
+  setupRole(currentRole);
+  await loadData();
+  showToast('Bienvenido, ' + profile.nombre);
+}
+
+async function doLogout() {
+  if (_realtimeChannel) _sb.removeChannel(_realtimeChannel);
+  await _sb.auth.signOut();
+  currentProfile = null;
+  currentRole    = 'empresa';
+  requests       = [];
+  MEDICS_DB      = [];
+  EMPRESAS_DB    = [];
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-shell').style.display   = 'none';
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('login-email').value    = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════
+// CARGA DE DATOS DESDE SUPABASE
+// ═══════════════════════════════════════════
+async function loadData() {
+  // Construcción de query según rol (RLS se aplica en Supabase)
+  let query = _sb
+    .from('solicitudes')
+    .select('*, empresa:empresa_id(id,nombre), medico:medico_id(id,nombre,cmp)')
+    .order('created_at', { ascending: false });
+
+  if (currentFilter)       query = query.or(`nombre_trabajador.ilike.%${currentFilter}%,codigo.ilike.%${currentFilter}%`);
+  if (currentStatusFilter) query = query.eq('estado', currentStatusFilter);
+
+  const { data: rows, error } = await query;
+  if (error) { console.error('loadData:', error); return; }
+
+  requests = (rows || []).map(mapRow);
+
+  // Admin: cargar médicos y empresas para selectores
+  if (currentRole === 'admin') {
+    const { data: medicos } = await _sb
+      .from('user_profiles').select('id,nombre,cmp').eq('rol','medico').eq('activo',true).order('nombre');
+    MEDICS_DB = medicos || [];
+
+    const { data: empresas } = await _sb
+      .from('empresas').select('id,nombre').eq('activa',true).order('nombre');
+    EMPRESAS_DB = empresas || [];
+
+    // Actualizar select de empresa en el formulario
+    const sel = document.getElementById('f-empresa');
+    if (sel) {
+      sel.innerHTML = '<option value="">— Seleccionar empresa —</option>' +
+        EMPRESAS_DB.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
+    }
+  }
+
+  renderTables();
+  renderMedicDashboard();
+  populateHistorialFilters();
+  renderHistorial();
+
+  // Suscribir a cambios en tiempo real
+  if (_realtimeChannel) _sb.removeChannel(_realtimeChannel);
+  _realtimeChannel = _sb
+    .channel('solicitudes-rt')
+    .on('postgres_changes', { event:'*', schema:'public', table:'solicitudes' }, () => loadData())
+    .on('postgres_changes', { event:'*', schema:'public', table:'informes' },    () => loadData())
+    .subscribe();
+}
+
+// Mapear fila de Supabase al formato interno
+function mapRow(row) {
+  return {
+    _uuid:       row.id,
+    id:          row.codigo || row.id.slice(0,8).toUpperCase(),
+    empresa:     row.empresa?.nombre || '',
+    empresa_id:  row.empresa_id,
+    nombre:      row.nombre_trabajador || '',
+    dni:         row.dni || '',
+    area:        row.area || '',
+    tel:         row.telefono || '',
+    servicio:    row.servicio || 'visita',
+    direccion:   row.direccion || '',
+    hospital:    row.hospital || '',
+    fecha_ini:   row.fecha_ini_dm || '',
+    fecha_fin:   row.fecha_fin_dm || '',
+    fecha_visita: row.fecha_visita || '',
+    estado:      row.estado || 'Pendiente',
+    medico:      row.medico?.nombre || '',
+    medico_id:   row.medico_id || '',
+    medico_cmp:  row.medico?.cmp || '',
+    obs:         row.observaciones || '',
+    created:     row.created_at ? new Date(row.created_at).toLocaleDateString('es-PE') : '',
+  };
+}
+
+// ═══════════════════════════════════════════
+// ROLE SETUP
+// ═══════════════════════════════════════════
+const NAVS = {
+  empresa: [
+    { label:'Panel de control', icon:'📊', page:'empresa-dashboard' },
+    { label:'Historial', icon:'📁', page:'historial' },
+  ],
+  admin: [
+    { label:'Centro de control', icon:'⚙️', page:'admin-dashboard', badge:'5' },
+    { label:'Historial completo', icon:'📁', page:'historial' },
+  ],
+  medico: [
+    { label:'Mis visitas hoy', icon:'📍', page:'medico-dashboard' },
+    { label:'Historial', icon:'📋', page:'medico-historial' },
+  ],
+};
+
+const ROLE_LABELS = { empresa:'Portal Empresa', admin:'Admin MEDIRAYN', medico:'Médico Auditor' };
+
+function setupRole(role) {
+  // badge + user — usar datos reales del perfil
+  document.getElementById('role-badge').textContent = ROLE_LABELS[role] || role;
+  const nombre  = currentProfile?.nombre || 'Usuario';
+  const empresa = currentProfile?.empresa?.nombre || '';
+  const avatarTxt = nombre.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+  const rolLabel = role === 'empresa' ? empresa || 'Empresa cliente'
+                 : role === 'medico'  ? 'Médico auditor'
+                 : 'MEDIRAYN';
+  document.getElementById('user-name').textContent   = nombre;
+  document.getElementById('user-role').textContent   = rolLabel;
+  document.getElementById('user-avatar').textContent = avatarTxt;
+
+  // ops pulse
+  document.getElementById('ops-pulse').style.display = role === 'admin' ? 'block' : 'none';
+
+  // nav
+  const nav = document.getElementById('sidebar-nav');
+  nav.innerHTML = '';
+  NAVS[role].forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'nav-item' + (i === 0 ? ' active' : '');
+    el.innerHTML = `<span class="nav-item-icon">${item.icon}</span>${item.label}${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}`;
+    el.onclick = () => navigateTo(item.page, el);
+    nav.appendChild(el);
+  });
+
+  navigateTo(NAVS[role][0].page, nav.firstChild);
+
+  // medic date
+  const d = new Date();
+  document.getElementById('medic-date').textContent = d.toLocaleDateString('es-PE', { weekday:'long', day:'numeric', month:'long' });
+}
+
+function navigateTo(page, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  closePanel();
+}
+
+// ═══════════════════════════════════════════
+// RENDER TABLES
+// ═══════════════════════════════════════════
+function getFilteredRequests() {
+  return requests.filter(r => {
+    // RLS ya filtró en Supabase; aquí solo aplicamos filtros UI locales
+    const textMatch = currentFilter === '' ||
+      r.nombre.toLowerCase().includes(currentFilter) ||
+      r.id.toLowerCase().includes(currentFilter) ||
+      r.empresa.toLowerCase().includes(currentFilter);
+    const statusMatch = currentStatusFilter === '' || r.estado === currentStatusFilter;
+    return textMatch && statusMatch;
+  });
+}
+
+function statusBadge(s) {
+  const map = {
+    'Pendiente':      'badge-pending',
+    'Asignado':       'badge-assigned',
+    'Aceptado':       'badge-assigned',
+    'Médico en ruta': 'badge-route',
+    'En sitio':       'badge-route',
+    'En revisión':    'badge-review',
+    'Informe listo':  'badge-report',
+    'Rechazado':      'badge-rejected',
+  };
+  return `<span class="badge ${map[s] || 'badge-pending'}">${s}</span>`;
+}
+
+function serviceBadge(s) {
+  return s === 'visita'
+    ? `<span class="service-tag service-visit">🏠 Domiciliaria</span>`
+    : `<span class="service-tag service-audit">🏥 Hospitalaria</span>`;
+}
+
+function renderTables() {
+  const data = getFilteredRequests().filter(r => r.estado !== 'En revisión');
+
+  // Empresa table
+  const etbody = document.getElementById('empresa-tbody');
+  if (etbody) {
+    etbody.innerHTML = data.length === 0 
+      ? `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">📭</div><h3>Sin solicitudes</h3><p>Crea una nueva solicitud para comenzar</p></div></td></tr>`
+      : data.map(r => `
+      <tr onclick="openPanel('${r.id}')">
+        <td><span class="req-id">${r.id}</span></td>
+        <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
+        <td>${serviceBadge(r.servicio)}</td>
+        <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text-mid)">${r.servicio === 'visita' ? r.direccion : r.hospital}</td>
+        <td style="font-size:12px">${r.fecha_ini}</td>
+        <td>${statusBadge(r.estado)}</td>
+        <td>${r.estado === 'Informe listo' 
+          ? `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();generarPDF('${r.id}')">⬇ PDF</button>`
+          : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Ver →</button>`
+        }</td>
+      </tr>`).join('');
+  }
+
+  // Admin table
+  const atbody = document.getElementById('admin-tbody');
+  if (atbody) {
+    const allData = requests.filter(r => {
+      const t = currentFilter === '' || r.nombre.toLowerCase().includes(currentFilter) || r.id.toLowerCase().includes(currentFilter);
+      const s = currentStatusFilter === '' || r.estado === currentStatusFilter;
+      return t && s;
+    });
+    atbody.innerHTML = allData.map(r => `
+      <tr onclick="openPanel('${r.id}')">
+        <td><span class="req-id">${r.id}</span></td>
+        <td style="font-size:12px;color:var(--text-mid)">${r.empresa}</td>
+        <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
+        <td>${serviceBadge(r.servicio)}</td>
+        <td style="font-size:12px">${r.fecha_ini}</td>
+        <td>${statusBadge(r.estado)}</td>
+        <td>
+          ${r.medico
+            ? `<span style="font-size:12px;color:var(--text)">${r.medico}</span>`
+            : `<select class="select-assign" onchange="assignMedic('${r.id}', this.value)" onclick="event.stopPropagation()">
+                <option value="">— Asignar —</option>
+                ${MEDICS_DB.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('')}
+               </select>`
+          }
+        </td>
+        <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Gestionar →</button></td>
+      </tr>`).join('');
+
+    // update kpi
+    const pending = requests.filter(r => r.estado === 'Pendiente').length;
+    document.getElementById('admin-kpi-pending').textContent = pending;
+  }
+
+  // Historial
+  populateHistorialFilters();
+  renderHistorial();
+
+  // Medic
+  renderMedicDashboard();
+
+  // medico historial
+  const mhtbody = document.getElementById('medico-historial-tbody');
+  if (mhtbody) {
+    mhtbody.innerHTML = requests.filter(r => r.medico_id === currentProfile?.id).map(r => `
+      <tr onclick="openVisitDetail('${r.id}')">
+        <td><span class="req-id">${r.id}</span></td>
+        <td>${r.nombre}</td>
+        <td style="font-size:12px;color:var(--text-mid)">${r.empresa}</td>
+        <td>${serviceBadge(r.servicio)}</td>
+        <td style="font-size:12px">${r.fecha_ini}</td>
+        <td>${statusBadge(r.estado)}</td>
+      </tr>`).join('');
+  }
+
+  // KPIs empresa
+  const active = requests.filter(r => r.estado !== 'Informe listo' && r.estado !== 'En revisión').length;
+  const reports = requests.filter(r => r.estado === 'Informe listo').length;
+  const ka = document.getElementById('kpi-active');
+  const kr = document.getElementById('kpi-reports');
+  if (ka) ka.textContent = active;
+  if (kr) kr.textContent = reports;
+}
+
+// ═══════════════════════════════════════════
+// MEDIC PORTAL
+// ═══════════════════════════════════════════
+
+// Datos demo con fechas pasadas y futuras para el médico
+
+
+
+// Visitas demo adicionales para el médico (anteriores y futuras)
+// Visitas del médico cargadas desde Supabase via loadData()
+
+let currentMedicTab = 'hoy';
+
+function renderMedicDashboard() {
+  if (!document.getElementById('medic-tab-hoy')) return;
+
+  const myAll = requests.filter(r => r.medico_id === currentProfile?.id);
+  const today = new Date().toISOString().split('T')[0];
+
+  const hoy        = myAll.filter(r => r.fecha_visita === today);
+  const anteriores = myAll.filter(r => r.fecha_visita < today).sort((a,b) => b.fecha_visita.localeCompare(a.fecha_visita));
+  const futuras    = myAll.filter(r => r.fecha_visita > today).sort((a,b) => a.fecha_visita.localeCompare(b.fecha_visita));
+
+  // Contadores en tabs
+  document.getElementById('tc-hoy').textContent = hoy.length;
+  document.getElementById('tc-anteriores').textContent = anteriores.length;
+  document.getElementById('tc-futuras').textContent = futuras.length;
+
+  // Subtitle header
+  const total = hoy.length;
+  document.getElementById('medic-visit-count').textContent =
+    total ? `${total} visita${total !== 1 ? 's' : ''} programada${total !== 1 ? 's' : ''} para hoy` : 'Sin visitas programadas para hoy';
+
+  // Render hoy — separado por en ruta / programadas
+  const enRuta   = hoy.filter(r => r.estado === 'Médico en ruta');
+  const program  = hoy.filter(r => r.estado === 'Asignado' || r.estado === 'Aceptado');
+  const completa = hoy.filter(r => r.estado === 'Informe listo');
+  const rechazad = hoy.filter(r => r.estado === 'Rechazado');
+  let htmlHoy = '';
+  if (!hoy.length) {
+    htmlHoy = emptyVisit('Sin visitas para hoy', 'No tienes visitas asignadas para el día de hoy');
+  } else {
+    if (enRuta.length)   htmlHoy += groupLabel('En ruta ahora')  + enRuta.map(r => visitListItem(r)).join('');
+    if (program.length)  htmlHoy += groupLabel('Programadas')    + program.map(r => visitListItem(r)).join('');
+    if (completa.length) htmlHoy += groupLabel('Completadas')    + completa.map(r => visitListItem(r, true)).join('');
+    if (rechazad.length) htmlHoy += groupLabel('Rechazadas')     + rechazad.map(r => visitListItem(r, true)).join('');
+  }
+  document.getElementById('medic-tab-hoy').innerHTML = htmlHoy;
+
+  // Render anteriores
+  let htmlAnt = '';
+  if (!anteriores.length) {
+    htmlAnt = emptyVisit('Sin visitas anteriores', 'Aquí aparecerán tus visitas completadas');
+  } else {
+    // Agrupar por fecha
+    const byDate = {};
+    anteriores.forEach(r => {
+      if (!byDate[r.fecha_visita]) byDate[r.fecha_visita] = [];
+      byDate[r.fecha_visita].push(r);
+    });
+    Object.entries(byDate).forEach(([fecha, list]) => {
+      htmlAnt += groupLabel(formatDate(fecha));
+      htmlAnt += list.map(r => visitListItem(r, true)).join('');
+    });
+  }
+  document.getElementById('medic-tab-anteriores').innerHTML = htmlAnt;
+
+  // Render futuras
+  let htmlFut = '';
+  if (!futuras.length) {
+    htmlFut = emptyVisit('Sin visitas futuras', 'Aquí aparecerán tus próximas visitas asignadas');
+  } else {
+    const byDate = {};
+    futuras.forEach(r => {
+      if (!byDate[r.fecha_visita]) byDate[r.fecha_visita] = [];
+      byDate[r.fecha_visita].push(r);
+    });
+    Object.entries(byDate).forEach(([fecha, list]) => {
+      htmlFut += groupLabel(formatDate(fecha));
+      htmlFut += list.map(r => visitListItem(r)).join('');
+    });
+  }
+  document.getElementById('medic-tab-futuras').innerHTML = htmlFut;
+}
+
+function switchMedicTab(tab) {
+  currentMedicTab = tab;
+  ['hoy','anteriores','futuras'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+    document.getElementById(`medic-tab-${t}`).style.display = t === tab ? 'block' : 'none';
+  });
+}
+
+function groupLabel(text) {
+  return `<div class="section-group-label">${text}</div>`;
+}
+
+function emptyVisit(title, sub) {
+  return `<div class="empty-state" style="margin-top:32px"><div class="empty-state-icon">📋</div><h3>${title}</h3><p>${sub}</p></div>`;
+}
+
+function formatDate(iso) {
+  const [y, m, d] = iso.split('-');
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const date = new Date(iso + 'T12:00:00');
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  return `${days[date.getDay()]} ${d} ${months[+m-1]}`;
+}
+
+function visitListItem(r, isPast = false) {
+  const isVisit = r.servicio === 'visita';
+  const loc = isVisit ? r.direccion : r.hospital;
+  const district = extractDistrict(loc);
+  const iconEmoji = isVisit ? '🏠' : '🏥';
+  const iconClass = isPast ? 'done' : (isVisit ? 'home' : 'hospital');
+
+  return `
+    <div class="visit-list-item ${isPast ? 'past' : ''}" onclick="openVisitDetail('${r.id}')">
+      <div class="vli-main">
+        <div class="vli-icon ${iconClass}">${iconEmoji}</div>
+        <div class="vli-info">
+          <div class="vli-name">${r.nombre}</div>
+          <div class="vli-meta">
+            <span>${isVisit ? 'Visita domiciliaria' : 'Auditoría DM'}</span>
+            <span class="vli-meta-sep">·</span>
+            <span>${r.empresa}</span>
+            ${district ? `<span class="vli-meta-sep">·</span><span>📍 ${district}</span>` : ''}
+          </div>
+        </div>
+        <div class="vli-right">
+          ${statusBadge(r.estado)}
+          <div class="vli-date">${r.fecha_visita}</div>
+        </div>
+      </div>
+      <div class="vli-footer">
+        <div class="vli-address">📍 ${loc || '—'}</div>
+        <span style="font-size:11px;color:var(--teal);font-weight:500">Ver detalle →</span>
+      </div>
+    </div>`;
+}
+
+function extractDistrict(address) {
+  if (!address) return '';
+  const parts = address.split(',');
+  return parts.length >= 2 ? parts[parts.length - 1].trim() : '';
+}
+
+function openVisitDetail(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  const isVisit = r.servicio === 'visita';
+  const loc = isVisit ? r.direccion : r.hospital;
+  const locLabel = isVisit ? 'Dirección' : 'Centro de salud';
+  const arrivedLabel = isVisit ? '📍 Llegué al domicilio' : '📍 Llegué al centro de salud';
+
+  document.getElementById('vdm-id').textContent = r.id;
+  document.getElementById('vdm-nombre').textContent = r.nombre;
+  document.getElementById('vdm-empresa').textContent = `${r.empresa} · ${r.area}`;
+  document.getElementById('vdm-badge').innerHTML = statusBadge(r.estado);
+
+  const icon = document.getElementById('vdm-icon');
+  icon.textContent = isVisit ? '🏠' : '🏥';
+  icon.style.background = isVisit ? '#EFF6FF' : '#FDF4FF';
+
+  // Info grid
+  document.getElementById('vdm-grid').innerHTML = `
+    <div class="vdm-field"><div class="vdm-label">Tipo de servicio</div><div class="vdm-value">${isVisit ? 'Visita domiciliaria' : 'Auditoría de descanso médico'}</div></div>
+    <div class="vdm-field"><div class="vdm-label">DNI / BP</div><div class="vdm-value">${r.dni}</div></div>
+    <div class="vdm-field"><div class="vdm-label">Fecha de visita</div><div class="vdm-value">${r.fecha_visita || r.fecha_ini}</div></div>
+    <div class="vdm-field"><div class="vdm-label">Descanso médico</div><div class="vdm-value">${r.fecha_ini} → ${r.fecha_fin}</div></div>
+    <div class="vdm-field" style="grid-column:1/-1"><div class="vdm-label">${locLabel}</div><div class="vdm-value">${loc || '—'}</div></div>
+    <div class="vdm-field"><div class="vdm-label">Teléfono</div><div class="vdm-value">${r.tel}</div></div>
+    <div class="vdm-field"><div class="vdm-label">Estado actual</div><div class="vdm-value">${statusBadge(r.estado)}</div></div>
+    ${r.obs ? `<div class="vdm-field" style="grid-column:1/-1"><div class="vdm-label">Observaciones</div><div class="vdm-value">${r.obs}</div></div>` : ''}
+    ${r.archivos && r.archivos.length ? `<div class="vdm-field" style="grid-column:1/-1"><div class="vdm-label">Documentos</div><div class="vdm-value" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">${r.archivos.map(a=>`<span style="padding:3px 8px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;font-size:12px;">📎 ${a}</span>`).join('')}</div></div>` : ''}
+  `;
+
+  // ── Progreso visual del flujo ──
+  const FLOW = [
+    { key: 'Asignado',       label: 'Asignada'    },
+    { key: 'Aceptado',       label: 'Aceptada'    },
+    { key: 'Médico en ruta', label: 'En ruta'     },
+    { key: 'En sitio',       label: 'En sitio'    },
+    { key: 'En revisión',    label: 'En revisión' },
+    { key: 'Informe listo',  label: 'Completada'  },
+  ];
+  const ORDER = { 'Asignado':0, 'Aceptado':1, 'Médico en ruta':2, 'En sitio':3, 'En revisión':4, 'Informe listo':5, 'Rechazado':-1 };
+  const currentIdx = ORDER[r.estado] ?? 0;
+
+  const stepsHtml = FLOW.map((s, i) => {
+    const cls = i < currentIdx ? 'done' : i === currentIdx ? 'current' : '';
+    const check = i < currentIdx ? '✓ ' : '';
+    return `${i > 0 ? '<span class="flow-step-arrow">›</span>' : ''}<span class="flow-step ${cls}">${check}${s.label}</span>`;
+  }).join('');
+
+  // ── Acciones según estado ──
+  let actionsHtml = '';
+
+  if (r.estado === 'Asignado') {
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">Se te ha asignado esta solicitud. Revisa los datos y confirma si puedes realizarla.</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-accept" onclick="medicAccept('${r.id}')">✓ Aceptar solicitud</button>
+          <button class="btn-reject" onclick="showRejectReason('${r.id}')">✕ Rechazar</button>
+        </div>
+        <textarea class="reject-reason" id="reject-reason-${r.id}" placeholder="Motivo del rechazo (opcional)..."></textarea>
+        <button id="reject-confirm-${r.id}" class="btn btn-danger btn-sm" style="display:none;margin-top:4px;" onclick="medicReject('${r.id}')">Confirmar rechazo</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openMaps('${encodeURIComponent(loc)}')">🗺 Ver en Maps</button>`;
+  }
+
+  else if (r.estado === 'Aceptado') {
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">Solicitud aceptada. Cuando estés listo para desplazarte, inicia la visita.</div>
+        <button class="btn-start-visit" onclick="medicStartVisit('${r.id}')">🚗 Empezar visita</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openMaps('${encodeURIComponent(loc)}')">🗺 Ver en Maps</button>`;
+  }
+
+  else if (r.estado === 'Médico en ruta') {
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">Estás en camino. Presiona el botón cuando hayas llegado al destino.</div>
+        <button class="btn-arrived" onclick="medicArrived('${r.id}')">📍 ${isVisit ? 'Llegué al domicilio' : 'Llegué al centro de salud'}</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openMaps('${encodeURIComponent(loc)}')">🗺 Abrir en Maps</button>`;
+  }
+
+  else if (r.estado === 'En sitio') {
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">
+          Has llegado al destino. Cuando estés listo, inicia el registro de la ${isVisit ? 'visita' : 'auditoría'}.
+        </div>
+        <button class="btn-start-visit" onclick="openVisitForm('${r.id}')">
+          📋 Iniciar ${isVisit ? 'visita domiciliaria' : 'auditoría de descanso médico'}
+        </button>
+      </div>`;
+  }
+
+  else if (r.estado === 'En revisión') {
+    const esMedico = currentRole === 'medico';
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">
+          El informe preliminar está generado y pendiente de aprobación por el administrador.
+        </div>
+        <button class="btn-start-visit" style="background:var(--navy);margin-bottom:10px" onclick="mostrarInformePreliminar('${r.id}')">
+          📋 ${esMedico ? 'Ver / Corregir informe' : 'Revisar informe preliminar'}
+        </button>
+        ${!esMedico ? `<button class="btn-aprobar" style="width:100%" onclick="aprobarInformeDirecto('${r.id}')">✓ Aprobar informe</button>` : `
+        <div style="padding:8px 10px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:7px;font-size:11px;color:#6D28D9;text-align:center;">
+          🔒 Solo el administrador puede aprobar este informe
+        </div>`}
+      </div>`;
+  }
+
+  else if (r.estado === 'Informe listo') {
+    actionsHtml = `
+      <div class="vdm-flow">
+        <div class="vdm-flow-title">Progreso de la solicitud</div>
+        <div class="vdm-flow-steps">${stepsHtml}</div>
+        <div style="font-size:13px;color:var(--green);font-weight:600;margin-bottom:14px;">✓ ${isVisit ? 'Visita' : 'Auditoría'} completada y aprobada.</div>
+        ${currentRole === 'admin'
+          ? `<button class="btn btn-navy" style="width:100%" onclick="generarPDF('${r.id}')">⬇ Descargar informe PDF</button>`
+          : `<div style="padding:8px 12px;background:#F1F5F9;border-radius:7px;font-size:12px;color:var(--text-mid);text-align:center;">✓ Informe aprobado — disponible para descarga por el administrador</div>`
+        }
+      </div>`;
+  }
+
+  else if (r.estado === 'Rechazado') {
+    actionsHtml = `
+      <div class="vdm-flow" style="border-color:#FECACA;background:#FEF2F2;">
+        <div class="vdm-flow-title" style="color:var(--red)">Solicitud rechazada</div>
+        <div style="font-size:13px;color:var(--text-mid);">Esta solicitud fue rechazada y será reasignada por el administrador.</div>
+      </div>`;
+  }
+
+  document.getElementById('vdm-actions').innerHTML = actionsHtml;
+  document.getElementById('visit-detail-modal').classList.add('open');
+}
+
+function showRejectReason(id) {
+  const ta = document.getElementById(`reject-reason-${id}`);
+  const btn = document.getElementById(`reject-confirm-${id}`);
+  if (ta && btn) {
+    ta.style.display = ta.style.display === 'none' ? 'block' : 'none';
+    btn.style.display = btn.style.display === 'none' ? 'inline-flex' : 'none';
+    if (ta.style.display === 'block') ta.focus();
+  }
+}
+
+async function medicAccept(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  await _sb.from('solicitudes').update({ estado:'Aceptado' }).eq('id', r._uuid);
+  await loadData();
+  openVisitDetail(id);
+  showToast(`✓ Solicitud ${id} aceptada`);
+}
+
+async function medicReject(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  await _sb.from('solicitudes').update({ estado:'Rechazado' }).eq('id', r._uuid);
+  await loadData();
+  closeVisitDetail();
+  showToast(`Solicitud ${id} rechazada — será reasignada por el administrador`);
+}
+
+async function medicStartVisit(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  await _sb.from('solicitudes').update({ estado:'Médico en ruta' }).eq('id', r._uuid);
+  await loadData();
+  openVisitDetail(id);
+  showToast(`🚗 Visita ${id} iniciada — en ruta`);
+}
+
+async function medicArrived(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  await _sb.from('solicitudes').update({ estado:'En sitio' }).eq('id', r._uuid);
+  await loadData();
+  openVisitDetail(id);
+  showToast(`📍 Llegada registrada — puedes iniciar la ${r.servicio === 'visita' ? 'visita' : 'auditoría'}`);
+}
+
+// ─── Formulario de campo ───────────────────────────
+let visitFormId = null;
+let vfFiles = [];
+
+function openVisitForm(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  visitFormId = id;
+  vfFiles = [];
+
+  const isVisit = r.servicio === 'visita';
+  const icon = document.getElementById('vf-header-icon');
+  icon.textContent = isVisit ? '🏠' : '🏥';
+  icon.style.background = isVisit ? '#EFF6FF' : '#FDF4FF';
+
+  document.getElementById('vf-title').textContent = isVisit ? 'Registro de visita domiciliaria' : 'Registro de auditoría de descanso médico';
+  document.getElementById('vf-subtitle').textContent = `${r.nombre} · ${r.empresa} · ${r.id}`;
+  document.getElementById('vf-finish-btn').textContent = isVisit ? '✓ Finalizar visita' : '✓ Finalizar auditoría';
+
+  document.getElementById('vf-body').innerHTML = isVisit ? formVisita(r) : formAuditoria(r);
+  document.getElementById('visit-form-overlay').classList.add('open');
+  // Cerrar el detalle de fondo
+  closeVisitDetail();
+}
+
+function formVisita(r) {
+  const isLATAM = r.empresa && r.empresa.toLowerCase().includes('latam');
+  return `
+    <div class="vf-section">
+      <div class="vf-section-title">Datos de la visita</div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Empresa</label>
+          <input type="text" class="vf-input" id="vf-empresa-v" value="${r.empresa}" readonly style="background:var(--surface-2);color:var(--text-mid)">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Fecha de visita</label>
+          <input type="date" class="vf-input" id="vf-fecha-v" value="${r.fecha_visita || r.fecha_ini}">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Hora de visita</label>
+          <input type="time" class="vf-input" id="vf-hora-inicio" value="${new Date().toTimeString().slice(0,5)}">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Hora fin de visita</label>
+          <input type="time" class="vf-input" id="vf-hora-fin">
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Datos del trabajador</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Nombre del trabajador</label>
+          <input type="text" class="vf-input" id="vf-nombre-v" value="${r.nombre}" readonly style="background:var(--surface-2);color:var(--text-mid)">
+        </div>
+      </div>
+      ${isLATAM ? `
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Área de labor</label>
+          <input type="text" class="vf-input" id="vf-area-v" value="${r.area || ''}">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">BP</label>
+          <input type="text" class="vf-input" id="vf-bp" value="${r.dni || ''}" placeholder="Nº BP">
+        </div>
+      </div>` : ''}
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Dirección</label>
+          <input type="text" class="vf-input" id="vf-direccion-v" value="${r.direccion || ''}">
+        </div>
+      </div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Referencia</label>
+          <input type="text" class="vf-input" id="vf-referencia" placeholder="Referencia del domicilio">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Edad</label>
+          <input type="number" class="vf-input" id="vf-edad" placeholder="Años">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">DNI</label>
+          <input type="text" class="vf-input" id="vf-dni-v" value="${r.dni || ''}" placeholder="Nº DNI">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Celular</label>
+          <input type="text" class="vf-input" id="vf-celular" value="${r.tel || ''}" placeholder="9XXXXXXXX">
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Contacto en visita</div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Se encontró al trabajador?</label>
+          <div class="vf-radio-group" id="vf-encontrado">
+            <label class="vf-radio" onclick="selectRadio('vf-encontrado','SI');toggleField('vf-quien-atendio-wrap','NO','vf-encontrado')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-encontrado','NO');toggleField('vf-quien-atendio-wrap','SI','vf-encontrado')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field" id="vf-quien-atendio-wrap">
+          <label class="vf-label">De no encontrarlo, ¿quién atendió?</label>
+          <input type="text" class="vf-input" id="vf-quien-atendio" placeholder="Nombre / vínculo">
+        </div>
+      </div>
+      ${isLATAM ? `
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Se llamó al trabajador?</label>
+          <div class="vf-radio-group" id="vf-se-llamo">
+            <label class="vf-radio" onclick="selectRadio('vf-se-llamo','SI');toggleField('vf-llamada-wrap','NO','vf-se-llamo')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-se-llamo','NO');toggleField('vf-llamada-wrap','SI','vf-se-llamo')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field" id="vf-llamada-wrap">
+          <label class="vf-label">Nº de llamadas</label>
+          <input type="number" class="vf-input" id="vf-num-llamadas" placeholder="Cantidad" min="0">
+        </div>
+      </div>
+      <div class="vf-row" id="vf-hora-llamada-wrap">
+        <div class="vf-field">
+          <label class="vf-label">Hora de llamada</label>
+          <input type="time" class="vf-input" id="vf-hora-llamada">
+        </div>
+      </div>` : ''}
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Descanso médico</div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Tiene descanso médico?</label>
+          <div class="vf-radio-group" id="vf-tiene-dm">
+            <label class="vf-radio" onclick="selectRadio('vf-tiene-dm','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-tiene-dm','NO')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Nº de días</label>
+          <input type="number" class="vf-input" id="vf-num-dias" placeholder="Días" min="1">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Periodo del descanso — desde</label>
+          <input type="date" class="vf-input" id="vf-dm-desde" value="${r.fecha_ini || ''}">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Al</label>
+          <input type="date" class="vf-input" id="vf-dm-hasta" value="${r.fecha_fin || ''}">
+        </div>
+      </div>
+      ${isLATAM ? `
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Motivo del descanso médico</label>
+          <input type="text" class="vf-input" id="vf-motivo-dm" placeholder="Motivo referido por el trabajador">
+        </div>
+      </div>` : ''}
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Información clínica</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Centro de atención</label>
+          <input type="text" class="vf-input" id="vf-centro-v" placeholder="Hospital, clínica o centro de salud">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Médico tratante</label>
+          <input type="text" class="vf-input" id="vf-medico-tratante" placeholder="Nombre del médico">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">C.M.P.</label>
+          <input type="text" class="vf-input" id="vf-cmp-v" placeholder="Nº CMP">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Especialidad</label>
+          <input type="text" class="vf-input" id="vf-especialidad" placeholder="Ej. Medicina general, Traumatología">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">R.N.E.</label>
+          <input type="text" class="vf-input" id="vf-rne" placeholder="Nº RNE (si aplica)">
+        </div>
+      </div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Diagnóstico</label>
+          <input type="text" class="vf-input" id="vf-diagnostico-v" placeholder="Diagnóstico consignado en el DM">
+        </div>
+      </div>
+
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Tiempo de enfermedad / Fecha del accidente</label>
+          <input type="text" class="vf-input" id="vf-tiempo-enfermedad" placeholder="Ej. 3 días / 12/06/2026">
+        </div>
+      </div>
+
+      ${!isLATAM ? `
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Detalle del accidente (si aplica)</label>
+          <input type="text" class="vf-input" id="vf-detalle-accidente" placeholder="Descripción breve del accidente">
+        </div>
+      </div>` : ''}
+
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Se operó?</label>
+          <div class="vf-radio-group" id="vf-opero">
+            <label class="vf-radio" onclick="selectRadio('vf-opero','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-opero','NO')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">¿Receta médica?</label>
+          <div class="vf-radio-group" id="vf-receta">
+            <label class="vf-radio" onclick="selectRadio('vf-receta','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-receta','NO')">NO</label>
+          </div>
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Terapia física?</label>
+          <div class="vf-radio-group" id="vf-terapia">
+            <label class="vf-radio" onclick="selectRadio('vf-terapia','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-terapia','NO')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">¿Exámenes adicionales?</label>
+          <div class="vf-radio-group" id="vf-examenes">
+            <label class="vf-radio" onclick="selectRadio('vf-examenes','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-examenes','NO')">NO</label>
+          </div>
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Próxima cita?</label>
+          <div class="vf-radio-group" id="vf-prox-cita">
+            <label class="vf-radio" onclick="selectRadio('vf-prox-cita','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-prox-cita','NO')">NO</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Apreciación del médico</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Comentario de la visita</label>
+          <textarea class="vf-textarea" id="vf-hallazgos" placeholder="Descripción del estado del trabajador, condiciones del domicilio, observaciones relevantes..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Fotografías</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div>
+          <div class="vf-label" style="margin-bottom:6px">Domicilio</div>
+          <div class="vf-radio-group" id="vf-foto-domicilio">
+            <label class="vf-radio" onclick="selectRadio('vf-foto-domicilio','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-foto-domicilio','NO')">NO</label>
+          </div>
+        </div>
+        <div>
+          <div class="vf-label" style="margin-bottom:6px">Fotocheck</div>
+          <div class="vf-radio-group" id="vf-foto-fotocheck">
+            <label class="vf-radio" onclick="selectRadio('vf-foto-fotocheck','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-foto-fotocheck','NO')">NO</label>
+          </div>
+        </div>
+        <div>
+          <div class="vf-label" style="margin-bottom:6px">Documentos</div>
+          <div class="vf-radio-group" id="vf-foto-docs">
+            <label class="vf-radio" onclick="selectRadio('vf-foto-docs','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-foto-docs','NO')">NO</label>
+          </div>
+        </div>
+      </div>
+      ${uploadSectionInline()}
+    </div>`;
+}
+
+function formAuditoria(r) {
+  return `
+    <div class="vf-section">
+      <div class="vf-section-title">Datos de la auditoría</div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Empresa</label>
+          <input type="text" class="vf-input" id="vf-empresa-a" value="${r.empresa}" readonly style="background:var(--surface-2);color:var(--text-mid)">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Fecha de auditoría</label>
+          <input type="date" class="vf-input" id="vf-fecha-a" value="${r.fecha_visita || r.fecha_ini}">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Hora de auditoría</label>
+          <input type="time" class="vf-input" id="vf-hora-inicio" value="${new Date().toTimeString().slice(0,5)}">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Hora fin de auditoría</label>
+          <input type="time" class="vf-input" id="vf-hora-fin">
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Datos del trabajador</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Nombre del trabajador</label>
+          <input type="text" class="vf-input" id="vf-nombre-a" value="${r.nombre}" readonly style="background:var(--surface-2);color:var(--text-mid)">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Edad</label>
+          <input type="number" class="vf-input" id="vf-edad-a" placeholder="Años">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">DNI</label>
+          <input type="text" class="vf-input" id="vf-dni-a" value="${r.dni || ''}" placeholder="Nº DNI">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Celular</label>
+          <input type="text" class="vf-input" id="vf-celular-a" value="${r.tel || ''}" placeholder="9XXXXXXXX">
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Centro de atención</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Clínica u hospital</label>
+          <input type="text" class="vf-input" id="vf-centro-a" value="${r.hospital || ''}" placeholder="Nombre del centro de salud">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Médico tratante</label>
+          <input type="text" class="vf-input" id="vf-medico-tratante-a" placeholder="Nombre del médico">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">C.M.P.</label>
+          <input type="text" class="vf-input" id="vf-cmp-a" placeholder="Nº CMP">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Especialidad</label>
+          <input type="text" class="vf-input" id="vf-especialidad-a" placeholder="Ej. Medicina general, Traumatología">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">R.N.E.</label>
+          <input type="text" class="vf-input" id="vf-rne-a" placeholder="Nº RNE (si aplica)">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Se encontró al médico tratante?</label>
+          <div class="vf-radio-group" id="vf-encontro-medico">
+            <label class="vf-radio" onclick="selectRadio('vf-encontro-medico','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-encontro-medico','NO')">NO</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Descanso médico</div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">¿Tiene descanso médico?</label>
+          <div class="vf-radio-group" id="vf-tiene-dm-a">
+            <label class="vf-radio" onclick="selectRadio('vf-tiene-dm-a','SI')">SI</label>
+            <label class="vf-radio" onclick="selectRadio('vf-tiene-dm-a','NO')">NO</label>
+          </div>
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Nº de días</label>
+          <input type="number" class="vf-input" id="vf-num-dias-a" placeholder="Días" min="1">
+        </div>
+      </div>
+      <div class="vf-row">
+        <div class="vf-field">
+          <label class="vf-label">Periodo del descanso — desde</label>
+          <input type="date" class="vf-input" id="vf-dm-desde-a" value="${r.fecha_ini || ''}">
+        </div>
+        <div class="vf-field">
+          <label class="vf-label">Al</label>
+          <input type="date" class="vf-input" id="vf-dm-hasta-a" value="${r.fecha_fin || ''}">
+        </div>
+      </div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <label class="vf-label">Diagnóstico</label>
+          <input type="text" class="vf-input" id="vf-diagnostico-a" placeholder="Diagnóstico consignado en el DM">
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Apreciación médica del descanso médico</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <textarea class="vf-textarea" id="vf-apreciacion-a" style="min-height:80px" placeholder="Apreciación del médico auditor sobre la validez y condiciones del descanso médico..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Fotografías y documentos</div>
+      ${uploadSectionInline()}
+    </div>
+
+    <div class="vf-section">
+      <div class="vf-section-title">Comentario de la auditoría</div>
+      <div class="vf-row full">
+        <div class="vf-field">
+          <textarea class="vf-textarea" id="vf-hallazgos" style="min-height:90px" placeholder="Observaciones adicionales, contexto, inconsistencias encontradas..."></textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+
+function uploadSectionInline() {
+  return `
+    <div class="vf-upload-zone" onclick="document.getElementById('vf-file-input').click()"
+      ondragover="event.preventDefault();this.style.borderColor='var(--teal)'"
+      ondragleave="this.style.borderColor='var(--border)'"
+      ondrop="handleVfDrop(event)">
+      <div style="font-size:22px;margin-bottom:4px">📸</div>
+      <div style="font-size:13px;font-weight:500;color:var(--text-mid)">Toca para adjuntar fotos o arrastra aquí</div>
+      <div style="font-size:11px;color:var(--text-light);margin-top:3px">JPG, PNG, PDF · máx. 5 archivos · 5 MB c/u</div>
+    </div>
+    <input type="file" id="vf-file-input" accept="image/*,.pdf" multiple style="display:none" onchange="handleVfFiles(this.files)">
+    <div class="vf-preview" id="vf-preview"></div>`;
+}
+
+function toggleDetailField(fieldId, showWhenValue, groupId) {
+  const group = document.getElementById(groupId);
+  const field = document.getElementById(fieldId);
+  if (!group || !field) return;
+  const selected = group.querySelector('.vf-radio.selected');
+  const isSelected = selected && selected.textContent.trim() === showWhenValue;
+  field.style.display = isSelected ? 'block' : 'none';
+  if (isSelected) field.focus();
+}
+
+function selectRadio(groupId, value) {
+  const group = document.getElementById(groupId);
+  const field = document.getElementById(fieldId);
+  if (!group || !field) return;
+  // El campo se oculta cuando se selecciona hideWhenValue
+  const selected = group.querySelector('.vf-radio.selected');
+  if (selected && selected.textContent.trim() === hideWhenValue) {
+    field.style.visibility = 'hidden';
+    field.style.opacity = '0';
+  } else {
+    field.style.visibility = 'visible';
+    field.style.opacity = '1';
+  }
+}
+
+function selectRadio(groupId, value) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.vf-radio').forEach(el => {
+    el.classList.toggle('selected', el.querySelector('input')?.value === value || el.textContent.trim().includes(value));
+  });
+}
+
+function handleVfFiles(files) {
+  Array.from(files).slice(0, 5 - vfFiles.length).forEach(f => {
+    if (f.size > 5 * 1024 * 1024) { showToast(`⚠ ${f.name} supera 5 MB`, true); return; }
+    vfFiles.push(f);
+  });
+  renderVfPreview();
+}
+
+function handleVfDrop(e) {
+  e.preventDefault();
+  handleVfFiles(e.dataTransfer.files);
+}
+
+function removeVfFile(idx) {
+  vfFiles.splice(idx, 1);
+  renderVfPreview();
+}
+
+function renderVfPreview() {
+  const container = document.getElementById('vf-preview');
+  if (!container) return;
+  container.innerHTML = vfFiles.map((f, i) => {
+    const isImg = f.type.startsWith('image/');
+    const url = isImg ? URL.createObjectURL(f) : null;
+    return `<div class="vf-preview-item">
+      ${url ? `<img src="${url}" alt="${f.name}">` : '<span>📄</span>'}
+      <button class="vf-preview-remove" onclick="removeVfFile(${i})">×</button>
+    </div>`;
+  }).join('');
+}
+
+function closeVisitForm() {
+  document.getElementById('visit-form-overlay').classList.remove('open');
+  visitFormId = null;
+  vfFiles = [];
+}
+
+async function finalizarVisita() {
+  if (!visitFormId) return;
+  const r = requests.find(x => x.id === visitFormId);
+  if (!r) return;
+
+  // Recopilar datos del formulario según tipo
+  const isVisit = r.servicio === 'visita';
+  const informe = { archivos_campo: vfFiles.map(f => f.name) };
+
+  if (isVisit) {
+    informe.hora_inicio      = document.getElementById('vf-hora-inicio')?.value || '';
+    informe.hora_fin         = document.getElementById('vf-hora-fin')?.value || '';
+    informe.encontrado       = document.getElementById('vf-encontrado')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.quien_atendio    = document.getElementById('vf-quien-atendio')?.value || '';
+    informe.tiene_dm         = document.getElementById('vf-tiene-dm')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.num_dias         = document.getElementById('vf-num-dias')?.value || '';
+    informe.dm_desde         = document.getElementById('vf-dm-desde')?.value || '';
+    informe.dm_hasta         = document.getElementById('vf-dm-hasta')?.value || '';
+    informe.centro           = document.getElementById('vf-centro-v')?.value || '';
+    informe.medico_tratante  = document.getElementById('vf-medico-tratante')?.value || '';
+    informe.cmp              = document.getElementById('vf-cmp-v')?.value || '';
+    informe.especialidad     = document.getElementById('vf-especialidad')?.value || '';
+    informe.rne              = document.getElementById('vf-rne')?.value || '';
+    informe.diagnostico      = document.getElementById('vf-diagnostico-v')?.value || '';
+    informe.tiempo_enfermedad= document.getElementById('vf-tiempo-enfermedad')?.value || '';
+    informe.opero            = document.getElementById('vf-opero')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.receta           = document.getElementById('vf-receta')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.terapia          = document.getElementById('vf-terapia')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.examenes         = document.getElementById('vf-examenes')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.prox_cita        = document.getElementById('vf-prox-cita')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.comentario       = document.getElementById('vf-hallazgos')?.value || '';
+    informe.foto_domicilio   = document.getElementById('vf-foto-domicilio')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.foto_fotocheck   = document.getElementById('vf-foto-fotocheck')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.foto_docs        = document.getElementById('vf-foto-docs')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+  } else {
+    informe.hora_inicio      = document.getElementById('vf-hora-inicio')?.value || '';
+    informe.hora_fin         = document.getElementById('vf-hora-fin')?.value || '';
+    informe.centro           = document.getElementById('vf-centro-a')?.value || '';
+    informe.medico_tratante  = document.getElementById('vf-medico-tratante-a')?.value || '';
+    informe.cmp              = document.getElementById('vf-cmp-a')?.value || '';
+    informe.especialidad     = document.getElementById('vf-especialidad-a')?.value || '';
+    informe.rne              = document.getElementById('vf-rne-a')?.value || '';
+    informe.encontro_medico  = document.getElementById('vf-encontro-medico')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.tiene_dm         = document.getElementById('vf-tiene-dm-a')?.querySelector('.vf-radio.selected')?.textContent?.trim() || '';
+    informe.num_dias         = document.getElementById('vf-num-dias-a')?.value || '';
+    informe.dm_desde         = document.getElementById('vf-dm-desde-a')?.value || '';
+    informe.dm_hasta         = document.getElementById('vf-dm-hasta-a')?.value || '';
+    informe.diagnostico      = document.getElementById('vf-diagnostico-a')?.value || '';
+    informe.apreciacion      = document.getElementById('vf-apreciacion-a')?.value || '';
+    informe.comentario       = document.getElementById('vf-hallazgos')?.value || '';
+  }
+
+  informe.hora_registro = new Date().toLocaleTimeString('es-PE', { hour:'2-digit', minute:'2-digit' });
+  r.informe = informe;
+
+  // Mapear campos al esquema de la tabla informes
+  const dbPayload = {
+    solicitud_id:      r._uuid,
+    medico_id:         currentProfile?.id,
+    estado_informe:    'en_revision',
+    hora_inicio:       informe.hora_inicio || null,
+    hora_fin:          informe.hora_fin    || null,
+    comentario:        informe.comentario  || null,
+    // visita
+    encontrado:        informe.encontrado        || null,
+    quien_atendio:     informe.quien_atendio     || null,
+    tiene_dm:          informe.tiene_dm          || null,
+    num_dias:          informe.num_dias ? parseInt(informe.num_dias) : null,
+    dm_desde:          informe.dm_desde          || null,
+    dm_hasta:          informe.dm_hasta          || null,
+    centro_atencion:   informe.centro            || null,
+    medico_tratante:   informe.medico_tratante   || null,
+    cmp:               informe.cmp               || null,
+    especialidad:      informe.especialidad      || null,
+    rne:               informe.rne               || null,
+    diagnostico:       informe.diagnostico       || null,
+    tiempo_enfermedad: informe.tiempo_enfermedad || null,
+    opero:             informe.opero             || null,
+    receta:            informe.receta            || null,
+    terapia_fisica:    informe.terapia           || null,
+    examenes_adicionales: informe.examenes       || null,
+    prox_cita:         informe.prox_cita         || null,
+    foto_domicilio:    informe.foto_domicilio    || null,
+    foto_fotocheck:    informe.foto_fotocheck    || null,
+    foto_docs:         informe.foto_docs         || null,
+    // auditoría
+    encontro_medico:   informe.encontro_medico   || null,
+    apreciacion:       informe.apreciacion       || null,
+    // LATAM
+    bp:                informe.bp                || null,
+    se_llamo:          informe.se_llamo          || null,
+    num_llamadas:      informe.num_llamadas ? parseInt(informe.num_llamadas) : null,
+    motivo_dm:         informe.motivo_dm         || null,
+  };
+
+  // Upsert del informe
+  const { data: existente } = await _sb.from('informes')
+    .select('id').eq('solicitud_id', r._uuid).maybeSingle();
+
+  if (existente) {
+    await _sb.from('informes').update(dbPayload).eq('id', existente.id);
+  } else {
+    await _sb.from('informes').insert(dbPayload);
+  }
+
+  // Subir evidencias de campo
+  for (const file of vfFiles) {
+    const path = `${r._uuid}/campo_${Date.now()}_${file.name}`;
+    const { error: upErr } = await _sb.storage.from('evidencias').upload(path, file, { upsert: false });
+    if (!upErr) {
+      await _sb.from('evidencias').insert({
+        solicitud_id: r._uuid, nombre: file.name,
+        storage_path: path, tipo_archivo: file.type,
+        subido_por: currentProfile?.id,
+      });
+    }
+  }
+
+  // Actualizar estado solicitud
+  await _sb.from('solicitudes').update({ estado:'En revisión' }).eq('id', r._uuid);
+
+  closeVisitForm();
+  await loadData();
+  mostrarInformePreliminar(r.id);
+}
+
+function mostrarInformePreliminar(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  const isVisit = r.servicio === 'visita';
+  const inf = r.informe || {};
+
+  document.getElementById('inf-icon').textContent = isVisit ? '🏠' : '🏥';
+  document.getElementById('inf-title').textContent = isVisit ? 'Informe preliminar — Visita domiciliaria' : 'Informe preliminar — Auditoría de DM';
+  document.getElementById('inf-subtitle').textContent = `${r.nombre} · ${r.empresa} · ${r.id}`;
+
+  const val = (v) => v || '<span style="color:var(--text-light);font-style:italic">No registrado</span>';
+
+  let body = `
+    <div class="informe-alert">
+      ⚠️ Este informe es preliminar. Revísalo antes de aprobarlo. La empresa <strong>no puede verlo</strong> hasta que lo apruebes.
+    </div>`;
+
+  if (isVisit) {
+    body += `
+      <div class="informe-section">
+        <div class="informe-section-title">Datos de la visita</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">Empresa</div><div class="informe-value">${val(r.empresa)}</div></div>
+          <div class="informe-field"><div class="informe-label">Fecha</div><div class="informe-value">${val(r.fecha_visita)}</div></div>
+          <div class="informe-field"><div class="informe-label">Hora inicio</div><div class="informe-value">${val(inf.hora_inicio)}</div></div>
+          <div class="informe-field"><div class="informe-label">Hora fin</div><div class="informe-value">${val(inf.hora_fin)}</div></div>
+          <div class="informe-field"><div class="informe-label">Trabajador</div><div class="informe-value">${val(r.nombre)}</div></div>
+          <div class="informe-field"><div class="informe-label">DNI / BP</div><div class="informe-value">${val(r.dni)}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Contacto en visita</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">¿Trabajador encontrado?</div><div class="informe-value">${val(inf.encontrado)}</div></div>
+          ${inf.quien_atendio ? `<div class="informe-field"><div class="informe-label">¿Quién atendió?</div><div class="informe-value">${inf.quien_atendio}</div></div>` : ''}
+          <div class="informe-field"><div class="informe-label">¿Tiene DM?</div><div class="informe-value">${val(inf.tiene_dm)}</div></div>
+          <div class="informe-field"><div class="informe-label">Nº días</div><div class="informe-value">${val(inf.num_dias)}</div></div>
+          <div class="informe-field"><div class="informe-label">Periodo DM</div><div class="informe-value">${inf.dm_desde || '—'} al ${inf.dm_hasta || '—'}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Información clínica</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">Centro de atención</div><div class="informe-value">${val(inf.centro)}</div></div>
+          <div class="informe-field"><div class="informe-label">Médico tratante</div><div class="informe-value">${val(inf.medico_tratante)}</div></div>
+          <div class="informe-field"><div class="informe-label">CMP</div><div class="informe-value">${val(inf.cmp)}</div></div>
+          <div class="informe-field"><div class="informe-label">Especialidad</div><div class="informe-value">${val(inf.especialidad)}</div></div>
+          <div class="informe-field" style="grid-column:1/-1"><div class="informe-label">Diagnóstico</div><div class="informe-value">${val(inf.diagnostico)}</div></div>
+          <div class="informe-field"><div class="informe-label">¿Se operó?</div><div class="informe-value">${val(inf.opero)}</div></div>
+          <div class="informe-field"><div class="informe-label">Receta médica</div><div class="informe-value">${val(inf.receta)}</div></div>
+          <div class="informe-field"><div class="informe-label">Terapia física</div><div class="informe-value">${val(inf.terapia)}</div></div>
+          <div class="informe-field"><div class="informe-label">Exámenes adicionales</div><div class="informe-value">${val(inf.examenes)}</div></div>
+          <div class="informe-field"><div class="informe-label">Próxima cita</div><div class="informe-value">${val(inf.prox_cita)}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Fotografías</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">Domicilio</div><div class="informe-value">${val(inf.foto_domicilio)}</div></div>
+          <div class="informe-field"><div class="informe-label">Fotocheck</div><div class="informe-value">${val(inf.foto_fotocheck)}</div></div>
+          <div class="informe-field"><div class="informe-label">Documentos</div><div class="informe-value">${val(inf.foto_docs)}</div></div>
+        </div>
+      </div>`;
+  } else {
+    body += `
+      <div class="informe-section">
+        <div class="informe-section-title">Datos de la auditoría</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">Empresa</div><div class="informe-value">${val(r.empresa)}</div></div>
+          <div class="informe-field"><div class="informe-label">Fecha</div><div class="informe-value">${val(r.fecha_visita)}</div></div>
+          <div class="informe-field"><div class="informe-label">Hora inicio</div><div class="informe-value">${val(inf.hora_inicio)}</div></div>
+          <div class="informe-field"><div class="informe-label">Hora fin</div><div class="informe-value">${val(inf.hora_fin)}</div></div>
+          <div class="informe-field"><div class="informe-label">Trabajador</div><div class="informe-value">${val(r.nombre)}</div></div>
+          <div class="informe-field"><div class="informe-label">DNI</div><div class="informe-value">${val(r.dni)}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Centro de atención</div>
+        <div class="informe-grid">
+          <div class="informe-field" style="grid-column:1/-1"><div class="informe-label">Clínica u hospital</div><div class="informe-value">${val(inf.centro)}</div></div>
+          <div class="informe-field"><div class="informe-label">Médico tratante</div><div class="informe-value">${val(inf.medico_tratante)}</div></div>
+          <div class="informe-field"><div class="informe-label">CMP</div><div class="informe-value">${val(inf.cmp)}</div></div>
+          <div class="informe-field"><div class="informe-label">Especialidad</div><div class="informe-value">${val(inf.especialidad)}</div></div>
+          <div class="informe-field"><div class="informe-label">RNE</div><div class="informe-value">${val(inf.rne)}</div></div>
+          <div class="informe-field"><div class="informe-label">¿Se encontró al médico?</div><div class="informe-value">${val(inf.encontro_medico)}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Descanso médico</div>
+        <div class="informe-grid">
+          <div class="informe-field"><div class="informe-label">¿Tiene DM?</div><div class="informe-value">${val(inf.tiene_dm)}</div></div>
+          <div class="informe-field"><div class="informe-label">Nº días</div><div class="informe-value">${val(inf.num_dias)}</div></div>
+          <div class="informe-field"><div class="informe-label">Periodo</div><div class="informe-value">${inf.dm_desde || '—'} al ${inf.dm_hasta || '—'}</div></div>
+          <div class="informe-field" style="grid-column:1/-1"><div class="informe-label">Diagnóstico</div><div class="informe-value">${val(inf.diagnostico)}</div></div>
+        </div>
+      </div>
+      <div class="informe-section">
+        <div class="informe-section-title">Apreciación médica</div>
+        <div class="informe-field"><div class="informe-value" style="font-size:13px;line-height:1.6">${val(inf.apreciacion)}</div></div>
+      </div>`;
+  }
+
+  // Comentario y archivos (común a ambos)
+  body += `
+    <div class="informe-section">
+      <div class="informe-section-title">Comentario del médico auditor</div>
+      <div class="informe-field"><div class="informe-value" style="font-size:13px;line-height:1.6">${val(inf.comentario)}</div></div>
+    </div>`;
+
+  if (inf.archivos_campo && inf.archivos_campo.length) {
+    body += `
+      <div class="informe-section">
+        <div class="informe-section-title">Fotografías y documentos adjuntos</div>
+        <div class="informe-fotos">${inf.archivos_campo.map(a => `<span class="informe-foto-chip">📎 ${a}</span>`).join('')}</div>
+      </div>`;
+  }
+
+  document.getElementById('inf-body').innerHTML = body;
+  document.getElementById('informe-overlay').dataset.reqId = id;
+
+  // Footer según rol
+  const footer = document.getElementById('informe-footer');
+  if (currentRole === 'admin') {
+    footer.innerHTML = `
+      <button class="btn-corregir" onclick="corregirInforme()">✎ Corregir datos</button>
+      <button class="btn-aprobar" onclick="aprobarInforme()">✓ Aprobar informe</button>`;
+  } else {
+    // Médico: solo puede corregir
+    footer.innerHTML = `
+      <button class="btn btn-outline" onclick="closeInforme()">Cerrar</button>
+      <button class="btn-corregir" style="flex:1" onclick="corregirInforme()">✎ Corregir datos</button>
+      <div style="width:100%;margin-top:8px;padding:8px 10px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:7px;font-size:11px;color:#6D28D9;text-align:center;">
+        🔒 Solo el administrador puede aprobar este informe
+      </div>`;
+  }
+
+  document.getElementById('informe-overlay').classList.add('open');
+}
+
+function closeInforme() {
+  document.getElementById('informe-overlay').classList.remove('open');
+}
+
+function generarPDF(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  if (currentRole !== 'admin') { showToast('⚠ Solo el administrador puede descargar el PDF', true); return; }
+
+  const isVisit = r.servicio === 'visita';
+  const inf = r.informe || {};
+  const now = new Date();
+  const fechaEmision = now.toLocaleDateString('es-PE', { day:'2-digit', month:'long', year:'numeric' });
+  const horaEmision  = now.toLocaleTimeString('es-PE', { hour:'2-digit', minute:'2-digit' });
+  const tipoDoc = isVisit ? 'INFORME DE VISITA DOMICILIARIA' : 'INFORME DE AUDITORÍA DE DESCANSO MÉDICO';
+  const loc = isVisit ? r.direccion : r.hospital;
+  const v = (x) => x || '—';
+
+  // Conclusión principal
+  let conclusionLabel = '', conclusionText = '', conclusionClass = '';
+  if (isVisit) {
+    conclusionText = v(inf.comentario);
+    conclusionLabel = 'Apreciación del médico auditor';
+    conclusionClass = inf.encontrado === 'NO' ? 'alerta' : '';
+  } else {
+    conclusionText = v(inf.apreciacion);
+    conclusionLabel = 'Apreciación médica del descanso médico';
+    conclusionClass = inf.tiene_dm === 'NO' ? 'alerta' : '';
+  }
+
+  const html = `
+  <div class="pdf-page">
+
+    <div class="pdf-header">
+      <div class="pdf-logo-medirayn">MEDIRAYN<span>Salud Ocupacional Corporativa</span></div>
+      <div class="pdf-logo-cliente">${r.empresa}<span>Empresa cliente</span></div>
+    </div>
+
+    <div class="pdf-confidencial">Documento confidencial — uso interno y cliente autorizado</div>
+
+    <div class="pdf-doc-title">${tipoDoc}</div>
+    <div class="pdf-doc-subtitle">Resumen ejecutivo · Código: ${r.id} · Emitido el ${fechaEmision} a las ${horaEmision}</div>
+
+    <div class="pdf-meta-bar">
+      <span><strong>ID:</strong> ${r.id}</span>
+      <span><strong>Fecha de ${isVisit ? 'visita' : 'auditoría'}:</strong> ${v(r.fecha_visita)}</span>
+      <span><strong>Médico auditor:</strong> ${v(r.medico)}</span>
+      <span><strong>Estado:</strong> Informe aprobado</span>
+    </div>
+
+    <div class="pdf-section">
+      <div class="pdf-section-title">Datos del trabajador</div>
+      <div class="pdf-grid three">
+        <div><div class="pdf-field-label">Nombre completo</div><div class="pdf-field-value">${v(r.nombre)}</div></div>
+        <div><div class="pdf-field-label">DNI / BP</div><div class="pdf-field-value">${v(r.dni)}</div></div>
+        <div><div class="pdf-field-label">Celular</div><div class="pdf-field-value">${v(inf.celular || r.tel)}</div></div>
+        <div><div class="pdf-field-label">Área / Cargo</div><div class="pdf-field-value">${v(inf.area || r.area)}</div></div>
+        <div><div class="pdf-field-label">Empresa</div><div class="pdf-field-value">${v(r.empresa)}</div></div>
+        ${isVisit ? `<div><div class="pdf-field-label">Dirección</div><div class="pdf-field-value">${v(r.direccion)}</div></div>` : `<div><div class="pdf-field-label">Centro de atención</div><div class="pdf-field-value">${v(inf.centro || r.hospital)}</div></div>`}
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <div class="pdf-section-title">Descanso médico</div>
+      <div class="pdf-grid">
+        <div><div class="pdf-field-label">¿Tiene descanso médico?</div><div class="pdf-field-value">${v(inf.tiene_dm || inf.tiene_dm_a)}</div></div>
+        <div><div class="pdf-field-label">Nº de días</div><div class="pdf-field-value">${v(inf.num_dias || inf.num_dias_a)}</div></div>
+        <div><div class="pdf-field-label">Período — desde</div><div class="pdf-field-value">${v(inf.dm_desde || r.fecha_ini)}</div></div>
+        <div><div class="pdf-field-label">Hasta</div><div class="pdf-field-value">${v(inf.dm_hasta || r.fecha_fin)}</div></div>
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <div class="pdf-section-title">Información clínica</div>
+      <div class="pdf-grid">
+        <div><div class="pdf-field-label">Médico tratante</div><div class="pdf-field-value">${v(inf.medico_tratante)}</div></div>
+        <div><div class="pdf-field-label">C.M.P.</div><div class="pdf-field-value">${v(inf.cmp)}</div></div>
+        <div><div class="pdf-field-label">Especialidad</div><div class="pdf-field-value">${v(inf.especialidad)}</div></div>
+        <div><div class="pdf-field-label">R.N.E.</div><div class="pdf-field-value">${v(inf.rne)}</div></div>
+        <div class="pdf-field-full"><div class="pdf-field-label">Diagnóstico</div><div class="pdf-field-value">${v(inf.diagnostico)}</div></div>
+      </div>
+    </div>
+
+    ${isVisit ? `
+    <div class="pdf-section">
+      <div class="pdf-section-title">Hallazgos de la visita</div>
+      <div class="pdf-grid three">
+        <div><div class="pdf-field-label">¿Trabajador encontrado?</div><div class="pdf-field-value">${v(inf.encontrado)}</div></div>
+        ${inf.quien_atendio ? `<div><div class="pdf-field-label">¿Quién atendió?</div><div class="pdf-field-value">${inf.quien_atendio}</div></div>` : ''}
+        <div><div class="pdf-field-label">Receta médica</div><div class="pdf-field-value">${v(inf.receta)}</div></div>
+        <div><div class="pdf-field-label">Terapia física</div><div class="pdf-field-value">${v(inf.terapia)}</div></div>
+        <div><div class="pdf-field-label">Exámenes adicionales</div><div class="pdf-field-value">${v(inf.examenes)}</div></div>
+        <div><div class="pdf-field-label">Próxima cita</div><div class="pdf-field-value">${v(inf.prox_cita)}</div></div>
+        <div><div class="pdf-field-label">Hora inicio</div><div class="pdf-field-value">${v(inf.hora_inicio)}</div></div>
+        <div><div class="pdf-field-label">Hora fin</div><div class="pdf-field-value">${v(inf.hora_fin)}</div></div>
+      </div>
+    </div>` : `
+    <div class="pdf-section">
+      <div class="pdf-section-title">Verificación en centro de salud</div>
+      <div class="pdf-grid">
+        <div><div class="pdf-field-label">¿Se encontró al médico tratante?</div><div class="pdf-field-value">${v(inf.encontro_medico)}</div></div>
+        <div><div class="pdf-field-label">Hora inicio</div><div class="pdf-field-value">${v(inf.hora_inicio)}</div></div>
+        <div><div class="pdf-field-label">Hora fin</div><div class="pdf-field-value">${v(inf.hora_fin)}</div></div>
+      </div>
+    </div>`}
+
+    <div class="pdf-conclusion ${conclusionClass}">
+      <div class="pdf-conclusion-label">${conclusionLabel}</div>
+      <div class="pdf-conclusion-text">${conclusionText || 'Sin observaciones registradas.'}</div>
+    </div>
+
+    ${inf.comentario && !isVisit ? `
+    <div class="pdf-section">
+      <div class="pdf-section-title">Comentario de la auditoría</div>
+      <div class="pdf-conclusion-text" style="font-size:9.5pt;line-height:1.5">${inf.comentario}</div>
+    </div>` : ''}
+
+    <div class="pdf-firma-row">
+      <div class="pdf-firma-box">
+        <div class="pdf-firma-line"></div>
+        <div class="pdf-firma-nombre">${v(r.medico)}</div>
+        <div class="pdf-firma-cargo">Médico Auditor · MEDIRAYN</div>
+      </div>
+      <div class="pdf-firma-box">
+        <div class="pdf-firma-line"></div>
+        <div class="pdf-firma-nombre">Administración MEDIRAYN</div>
+        <div class="pdf-firma-cargo">Responsable de aprobación</div>
+      </div>
+    </div>
+
+    <div class="pdf-footer">
+      <span>MEDIRAYN S.A.C. · Av. Santo Toribio 143, San Isidro · medicomercial@medirayn.com</span>
+      <span>Pág. 1 de 1 · ${r.id}</span>
+    </div>
+
+  </div>`;
+
+  document.getElementById('pdf-print-area').innerHTML = html;
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => { document.getElementById('pdf-print-area').innerHTML = ''; }, 1000);
+  }, 150);
+}
+
+
+
+async function aprobarInformeDirecto(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+
+  // Buscar el informe en BD
+  const { data: inf } = await _sb.from('informes')
+    .select('id').eq('solicitud_id', r._uuid).maybeSingle();
+
+  if (inf) {
+    await _sb.from('informes').update({
+      estado_informe: 'aprobado',
+      aprobado_por:   currentProfile?.id,
+      aprobado_at:    new Date().toISOString(),
+    }).eq('id', inf.id);
+    // El trigger sync_estado_informe actualiza la solicitud automáticamente
+  } else {
+    // Sin informe registrado: actualizar estado directamente
+    await _sb.from('solicitudes').update({ estado:'Informe listo' }).eq('id', r._uuid);
+  }
+
+  closeInforme();
+  closeVisitDetail();
+  await loadData();
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(id);
+  showToast(`✓ Informe ${id} aprobado — disponible para la empresa`);
+}
+
+function aprobarInforme() {
+  aprobarInformeDirecto(document.getElementById('informe-overlay').dataset.reqId);
+}
+
+function corregirInforme() {
+  const id = document.getElementById('informe-overlay').dataset.reqId;
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  closeInforme();
+  // Volver a abrir el formulario con los datos
+  r.estado = 'En sitio';
+  renderTables();
+  renderMedicDashboard();
+  openVisitForm(id);
+  showToast('Puedes corregir el formulario y volver a finalizar');
+}
+
+function closeVisitDetail() {
+  document.getElementById('visit-detail-modal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════
+function openPanel(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+
+  document.getElementById('panel-req-id').textContent = r.id;
+  document.getElementById('panel-worker').textContent = r.nombre;
+  document.getElementById('panel-company-name').textContent = `${r.empresa} · DNI ${r.dni}`;
+
+  const isAdmin = currentRole === 'admin';
+  const loc = r.servicio === 'visita' ? r.direccion : r.hospital;
+  const locLabel = r.servicio === 'visita' ? 'Dirección' : 'Centro de salud';
+
+  const timeline = buildTimeline(r.estado);
+
+  document.getElementById('panel-body').innerHTML = `
+    <div class="info-grid">
+      <div class="info-item"><div class="info-label">Estado actual</div><div class="info-value">${statusBadge(r.estado)}</div></div>
+      <div class="info-item"><div class="info-label">Tipo de servicio</div><div class="info-value">${serviceBadge(r.servicio)}</div></div>
+      <div class="info-item"><div class="info-label">Área</div><div class="info-value">${r.area}</div></div>
+      <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value">${r.tel}</div></div>
+      <div class="info-item"><div class="info-label">Inicio DM</div><div class="info-value">${r.fecha_ini}</div></div>
+      <div class="info-item"><div class="info-label">Fin DM</div><div class="info-value">${r.fecha_fin}</div></div>
+      <div class="info-item"><div class="info-label">Fecha de visita</div><div class="info-value">${r.fecha_visita || '—'}</div></div>
+      <div class="info-item" style="grid-column:1/-1"><div class="info-label">${locLabel}</div><div class="info-value">${loc}</div></div>
+      ${r.archivos && r.archivos.length ? `<div class="info-item" style="grid-column:1/-1"><div class="info-label">Documentos adjuntos</div><div class="info-value" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">${r.archivos.map(a => `<span style="padding:4px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;font-size:12px;">📎 ${a}</span>`).join('')}</div></div>` : ''}
+      ${r.obs ? `<div class="info-item" style="grid-column:1/-1"><div class="info-label">Observaciones</div><div class="info-value">${r.obs}</div></div>` : ''}
+    </div>
+
+    ${isAdmin ? `
+    <div class="assign-box">
+      <div class="assign-title">Médico auditor asignado</div>
+      <select class="select-assign" onchange="assignMedic('${r.id}', this.value)">
+        <option value="">${r.medico || '— Seleccionar médico —'}</option>
+        ${MEDICS_DB.map(m => `<option value="${m.id}" ${m.id === r.medico_id ? 'selected' : ''}>${m.nombre}</option>`).join('')}
+      </select>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-teal btn-sm" onclick="updateStatus('${r.id}', 'Médico en ruta')">Marcar en ruta</button>
+        <button class="btn btn-navy btn-sm" onclick="updateStatus('${r.id}', 'Informe listo')">Marcar informe listo</button>
+        ${r.estado === 'En revisión' ? `
+        <div style="width:100%;margin-top:6px;border-top:1px solid var(--border);padding-top:10px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;">Informe preliminar</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="mostrarInformePreliminar('${r.id}')">📋 Ver / Corregir</button>
+            <button class="btn btn-teal btn-sm" style="background:var(--green);border-color:var(--green);color:white" onclick="aprobarInformeDirecto('${r.id}')">✓ Aprobar informe</button>
+          </div>
+        </div>` : ''}
+      </div>
+    </div>` : ''}
+
+    <div class="section-title">Línea de tiempo</div>
+    <div class="timeline">${timeline}</div>
+
+    ${r.estado === 'Informe listo' ? `
+    <div class="divider"></div>
+    <button class="btn btn-teal" style="width:100%" onclick="generarPDF('${r.id}')">⬇ Descargar informe PDF</button>` : ''}
+  `;
+
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function buildTimeline(estado) {
+  const steps = [
+    { label:'Solicitud recibida',       time:'Hoy 08:15' },
+    { label:'Asignación de médico',     time:'Hoy 09:00' },
+    { label:'Solicitud aceptada',       time:'Hoy 09:30' },
+    { label:'Médico en ruta',           time:'Hoy 10:30' },
+    { label:'En sitio',                 time:'—' },
+    { label:'Visita / Auditoría completada', time:'—' },
+  ];
+  const idx = { 'Pendiente':0, 'Asignado':1, 'Aceptado':2, 'Médico en ruta':3, 'En sitio':4, 'Informe listo':5, 'Rechazado':1 };
+  const current = idx[estado] ?? 0;
+  return steps.map((s, i) => `
+    <div class="timeline-item ${i > current ? 'past' : ''}">
+      <div class="timeline-time">${i <= current ? s.time : '—'}</div>
+      <div class="timeline-text" style="${i === current ? 'font-weight:600;color:var(--navy)' : ''}">${s.label}</div>
+    </div>`).join('');
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════
+function getDefaultVisitDate() {
+  const now = new Date();
+  const hour = now.getHours();
+  // Antes de las 14:00 → mismo día; desde las 14:00 → día siguiente
+  if (hour < 14) {
+    return now.toISOString().split('T')[0];
+  } else {
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  }
+}
+
+function updateVisitDateField() {
+  const fechaInput = document.getElementById('f-fecha-visita');
+  if (!fechaInput) return;
+  fechaInput.value = getDefaultVisitDate();
+  fechaInput.readOnly = false;
+  fechaInput.style.background = '';
+  fechaInput.style.color = '';
+  fechaInput.style.cursor = '';
+}
+
+function handleFiles(files) {
+  const arr = Array.from(files);
+  const remaining = 5 - uploadedFiles.length;
+  const toAdd = arr.slice(0, remaining);
+  if (arr.length > remaining) showToast(`⚠ Máximo 5 archivos. Se agregaron ${toAdd.length}.`, true);
+  toAdd.forEach(f => {
+    if (f.size > 5 * 1024 * 1024) { showToast(`⚠ ${f.name} supera 5 MB`, true); return; }
+    uploadedFiles.push(f);
+  });
+  renderFilePreviews();
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').style.borderColor = 'var(--border)';
+  document.getElementById('upload-zone').style.background = 'var(--surface)';
+  handleFiles(e.dataTransfer.files);
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  renderFilePreviews();
+}
+
+function renderFilePreviews() {
+  const container = document.getElementById('file-preview');
+  if (!container) return;
+  if (!uploadedFiles.length) { container.innerHTML = ''; return; }
+  container.innerHTML = uploadedFiles.map((f, i) => {
+    const isImg = f.type.startsWith('image/');
+    const icon = isImg ? '🖼' : '📄';
+    const name = f.name.length > 22 ? f.name.substring(0, 20) + '…' : f.name;
+    return `<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;font-size:12px;">
+      <span>${icon}</span>
+      <span style="color:var(--text-mid)">${name}</span>
+      <button onclick="removeFile(${i})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;" title="Quitar">×</button>
+    </div>`;
+  }).join('');
+}
+
+function openNewRequest() {
+  // reset form
+  ['f-nombre','f-dni','f-area','f-tel','f-fecha-ini','f-fecha-fin','f-direccion','f-hospital','f-obs','f-empresa','f-fecha-visita'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  uploadedFiles = [];
+  renderFilePreviews();
+  document.getElementById('f-imagenes').value = '';
+  // today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-fecha-ini').value = today;
+  document.getElementById('f-fecha-visita').value = today;
+  selectService('visita', document.getElementById('opt-visit'));
+  updateVisitDateField();
+  // mostrar campo empresa solo si es admin
+  document.getElementById('field-empresa-admin').style.display = currentRole === 'admin' ? 'grid' : 'none';
+  document.getElementById('modal-new-request').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function selectService(type, el) {
+  selectedService = type;
+  document.querySelectorAll('.service-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('field-domicilio').style.display = type === 'visita' ? 'grid' : 'none';
+  document.getElementById('field-hospital').style.display = type === 'auditoria' ? 'grid' : 'none';
+  updateVisitDateField();
+}
+
+async function submitRequest() {
+  const nombre    = document.getElementById('f-nombre').value.trim();
+  const dni       = document.getElementById('f-dni').value.trim();
+  const fecha_ini = document.getElementById('f-fecha-ini').value;
+
+  // Determinar empresa_id
+  let empresa_id = null;
+  if (currentRole === 'admin') {
+    empresa_id = document.getElementById('f-empresa').value;
+    if (!empresa_id) { showToast('⚠ Selecciona la empresa cliente', true); return; }
+  } else if (currentRole === 'empresa') {
+    empresa_id = currentProfile?.empresa_id;
+  }
+
+  if (!nombre || !dni || !fecha_ini) {
+    showToast('⚠ Completa los campos obligatorios', true); return;
+  }
+
+  const loc = selectedService === 'visita'
+    ? document.getElementById('f-direccion').value.trim()
+    : document.getElementById('f-hospital').value.trim();
+
+  const { data, error } = await _sb.from('solicitudes').insert({
+    empresa_id,
+    nombre_trabajador: nombre,
+    dni,
+    area:        document.getElementById('f-area').value.trim() || null,
+    telefono:    document.getElementById('f-tel').value.trim()  || null,
+    servicio:    selectedService,
+    direccion:   selectedService === 'visita' ? loc : null,
+    hospital:    selectedService === 'auditoria' ? loc : null,
+    fecha_ini_dm:  fecha_ini || null,
+    fecha_fin_dm:  document.getElementById('f-fecha-fin').value || null,
+    fecha_visita:  document.getElementById('f-fecha-visita').value || fecha_ini || null,
+    observaciones: document.getElementById('f-obs').value.trim() || null,
+    estado:        'Pendiente',
+    created_by:    currentProfile?.id,
+  }).select().single();
+
+  if (error) { showToast('⚠ Error al crear solicitud: ' + error.message, true); return; }
+
+  // Subir archivos adjuntos si hay
+  for (const file of uploadedFiles) {
+    const path = `${data.id}/${Date.now()}_${file.name}`;
+    await _sb.storage.from('evidencias').upload(path, file, { upsert: false });
+    await _sb.from('evidencias').insert({
+      solicitud_id: data.id, nombre: file.name, storage_path: path,
+      tipo_archivo: file.type, subido_por: currentProfile?.id,
+    });
+  }
+
+  closeModal('modal-new-request');
+  await loadData();
+  showToast(`✓ Solicitud ${data.codigo} registrada correctamente`);
+}
+
+async function assignMedic(solicitudCodigo, medicoId) {
+  if (!medicoId) return;
+  const r = requests.find(x => x.id === solicitudCodigo);
+  if (!r) return;
+
+  const medico = MEDICS_DB.find(m => m.id === medicoId);
+  const { error } = await _sb.from('solicitudes')
+    .update({ medico_id: medicoId, estado: 'Asignado' })
+    .eq('id', r._uuid);
+
+  if (error) { showToast('⚠ Error al asignar médico', true); return; }
+
+  await loadData();
+  showToast(`${medico?.nombre || 'Médico'} asignado/a a ${solicitudCodigo}`);
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(solicitudCodigo);
+}
+
+async function updateStatus(id, estado) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+
+  const { error } = await _sb.from('solicitudes')
+    .update({ estado })
+    .eq('id', r._uuid);
+
+  if (error) { showToast('⚠ Error al actualizar estado', true); return; }
+
+  await loadData();
+  showToast(`Estado actualizado: ${estado}`);
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(id);
+}
+
+function markArrived(id) {
+  const r = requests.find(x => x.id === id);
+  if (r) {
+    r.estado = 'Informe listo';
+    renderTables();
+    renderMedicDashboard();
+    showToast(`✓ Visita ${id} completada`);
+  }
+}
+
+function openMaps(loc) {
+  showToast('Abriendo Google Maps...');
+}
+
+function filterHistorial(key, val) {
+  histFilters[key] = val;
+  renderHistorial();
+}
+
+function clearHistorialFilters() {
+  histFilters = { text: '', empresa: '', medico: '', servicio: '', estado: '' };
+  // reset selects
+  ['hist-filter-empresa','hist-filter-medico','hist-filter-servicio','hist-filter-estado'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderHistorial();
+}
+
+function populateHistorialFilters() {
+  // Empresas únicas
+  const empresaEl = document.getElementById('hist-filter-empresa');
+  if (empresaEl) {
+    const empresas = [...new Set(requests.map(r => r.empresa))].sort();
+    empresaEl.innerHTML = '<option value="">Todas las empresas</option>' +
+      empresas.map(e => `<option value="${e}">${e}</option>`).join('');
+    empresaEl.style.display = currentRole === 'admin' ? '' : 'none';
+  }
+  // Médicos únicos
+  const medicoEl = document.getElementById('hist-filter-medico');
+  if (medicoEl) {
+    const medicos = [...new Set(requests.map(r => r.medico).filter(Boolean))].sort();
+    medicoEl.innerHTML = '<option value="">Todos los médicos</option>' +
+      medicos.map(m => `<option value="${m}">${m}</option>`).join('');
+  }
+}
+
+function renderHistorial() {
+  const htbody = document.getElementById('historial-tbody');
+  if (!htbody) return;
+
+  let data = currentRole === 'empresa'
+    ? requests.filter(r => r.empresa === 'TechCorp SA')
+    : [...requests];
+
+  if (histFilters.text)     data = data.filter(r => r.nombre.toLowerCase().includes(histFilters.text.toLowerCase()) || r.id.toLowerCase().includes(histFilters.text.toLowerCase()));
+  if (histFilters.empresa)  data = data.filter(r => r.empresa === histFilters.empresa);
+  if (histFilters.medico)   data = data.filter(r => r.medico === histFilters.medico);
+  if (histFilters.servicio) data = data.filter(r => r.servicio === histFilters.servicio);
+  if (histFilters.estado)   data = data.filter(r => r.estado === histFilters.estado);
+
+  const countEl = document.getElementById('historial-count');
+  if (countEl) countEl.textContent = `${data.length} resultado${data.length !== 1 ? 's' : ''} encontrado${data.length !== 1 ? 's' : ''}`;
+
+  if (!data.length) {
+    htbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">🔍</div><h3>Sin resultados</h3><p>Ajusta los filtros para encontrar solicitudes</p></div></td></tr>`;
+    return;
+  }
+
+  htbody.innerHTML = data.map(r => `
+    <tr onclick="openPanel('${r.id}')">
+      <td><span class="req-id">${r.id}</span></td>
+      <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
+      <td style="font-size:12px;color:var(--text-mid)">${r.empresa}</td>
+      <td>${serviceBadge(r.servicio)}</td>
+      <td style="font-size:12px">${r.fecha_ini}</td>
+      <td>${statusBadge(r.estado)}</td>
+      <td>
+        ${r.estado === 'Informe listo'
+          ? `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();generarPDF('${r.id}')">⬇ PDF</button>`
+          : `<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Ver →</button>`}
+      </td>
+    </tr>`).join('');
+}
+
+function filterTable(val) {
+  currentFilter = val.toLowerCase();
+  renderTables();
+}
+
+function filterByStatus(val) {
+  currentStatusFilter = val;
+  renderTables();
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+let toastTimer;
+function showToast(msg, isWarn = false) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.background = isWarn ? '#B45309' : 'var(--navy)';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  // Inicializar Supabase después de que el CDN haya cargado
+  const SUPABASE_URL  = 'https://squxfxtehybcbvwnwxyp.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxdXhmeHRlaHliY2J2d253eHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxODM1NjgsImV4cCI6MjEwMDc1OTU2OH0.lfe0uPeJRTkbGC7UbrmLVYzizXO2e5lC24tyOHB-L3o';
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  // Exponer funciones async como globales para que los onclick del HTML funcionen
+  window.doLogin          = doLogin;
+  window.doLogout         = doLogout;
+  window.submitRequest    = submitRequest;
+  window.assignMedic      = assignMedic;
+  window.updateStatus     = updateStatus;
+  window.medicAccept      = medicAccept;
+  window.medicReject      = medicReject;
+  window.medicStartVisit  = medicStartVisit;
+  window.medicArrived     = medicArrived;
+  window.openNewRequest   = openNewRequest;
+  window.closeModal       = closeModal;
+  window.selectService    = selectService;
+  window.openPanel        = openPanel;
+  window.closePanel       = closePanel;
+  window.openVisitDetail  = openVisitDetail;
+  window.closeVisitDetail = closeVisitDetail;
+  window.openVisitForm    = openVisitForm;
+  window.closeVisitForm   = closeVisitForm;
+  window.finalizarVisita  = finalizarVisita;
+  window.mostrarInformePreliminar = mostrarInformePreliminar;
+  window.closeInforme     = closeInforme;
+  window.aprobarInforme   = aprobarInforme;
+  window.aprobarInformeDirecto = aprobarInformeDirecto;
+  window.corregirInforme  = corregirInforme;
+  window.generarPDF       = generarPDF;
+  window.navigateTo       = navigateTo;
+  window.filterTable      = filterTable;
+  window.filterByStatus   = filterByStatus;
+  window.filterHistorial  = filterHistorial;
+  window.clearHistorialFilters = clearHistorialFilters;
+  window.switchMedicTab   = switchMedicTab;
+  window.showRejectReason = showRejectReason;
+  window.medicReject      = medicReject;
+  window.selectRadio      = selectRadio;
+  window.toggleField      = toggleField;
+  window.toggleDetailField = toggleDetailField;
+  window.handleFiles      = handleFiles;
+  window.handleDrop       = handleDrop;
+  window.removeFile       = removeFile;
+  window.handleVfFiles    = handleVfFiles;
+  window.handleVfDrop     = handleVfDrop;
+  window.removeVfFile     = removeVfFile;
+  window.markArrived      = markArrived;
+  window.openMaps         = openMaps;
+  window.updateVisitDateField = updateVisitDateField;
+  window.getDefaultVisitDate  = getDefaultVisitDate;
+
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+
+  // Verificar sesión activa (recarga de página)
+  const { data: { session } } = await _sb.auth.getSession();
+  if (session?.user) {
+    await iniciarSesionConPerfil(session.user);
+  }
+
+  // Escuchar expiración de sesión
+  _sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_OUT') doLogout();
+  });
+});
+</script>
+</body>
+</html>
