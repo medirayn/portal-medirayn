@@ -2791,6 +2791,24 @@ function openPanel(id) {
   document.getElementById('detail-panel').classList.add('open');
 }
 
+function buildTimeline(estado) {
+  const steps = [
+    { label:'Solicitud recibida',            time:'—' },
+    { label:'Asignación de médico',          time:'—' },
+    { label:'Solicitud aceptada',            time:'—' },
+    { label:'Médico en ruta',                time:'—' },
+    { label:'En sitio',                      time:'—' },
+    { label:'Visita / Auditoría completada', time:'—' },
+  ];
+  const idx = { 'Pendiente':0, 'Asignado':1, 'Aceptado':2, 'Médico en ruta':3, 'En sitio':4, 'En revisión':4, 'Informe listo':5, 'Rechazado':1 };
+  const current = idx[estado] ?? 0;
+  return steps.map((s, i) => `
+    <div class="timeline-item ${i > current ? 'past' : ''}">
+      <div class="timeline-time">${i <= current ? 'Completado' : '—'}</div>
+      <div class="timeline-text" style="${i === current ? 'font-weight:600;color:var(--navy)' : ''}">${s.label}</div>
+    </div>`).join('');
+}
+
 function aprobarInforme() {
   aprobarInformeDirecto(document.getElementById('informe-overlay').dataset.reqId);
 }
