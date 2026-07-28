@@ -1792,68 +1792,84 @@
       <div class="topbar">
         <div>
           <div class="topbar-title">Centro de Control MEDIRAYN</div>
-          <div class="topbar-sub">Gestión global de operaciones y asignaciones</div>
+          <div class="topbar-sub" id="admin-topbar-sub">Cargando datos...</div>
         </div>
-        <select class="select-filter" onchange="filterByStatus(this.value)">
+        <input class="search-bar" placeholder="Buscar trabajador o código..." oninput="filterTable(this.value)" style="width:200px;">
+        <select class="select-filter" id="admin-filter-estado" onchange="filterByStatus(this.value)">
           <option value="">Todos los estados</option>
           <option value="Pendiente">Pendiente</option>
           <option value="Asignado">Asignado</option>
           <option value="Aceptado">Aceptado</option>
           <option value="Médico en ruta">En ruta</option>
           <option value="En sitio">En sitio</option>
+          <option value="En revisión">En revisión</option>
           <option value="Informe listo">Informe listo</option>
           <option value="Rechazado">Rechazado</option>
         </select>
+        <select class="select-filter" id="admin-filter-servicio" onchange="filterAdminByServicio(this.value)">
+          <option value="">Todos los servicios</option>
+          <option value="visita">🏠 Visita domiciliaria</option>
+          <option value="auditoria">🏥 Auditoría DM</option>
+        </select>
         <button class="btn btn-navy" onclick="openNewRequest()">＋ Nueva solicitud</button>
       </div>
+
       <div style="padding:24px 28px;">
-        <div class="kpi-grid">
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:24px;">
           <div class="kpi-card" style="--accent:#EF4444">
-            <div class="kpi-label">Sin asignar</div>
-            <div class="kpi-value" id="admin-kpi-pending">0</div>
-            <div class="kpi-delta down">Requieren acción</div>
+            <div class="kpi-label">Pendientes de asignar</div>
+            <div class="kpi-value" id="akpi-pendientes">—</div>
+            <div class="kpi-delta down" id="akpi-pendientes-sub">Sin médico asignado</div>
             <div class="kpi-icon">⚠️</div>
           </div>
-          <div class="kpi-card" style="--accent:#F59E0B">
-            <div class="kpi-label">Médicos en ruta</div>
-            <div class="kpi-value">8</div>
-            <div class="kpi-delta">Ahora mismo</div>
-            <div class="kpi-icon">🚗</div>
-          </div>
           <div class="kpi-card" style="--accent:#0EA5E9">
-            <div class="kpi-label">Visitas hoy</div>
-            <div class="kpi-value">24</div>
-            <div class="kpi-delta up">↑ +3 vs ayer</div>
-            <div class="kpi-icon">📍</div>
+            <div class="kpi-label">Visitas completadas</div>
+            <div class="kpi-value" id="akpi-visitas">—</div>
+            <div class="kpi-delta" id="akpi-visitas-sub">Informe listo</div>
+            <div class="kpi-icon">🏠</div>
+          </div>
+          <div class="kpi-card" style="--accent:#7C3AED">
+            <div class="kpi-label">Auditorías completadas</div>
+            <div class="kpi-value" id="akpi-auditorias">—</div>
+            <div class="kpi-delta" id="akpi-auditorias-sub">Informe listo</div>
+            <div class="kpi-icon">🏥</div>
           </div>
           <div class="kpi-card" style="--accent:#10B981">
             <div class="kpi-label">Informes generados</div>
-            <div class="kpi-value">18</div>
-            <div class="kpi-delta">Este mes</div>
-            <div class="kpi-icon">✅</div>
+            <div class="kpi-value" id="akpi-informes">—</div>
+            <div class="kpi-delta">Total aprobados</div>
+            <div class="kpi-icon">📄</div>
+          </div>
+          <div class="kpi-card" style="--accent:#F59E0B">
+            <div class="kpi-label">Tasa de ausentismo</div>
+            <div class="kpi-value" id="akpi-tasa">—<span style="font-size:16px;font-weight:500">%</span></div>
+            <div class="kpi-delta" id="akpi-tasa-sub">DM activos / total</div>
+            <div class="kpi-icon">📊</div>
           </div>
         </div>
 
+        <!-- BANDEJA -->
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="flex-wrap:wrap;gap:8px;">
             <div class="card-title">Bandeja de operaciones</div>
-            <input class="search-bar" placeholder="Buscar..." oninput="filterTable(this.value)">
+            <div style="margin-left:auto;font-size:12px;color:var(--text-light)" id="admin-bandeja-count"></div>
           </div>
           <table id="admin-table">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Código</th>
                 <th>Empresa</th>
                 <th>Trabajador</th>
                 <th>Servicio</th>
-                <th>Fecha DM</th>
+                <th>Fecha visita</th>
                 <th>Estado</th>
                 <th>Médico asignado</th>
                 <th>Acción</th>
               </tr>
             </thead>
-            <tbody id="admin-tbody">
-            </tbody>
+            <tbody id="admin-tbody"></tbody>
           </table>
         </div>
       </div>
@@ -2462,37 +2478,86 @@ function renderTables() {
       </tr>`).join('');
   }
 
-  // Admin table
+  // Admin table + KPIs
   const atbody = document.getElementById('admin-tbody');
   if (atbody) {
+    // ── Filtros ──
+    const servicioFilter = document.getElementById('admin-filter-servicio')?.value || '';
     const allData = requests.filter(r => {
-      const t = currentFilter === '' || r.nombre.toLowerCase().includes(currentFilter) || r.id.toLowerCase().includes(currentFilter);
+      const t = currentFilter === '' ||
+        r.nombre.toLowerCase().includes(currentFilter) ||
+        r.id.toLowerCase().includes(currentFilter) ||
+        (r.empresa || '').toLowerCase().includes(currentFilter);
       const s = currentStatusFilter === '' || r.estado === currentStatusFilter;
-      return t && s;
+      const sv = servicioFilter === '' || r.servicio === servicioFilter;
+      return t && s && sv;
     });
-    atbody.innerHTML = allData.map(r => `
-      <tr onclick="openPanel('${r.id}')">
-        <td><span class="req-id">${r.id}</span></td>
-        <td style="font-size:12px;color:var(--text-mid)">${r.empresa}</td>
-        <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
-        <td>${serviceBadge(r.servicio)}</td>
-        <td style="font-size:12px">${r.fecha_ini}</td>
-        <td>${statusBadge(r.estado)}</td>
-        <td>
-          ${r.medico
-            ? `<span style="font-size:12px;color:var(--text)">${r.medico}</span>`
-            : `<select class="select-assign" onchange="assignMedic('${r.id}', this.value)" onclick="event.stopPropagation()">
-                <option value="">— Asignar —</option>
-                ${MEDICS_DB.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('')}
-               </select>`
-          }
-        </td>
-        <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Gestionar →</button></td>
-      </tr>`).join('');
 
-    // update kpi
-    const pending = requests.filter(r => r.estado === 'Pendiente').length;
-    document.getElementById('admin-kpi-pending').textContent = pending;
+    // ── KPIs reales ──
+    const pendientes   = requests.filter(r => r.estado === 'Pendiente').length;
+    const visitasComp  = requests.filter(r => r.servicio === 'visita'    && r.estado === 'Informe listo').length;
+    const auditComp    = requests.filter(r => r.servicio === 'auditoria' && r.estado === 'Informe listo').length;
+    const informes     = requests.filter(r => r.estado === 'Informe listo').length;
+    const activos      = requests.filter(r => !['Informe listo','Rechazado'].includes(r.estado)).length;
+    const tasa         = requests.length > 0 ? ((activos / requests.length) * 100).toFixed(1) : '0.0';
+    const today        = new Date().toISOString().split('T')[0];
+    const hoy          = requests.filter(r => r.fecha_visita === today).length;
+
+    // Actualizar cards
+    const setKpi = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    setKpi('akpi-pendientes', pendientes);
+    setKpi('akpi-visitas',    visitasComp);
+    setKpi('akpi-auditorias', auditComp);
+    setKpi('akpi-informes',   informes);
+
+    // Tasa (número sin el %)
+    const tasaEl = document.getElementById('akpi-tasa');
+    if (tasaEl) tasaEl.innerHTML = `${tasa}<span style="font-size:16px;font-weight:500">%</span>`;
+
+    // Subtítulos dinámicos
+    const setSub = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    setSub('akpi-pendientes-sub', pendientes === 0 ? '✓ Todo asignado' : `${pendientes} sin médico`);
+    setSub('akpi-visitas-sub',    `${visitasComp} de ${requests.filter(r=>r.servicio==='visita').length} total`);
+    setSub('akpi-auditorias-sub', `${auditComp} de ${requests.filter(r=>r.servicio==='auditoria').length} total`);
+
+    // Subtitle del topbar
+    const sub = document.getElementById('admin-topbar-sub');
+    if (sub) sub.textContent = `${requests.length} solicitudes totales · ${hoy} programadas para hoy`;
+
+    // Contador bandeja
+    const count = document.getElementById('admin-bandeja-count');
+    if (count) count.textContent = `${allData.length} resultado${allData.length !== 1 ? 's' : ''}`;
+
+    // ── Tabla ──
+    if (!allData.length) {
+      atbody.innerHTML = `<tr><td colspan="8">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <h3>Sin solicitudes</h3>
+          <p>No hay solicitudes que coincidan con los filtros aplicados</p>
+        </div>
+      </td></tr>`;
+    } else {
+      atbody.innerHTML = allData.map(r => `
+        <tr onclick="openPanel('${r.id}')">
+          <td><span class="req-id">${r.id}</span></td>
+          <td style="font-size:12px;color:var(--text-mid);font-weight:500">${r.empresa}</td>
+          <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
+          <td>${serviceBadge(r.servicio)}</td>
+          <td style="font-size:12px">${r.fecha_visita || r.fecha_ini || '—'}</td>
+          <td>${statusBadge(r.estado)}</td>
+          <td>
+            ${r.medico
+              ? `<span style="font-size:12px;color:var(--text)">${r.medico}</span>`
+              : `<select class="select-assign" onchange="assignMedic('${r.id}', this.value)" onclick="event.stopPropagation()">
+                  <option value="">— Asignar —</option>
+                  ${MEDICS_DB.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('')}
+                 </select>`
+            }
+          </td>
+          <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Gestionar →</button></td>
+        </tr>`).join('');
+    }
   }
 
   // Historial
@@ -4223,6 +4288,11 @@ function filterTable(val) {
   renderTables();
 }
 
+function filterAdminByServicio(val) {
+  // El filtro lo lee renderTables directamente del select
+  renderTables();
+}
+
 function filterByStatus(val) {
   currentStatusFilter = val;
   renderTables();
@@ -4278,6 +4348,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.generarPDF       = generarPDF;
   window.navigateTo       = navigateTo;
   window.filterTable      = filterTable;
+  window.filterAdminByServicio = filterAdminByServicio;
   window.filterByStatus   = filterByStatus;
   window.filterHistorial  = filterHistorial;
   window.clearHistorialFilters = clearHistorialFilters;
