@@ -3947,30 +3947,64 @@ function generarPDF(id) {
 }
 
 // ═══════════════════════════════════════════
-// INIT
+// INIT — usar DOMContentLoaded garantiza que
+// todo el script ya fue parseado y las
+// funciones están disponibles
 // ═══════════════════════════════════════════
-(async function init() {
-  // Exponer todas las funciones globalmente para los onclick del HTML
-  const fns = {
-    doLogin, doLogout, submitRequest, assignMedic, updateStatus,
-    medicAccept, medicReject, medicStartVisit, medicArrived,
-    openNewRequest, closeModal, selectService, openPanel, closePanel,
-    openVisitDetail, closeVisitDetail, openVisitForm, closeVisitForm,
-    finalizarVisita, mostrarInformePreliminar, closeInforme,
-    aprobarInforme, aprobarInformeDirecto, corregirInforme, generarPDF,
-    navigateTo, filterTable, filterByStatus, filterAdminByServicio,
-    filterHistorial, clearHistorialFilters, switchMedicTab,
-    showRejectReason, selectRadio, toggleField, toggleDetailField,
-    handleFiles, handleDrop, removeFile, handleVfFiles, handleVfDrop,
-    removeVfFile, markArrived, openMaps, updateVisitDateField,
-    getDefaultVisitDate, showToast,
-  };
-  Object.entries(fns).forEach(([k,v]) => { window[k] = v; });
+document.addEventListener('DOMContentLoaded', async function() {
+  // Exponer funciones globalmente para los onclick del HTML
+  window.doLogin              = doLogin;
+  window.doLogout             = doLogout;
+  window.submitRequest        = submitRequest;
+  window.assignMedic          = assignMedic;
+  window.updateStatus         = updateStatus;
+  window.medicAccept          = medicAccept;
+  window.medicReject          = medicReject;
+  window.medicStartVisit      = medicStartVisit;
+  window.medicArrived         = medicArrived;
+  window.openNewRequest       = openNewRequest;
+  window.closeModal           = closeModal;
+  window.selectService        = selectService;
+  window.openPanel            = openPanel;
+  window.closePanel           = closePanel;
+  window.openVisitDetail      = openVisitDetail;
+  window.closeVisitDetail     = closeVisitDetail;
+  window.openVisitForm        = openVisitForm;
+  window.closeVisitForm       = closeVisitForm;
+  window.finalizarVisita      = finalizarVisita;
+  window.mostrarInformePreliminar = mostrarInformePreliminar;
+  window.closeInforme         = closeInforme;
+  window.aprobarInforme       = aprobarInforme;
+  window.aprobarInformeDirecto = aprobarInformeDirecto;
+  window.corregirInforme      = corregirInforme;
+  window.generarPDF           = generarPDF;
+  window.navigateTo           = navigateTo;
+  window.filterTable          = filterTable;
+  window.filterByStatus       = filterByStatus;
+  window.filterAdminByServicio = filterAdminByServicio;
+  window.filterHistorial      = filterHistorial;
+  window.clearHistorialFilters = clearHistorialFilters;
+  window.switchMedicTab       = switchMedicTab;
+  window.showRejectReason     = showRejectReason;
+  window.selectRadio          = selectRadio;
+  window.toggleField          = toggleField;
+  window.toggleDetailField    = toggleDetailField;
+  window.handleFiles          = handleFiles;
+  window.handleDrop           = handleDrop;
+  window.removeFile           = removeFile;
+  window.handleVfFiles        = handleVfFiles;
+  window.handleVfDrop         = handleVfDrop;
+  window.removeVfFile         = removeVfFile;
+  window.markArrived          = markArrived;
+  window.openMaps             = openMaps;
+  window.updateVisitDateField = updateVisitDateField;
+  window.getDefaultVisitDate  = getDefaultVisitDate;
+  window.showToast            = showToast;
 
   document.getElementById('app-shell').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
 
-  // Verificar sesión activa
+  // Verificar sesión activa (recarga de página)
   try {
     const { data: { session } } = await _sb.auth.getSession();
     if (session?.user) await iniciarSesionConPerfil(session.user);
@@ -3980,7 +4014,7 @@ function generarPDF(id) {
   _sb.auth.onAuthStateChange(async (event) => {
     if (event === 'SIGNED_OUT') doLogout();
   });
-})();
+});
 </script>
 </body>
 </html>
