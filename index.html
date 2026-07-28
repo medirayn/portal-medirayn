@@ -2510,8 +2510,365 @@ function navigateTo(page, navEl) {
 }
 
 // ═══════════════════════════════════════════
-// RENDER TABLES
+// FUNCIONES DE UI Y ACCIÓN
 // ═══════════════════════════════════════════
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+}
+
+function closeVisitDetail() {
+  document.getElementById('visit-detail-modal').classList.remove('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function showToast(msg, isWarn = false) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.background = isWarn ? '#B45309' : 'var(--navy)';
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openMaps(loc) {
+  window.open('https://www.google.com/maps/search/?api=1&query=' + loc, '_blank');
+}
+
+function markArrived(id) { medicArrived(id); }
+
+function filterTable(val) {
+  currentFilter = val.toLowerCase();
+  renderTables();
+}
+
+function filterByStatus(val) {
+  currentStatusFilter = val;
+  renderTables();
+}
+
+function filterAdminByServicio(val) {
+  renderTables();
+}
+
+function filterHistorial(key, val) {
+  histFilters[key] = val;
+  renderHistorial();
+}
+
+function clearHistorialFilters() {
+  histFilters = { text:'', empresa:'', medico:'', servicio:'', estado:'' };
+  ['hist-filter-empresa','hist-filter-medico','hist-filter-servicio','hist-filter-estado'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderHistorial();
+}
+
+function selectService(type, el) {
+  selectedService = type;
+  document.querySelectorAll('.service-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('field-domicilio').style.display = type === 'visita' ? 'grid' : 'none';
+  document.getElementById('field-hospital').style.display = type === 'auditoria' ? 'grid' : 'none';
+  updateVisitDateField();
+}
+
+function getDefaultVisitDate() {
+  const now = new Date();
+  const hour = now.getHours();
+  if (hour < 14) return now.toISOString().split('T')[0];
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow.toISOString().split('T')[0];
+}
+
+function updateVisitDateField() {
+  const fechaInput = document.getElementById('f-fecha-visita');
+  if (!fechaInput) return;
+  fechaInput.value = getDefaultVisitDate();
+  fechaInput.readOnly = false;
+  fechaInput.style.background = '';
+  fechaInput.style.color = '';
+  fechaInput.style.cursor = '';
+}
+
+function toggleField(fieldId, hideWhenValue, groupId) {
+  const group = document.getElementById(groupId);
+  const field = document.getElementById(fieldId);
+  if (!group || !field) return;
+  const selected = group.querySelector('.vf-radio.selected');
+  if (selected && selected.textContent.trim() === hideWhenValue) {
+    field.style.visibility = 'hidden'; field.style.opacity = '0';
+  } else {
+    field.style.visibility = 'visible'; field.style.opacity = '1';
+  }
+}
+
+let uploadedFiles = [];
+
+function handleFiles(files) {
+  Array.from(files).slice(0, 5 - uploadedFiles.length).forEach(f => {
+    if (f.size > 5*1024*1024) { showToast('⚠ ' + f.name + ' supera 5 MB', true); return; }
+    uploadedFiles.push(f);
+  });
+  renderFilePreviews();
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').style.borderColor = 'var(--border)';
+  document.getElementById('upload-zone').style.background = 'var(--surface)';
+  handleFiles(e.dataTransfer.files);
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  renderFilePreviews();
+}
+
+function renderFilePreviews() {
+  const container = document.getElementById('file-preview');
+  if (!container) return;
+  if (!uploadedFiles.length) { container.innerHTML = ''; return; }
+  container.innerHTML = uploadedFiles.map((f, i) => {
+    const isImg = f.type.startsWith('image/');
+    const name = f.name.length > 22 ? f.name.substring(0,20)+'…' : f.name;
+    return `<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;font-size:12px;">
+      <span>${isImg?'🖼':'📄'}</span><span style="color:var(--text-mid)">${name}</span>
+      <button onclick="removeFile(${i})" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:0 2px;">×</button>
+    </div>`;
+  }).join('');
+}
+
+function openNewRequest() {
+  ['f-nombre','f-dni','f-area','f-tel','f-fecha-ini','f-fecha-fin','f-direccion','f-hospital','f-obs','f-empresa','f-fecha-visita'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  uploadedFiles = [];
+  renderFilePreviews();
+  const fi = document.getElementById('f-imagenes');
+  if (fi) fi.value = '';
+  const today = new Date().toISOString().split('T')[0];
+  const fdi = document.getElementById('f-fecha-ini');
+  if (fdi) fdi.value = today;
+  selectService('visita', document.getElementById('opt-visit'));
+  updateVisitDateField();
+  const fea = document.getElementById('field-empresa-admin');
+  if (fea) fea.style.display = currentRole === 'admin' ? 'grid' : 'none';
+  document.getElementById('modal-new-request').classList.add('open');
+}
+
+async function submitRequest() {
+  const nombre    = document.getElementById('f-nombre').value.trim();
+  const dni       = document.getElementById('f-dni').value.trim();
+  const fecha_ini = document.getElementById('f-fecha-ini').value;
+
+  let empresa_id = null;
+  if (currentRole === 'admin') {
+    empresa_id = document.getElementById('f-empresa').value;
+    if (!empresa_id) { showToast('⚠ Selecciona la empresa cliente', true); return; }
+  } else if (currentRole === 'empresa') {
+    empresa_id = currentProfile?.empresa_id;
+  }
+
+  if (!nombre || !dni || !fecha_ini) { showToast('⚠ Completa los campos obligatorios', true); return; }
+
+  const loc = selectedService === 'visita'
+    ? document.getElementById('f-direccion').value.trim()
+    : document.getElementById('f-hospital').value.trim();
+
+  const { data, error } = await _sb.from('solicitudes').insert({
+    empresa_id, nombre_trabajador: nombre, dni,
+    area:        document.getElementById('f-area').value.trim() || null,
+    telefono:    document.getElementById('f-tel').value.trim()  || null,
+    servicio:    selectedService,
+    direccion:   selectedService === 'visita' ? loc : null,
+    hospital:    selectedService === 'auditoria' ? loc : null,
+    fecha_ini_dm:  fecha_ini || null,
+    fecha_fin_dm:  document.getElementById('f-fecha-fin').value || null,
+    fecha_visita:  document.getElementById('f-fecha-visita').value || fecha_ini || null,
+    observaciones: document.getElementById('f-obs').value.trim() || null,
+    estado: 'Pendiente', created_by: currentProfile?.id,
+  }).select().single();
+
+  if (error) { showToast('⚠ Error: ' + error.message, true); return; }
+
+  for (const file of uploadedFiles) {
+    const path = `${data.id}/${Date.now()}_${file.name}`;
+    await _sb.storage.from('evidencias').upload(path, file, { upsert: false });
+    await _sb.from('evidencias').insert({
+      solicitud_id: data.id, nombre: file.name,
+      storage_path: path, tipo_archivo: file.type, subido_por: currentProfile?.id,
+    });
+  }
+
+  closeModal('modal-new-request');
+  await loadData();
+  showToast(`✓ Solicitud ${data.codigo} registrada correctamente`);
+}
+
+async function assignMedic(solicitudCodigo, medicoId) {
+  if (!medicoId) return;
+  const r = requests.find(x => x.id === solicitudCodigo);
+  if (!r) return;
+  const medico = MEDICS_DB.find(m => m.id === medicoId);
+  const { error } = await _sb.from('solicitudes')
+    .update({ medico_id: medicoId, estado: 'Asignado' }).eq('id', r._uuid);
+  if (error) { showToast('⚠ Error al asignar médico', true); return; }
+  await loadData();
+  showToast(`${medico?.nombre || 'Médico'} asignado/a a ${solicitudCodigo}`);
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(solicitudCodigo);
+}
+
+async function updateStatus(id, estado) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  const { error } = await _sb.from('solicitudes').update({ estado }).eq('id', r._uuid);
+  if (error) { showToast('⚠ Error al actualizar estado', true); return; }
+  await loadData();
+  showToast(`Estado actualizado: ${estado}`);
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(id);
+}
+
+function openPanel(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  const isAdmin = currentRole === 'admin';
+  const isVisit = r.servicio === 'visita';
+  const loc = isVisit ? r.direccion : r.hospital;
+  const locLabel = isVisit ? 'Dirección' : 'Centro de salud';
+  const timeline = buildTimeline(r.estado);
+
+  document.getElementById('panel-req-id').textContent = r.id;
+  document.getElementById('panel-worker').textContent = r.nombre;
+  document.getElementById('panel-company-name').textContent = `${r.empresa} · DNI ${r.dni}`;
+
+  document.getElementById('panel-body').innerHTML = `
+    <div class="info-grid">
+      <div class="info-item"><div class="info-label">Estado actual</div><div class="info-value">${statusBadge(r.estado)}</div></div>
+      <div class="info-item"><div class="info-label">Tipo de servicio</div><div class="info-value">${serviceBadge(r.servicio)}</div></div>
+      <div class="info-item"><div class="info-label">Área</div><div class="info-value">${r.area}</div></div>
+      <div class="info-item"><div class="info-label">Teléfono</div><div class="info-value">${r.tel}</div></div>
+      <div class="info-item"><div class="info-label">Inicio DM</div><div class="info-value">${r.fecha_ini}</div></div>
+      <div class="info-item"><div class="info-label">Fin DM</div><div class="info-value">${r.fecha_fin}</div></div>
+      <div class="info-item"><div class="info-label">Fecha de visita</div><div class="info-value">${r.fecha_visita||'—'}</div></div>
+      <div class="info-item"><div class="info-label">${locLabel}</div><div class="info-value">${loc||'—'}</div></div>
+      ${r.obs?`<div class="info-item" style="grid-column:1/-1"><div class="info-label">Observaciones</div><div class="info-value">${r.obs}</div></div>`:''}
+    </div>
+    ${isAdmin ? `
+    <div class="assign-box">
+      <div class="assign-title">Médico auditor asignado</div>
+      <select class="select-assign" onchange="assignMedic('${r.id}', this.value)">
+        <option value="">${r.medico || '— Seleccionar médico —'}</option>
+        ${MEDICS_DB.map(m=>`<option value="${m.id}" ${m.id===r.medico_id?'selected':''}>${m.nombre}</option>`).join('')}
+      </select>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-teal btn-sm" onclick="updateStatus('${r.id}','Médico en ruta')">Marcar en ruta</button>
+        <button class="btn btn-navy btn-sm" onclick="updateStatus('${r.id}','Informe listo')">Marcar informe listo</button>
+        ${r.estado==='En revisión'?`
+        <div style="width:100%;margin-top:6px;border-top:1px solid var(--border);padding-top:10px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;">Informe preliminar</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="mostrarInformePreliminar('${r.id}')">📋 Ver / Corregir</button>
+            <button class="btn btn-teal btn-sm" style="background:var(--green);border-color:var(--green);color:white" onclick="aprobarInformeDirecto('${r.id}')">✓ Aprobar</button>
+          </div>
+        </div>`:''}
+      </div>
+    </div>`:''
+    }
+    <div class="section-title">Línea de tiempo</div>
+    <div class="timeline">${timeline}</div>
+    ${r.estado==='Informe listo'?`
+    <div class="divider"></div>
+    <button class="btn btn-teal" style="width:100%" onclick="generarPDF('${r.id}')">⬇ Descargar informe PDF</button>`:''}
+  `;
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function aprobarInforme() {
+  aprobarInformeDirecto(document.getElementById('informe-overlay').dataset.reqId);
+}
+
+async function aprobarInformeDirecto(id) {
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  const { data: inf } = await _sb.from('informes').select('id').eq('solicitud_id', r._uuid).maybeSingle();
+  if (inf) {
+    await _sb.from('informes').update({
+      estado_informe: 'aprobado', aprobado_por: currentProfile?.id, aprobado_at: new Date().toISOString(),
+    }).eq('id', inf.id);
+  } else {
+    await _sb.from('solicitudes').update({ estado:'Informe listo' }).eq('id', r._uuid);
+  }
+  closeInforme(); closeVisitDetail();
+  if (document.getElementById('detail-panel').classList.contains('open')) openPanel(id);
+  await loadData();
+  showToast(`✓ Informe ${id} aprobado — disponible para la empresa`);
+}
+
+function corregirInforme() {
+  const id = document.getElementById('informe-overlay').dataset.reqId;
+  const r = requests.find(x => x.id === id);
+  if (!r) return;
+  closeInforme();
+  r.estado = 'En sitio';
+  openVisitForm(id);
+  showToast('Puedes corregir el formulario y volver a finalizar');
+}
+
+function populateHistorialFilters() {
+  const empresaEl = document.getElementById('hist-filter-empresa');
+  if (empresaEl) {
+    const empresas = [...new Set(requests.map(r => r.empresa))].sort();
+    empresaEl.innerHTML = '<option value="">Todas las empresas</option>' +
+      empresas.map(e => `<option value="${e}">${e}</option>`).join('');
+    empresaEl.style.display = currentRole === 'admin' ? '' : 'none';
+  }
+  const medicoEl = document.getElementById('hist-filter-medico');
+  if (medicoEl) {
+    const medicos = [...new Set(requests.map(r => r.medico).filter(Boolean))].sort();
+    medicoEl.innerHTML = '<option value="">Todos los médicos</option>' +
+      medicos.map(m => `<option value="${m}">${m}</option>`).join('');
+  }
+}
+
+function renderHistorial() {
+  const htbody = document.getElementById('historial-tbody');
+  if (!htbody) return;
+  let data = [...requests];
+  if (histFilters.text)     data = data.filter(r => r.nombre.toLowerCase().includes(histFilters.text.toLowerCase()) || r.id.toLowerCase().includes(histFilters.text.toLowerCase()));
+  if (histFilters.empresa)  data = data.filter(r => r.empresa === histFilters.empresa);
+  if (histFilters.medico)   data = data.filter(r => r.medico === histFilters.medico);
+  if (histFilters.servicio) data = data.filter(r => r.servicio === histFilters.servicio);
+  if (histFilters.estado)   data = data.filter(r => r.estado === histFilters.estado);
+  const countEl = document.getElementById('historial-count');
+  if (countEl) countEl.textContent = `${data.length} resultado${data.length!==1?'s':''} encontrado${data.length!==1?'s':''}`;
+  if (!data.length) {
+    htbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">🔍</div><h3>Sin resultados</h3><p>Ajusta los filtros</p></div></td></tr>`;
+    return;
+  }
+  htbody.innerHTML = data.map(r => `
+    <tr onclick="openPanel('${r.id}')">
+      <td><span class="req-id">${r.id}</span></td>
+      <td><div class="worker-cell">${r.nombre}</div><div class="worker-dni">DNI ${r.dni}</div></td>
+      <td style="font-size:12px;color:var(--text-mid)">${r.empresa}</td>
+      <td>${serviceBadge(r.servicio)}</td>
+      <td style="font-size:12px">${r.fecha_ini}</td>
+      <td>${statusBadge(r.estado)}</td>
+      <td>${r.estado==='Informe listo'
+        ?`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();generarPDF('${r.id}')">⬇ PDF</button>`
+        :`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPanel('${r.id}')">Ver →</button>`}
+      </td>
+    </tr>`).join('');
+}
+
+
 function getFilteredRequests() {
   return requests.filter(r => {
     // RLS ya filtró en Supabase; aquí solo aplicamos filtros UI locales
