@@ -483,8 +483,8 @@
   .offer-banner-text h3 { color: var(--white); font-size: 20px; margin-bottom: 8px; }
   .offer-banner-text p { color: rgba(255,255,255,0.68); font-size: 14.5px; }
 
-  .offer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  @media (max-width: 760px) { .offer-grid { grid-template-columns: 1fr; } }
+  .offer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 640px) { .offer-grid { grid-template-columns: 1fr; } }
   .offer-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 22px; }
   .offer-card .icon-box { margin-bottom: 14px; }
   .offer-card h4 { font-size: 15px; margin-bottom: 6px; }
@@ -529,7 +529,7 @@
   /* ─── INSCRIPCIÓN ─────────────────────────────────────── */
   #inscripcion { position: relative; }
   .enroll-box {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
     text-align: center;
     background: var(--surface);
@@ -553,6 +553,53 @@
   }
   .btn-whatsapp:hover { background: #1DA851; transform: translateY(-1px); }
   .btn-lg { padding: 16px 28px; font-size: 15.5px; }
+
+  .enroll-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--text-light);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 4px 0 26px;
+  }
+  .enroll-divider::before, .enroll-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .enroll-form { text-align: left; }
+  .enroll-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .enroll-form .form-row { grid-template-columns: 1fr; } }
+  .enroll-form .field { margin-bottom: 16px; }
+  .enroll-form .field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
+  .enroll-form .field input, .enroll-form .field select, .enroll-form .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color .15s ease;
+  }
+  .enroll-form .field input:focus, .enroll-form .field select:focus, .enroll-form .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+  }
+  .enroll-form .field textarea { resize: vertical; min-height: 90px; }
+  .enroll-form-note { font-size: 12px; color: var(--text-light); margin-top: 14px; text-align: center; }
+
+  .enroll-success {
+    display: none;
+    text-align: center;
+    padding: 20px 10px 6px;
+  }
+  .enroll-success.show { display: block; }
+  .enroll-success .icon-box { margin: 0 auto 16px; width: 56px; height: 56px; }
+  .enroll-success .icon-box svg { width: 28px; height: 28px; }
+  .enroll-success h4 { font-size: 18px; margin-bottom: 8px; }
+  .enroll-success p { font-size: 13.8px; color: var(--text-mid); }
 
   .enroll-direct {
     display: flex;
@@ -654,7 +701,7 @@
       <h1>Detectamos a tiempo los problemas <em>posturales</em> y musculoesqueléticos de sus estudiantes</h1>
       <p class="lead">Un equipo clínico evalúa a cada estudiante dentro del colegio, sin trasladarlos a un centro médico, y entrega un informe individual y confidencial a cada familia.</p>
       <div class="hero-actions">
-        <a href="#inscripcion" class="btn btn-primary">Solicitar evaluación para mi colegio</a>
+        <a href="#inscripcion" class="btn btn-primary">Solicitar Campaña Salud en Aula</a>
         <a href="#proceso" class="btn btn-ghost-light">Ver cómo funciona</a>
       </div>
       <div class="hero-trust">
@@ -970,30 +1017,25 @@
     <div class="section-head">
       <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Cupos de lanzamiento</span>
       <h2>10 cupos gratuitos por colegio</h2>
-      <p>Por el lanzamiento del Programa Salud en Aula, cada colegio que se inscribe accede a 10 cupos sin costo para las familias.</p>
+      <p>Por el lanzamiento de la Campaña Salud en Aula, cada colegio que se suma recibe 10 evaluaciones sin costo para las familias.</p>
     </div>
     <div class="offer-banner">
       <div class="offer-number">10<span>cupos gratis</span></div>
       <div class="offer-banner-text">
-        <h3>Sin costo para las familias, por colegio</h3>
-        <p>Los primeros 10 alumnos de su colegio en completar el formulario de inscripción reciben la evaluación sin costo, mientras dure la campaña de lanzamiento.</p>
+        <h3>Así se pone en marcha la campaña</h3>
+        <p>Coordinamos primero una reunión con la dirección del colegio para definir fechas y grados; desde ahí damos inicio a la campaña con sus 10 cupos gratuitos.</p>
       </div>
     </div>
     <div class="offer-grid">
       <div class="offer-card">
-        <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <h4>Sin costo</h4>
-        <p>Los 10 cupos de lanzamiento no tienen ningún costo para los apoderados.</p>
-      </div>
-      <div class="offer-card">
         <div class="icon-box amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
-        <h4>Por orden de inscripción</h4>
-        <p>Se asignan a los primeros alumnos de cada colegio en completar el formulario.</p>
+        <h4>Cómo se asignan</h4>
+        <p>Los cupos se confirman según el orden en que cada colegio coordina la fecha de la jornada con nuestro equipo.</p>
       </div>
       <div class="offer-card">
         <div class="icon-box navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <h4>¿Necesita más cupos?</h4>
-        <p>Coordine directamente con nuestro equipo la evaluación del resto de los alumnos del colegio.</p>
+        <p>Coordinamos directamente con la dirección del colegio la evaluación del resto de los estudiantes.</p>
       </div>
     </div>
   </div>
@@ -1048,7 +1090,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Los 10 cupos gratuitos son permanentes?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        <div class="faq-a"><p>Corresponden a la campaña de lanzamiento del programa. Se asignan por orden de inscripción, así que conviene completar el formulario apenas su colegio se sume.</p></div>
+        <div class="faq-a"><p>Corresponden a la campaña de lanzamiento del programa. Se asignan por orden de coordinación con cada colegio, así que conviene contactarnos apenas le interese sumarse.</p></div>
       </div>
     </div>
   </div>
@@ -1059,8 +1101,8 @@
   <div class="container">
     <div class="enroll-box">
       <span class="eyebrow">Inscripción</span>
-      <h2>Inscriba a su colegio o a su hijo o hija</h2>
-      <p style="color:var(--text-mid);font-size:15.5px;">Nuestro equipo se contacta directamente con los colegios para coordinar el programa, pero la dirección del colegio o los propios padres también pueden escribirnos. Por el lanzamiento, cada colegio cuenta con 10 cupos gratuitos: complete el formulario para inscribir a su hijo o hija.</p>
+      <h2>Coordinemos la Campaña Salud en Aula en su colegio</h2>
+      <p style="color:var(--text-mid);font-size:15.5px;">Escríbanos por WhatsApp o complete el formulario. Primero coordinamos una reunión con la dirección del colegio para definir fechas y grados, y desde ahí damos inicio a la campaña con sus 10 cupos gratuitos.</p>
       <div class="enroll-actions">
         <div class="enroll-action">
           <a
@@ -1072,15 +1114,62 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.5 8.5 0 0 1-11.8 7.8L3 21l1.7-6.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 10a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M8.7 10.3c.4 1.8 1.9 3.3 3.7 3.7M14.5 13a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>
             Escribir por WhatsApp
           </a>
-          <span class="enroll-action-caption">Coordinación con el colegio</span>
+          <span class="enroll-action-caption">Coordinación directa y rápida</span>
         </div>
-        <div class="enroll-action">
-          <a href="https://forms.gle/iuyfxQdfybTg1pXj6" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
-            Completar formulario de inscripción
-          </a>
-          <span class="enroll-action-caption">Inscripción a los cupos gratuitos</span>
+      </div>
+      <div class="enroll-divider">o complete el formulario</div>
+      <form class="enroll-form" id="enrollForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="colegio">Nombre del colegio *</label>
+            <input type="text" id="colegio" name="colegio" required>
+          </div>
+          <div class="field">
+            <label for="comuna">Distrito / ciudad *</label>
+            <input type="text" id="comuna" name="comuna" required>
+          </div>
         </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="contactoNombre">Nombre de contacto *</label>
+            <input type="text" id="contactoNombre" name="contactoNombre" required>
+          </div>
+          <div class="field">
+            <label for="cargo">Cargo</label>
+            <input type="text" id="cargo" name="cargo" placeholder="Ej: Director(a), coordinador(a)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono">
+          </div>
+        </div>
+        <div class="field">
+          <label for="estudiantes">N° aproximado de estudiantes del colegio</label>
+          <select id="estudiantes" name="estudiantes">
+            <option value="">Seleccione un rango</option>
+            <option value="1-50">1 – 50</option>
+            <option value="51-150">51 – 150</option>
+            <option value="151-400">151 – 400</option>
+            <option value="400+">Más de 400</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="mensaje">Mensaje (opcional)</label>
+          <textarea id="mensaje" name="mensaje" placeholder="Cuéntenos sobre los grados que le interesa evaluar, fechas tentativas, etc."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Enviar solicitud</button>
+        <p class="enroll-form-note">Al enviar este formulario, un miembro de nuestro equipo se contactará dentro de los próximos días hábiles para coordinar con la dirección del colegio.</p>
+      </form>
+      <div class="enroll-success" id="enrollSuccess">
+        <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h4>¡Solicitud enviada!</h4>
+        <p>Gracias por su interés. Nuestro equipo revisará la información y se pondrá en contacto a la brevedad.</p>
       </div>
       <div class="enroll-direct">
         <div class="enroll-direct-item">
@@ -1169,6 +1258,19 @@
         a.style.maxHeight = a.scrollHeight + 'px';
       }
     });
+  });
+
+  // Formulario de inscripción
+  // NOTA: este envío es solo de interfaz. Para producción, conectar este
+  // formulario a un backend (por ejemplo, una tabla de Supabase como la que
+  // ya usa el portal principal, o un servicio de email transaccional) que
+  // reciba los datos de "enrollForm" y notifique al equipo comercial.
+  const enrollForm = document.getElementById('enrollForm');
+  const enrollSuccess = document.getElementById('enrollSuccess');
+  enrollForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    enrollForm.style.display = 'none';
+    enrollSuccess.classList.add('show');
   });
 </script>
 
