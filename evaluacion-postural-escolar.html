@@ -497,9 +497,10 @@
     border-radius: 100px;
   }
   .price-week { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 14px; }
-  .price-amount { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+  .price-amount { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
   .price-amount b { font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
   .price-amount span { font-size: 14px; color: var(--text-mid); }
+  .price-amount .price-was { font-size: 15px; font-weight: 600; color: var(--text-light); text-decoration: line-through; order: -1; width: 100%; }
   .price-card p.price-note-small { font-size: 13px; color: var(--text-mid); }
 
   .price-note {
@@ -565,10 +566,12 @@
   .enroll-actions {
     display: flex;
     justify-content: center;
-    gap: 14px;
+    gap: 20px;
     flex-wrap: wrap;
     margin: 30px 0 26px;
   }
+  .enroll-action { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .enroll-action-caption { font-size: 12.5px; color: var(--text-light); }
   .btn-whatsapp {
     background: #25D366;
     color: var(--white);
@@ -953,30 +956,30 @@
   <div class="container">
     <div class="section-head">
       <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Cupos e inversión</span>
-      <h2>Cupos limitados por semana de inscripción</h2>
-      <p>El valor por estudiante depende de la semana en que su colegio se inscriba: los cupos de nuestro equipo clínico son limitados y se van reservando por orden de llegada.</p>
+      <h2>Precio especial de lanzamiento</h2>
+      <p>Cada evaluación la cubre el apoderado del alumno inscrito, no el colegio. Por el lanzamiento del programa, el valor regular de S/ 40 baja según la semana en que se inscriba.</p>
     </div>
     <div class="price-grid">
       <div class="price-card featured">
-        <span class="price-badge">Primeros 10 cupos, gratis</span>
+        <span class="price-badge">Primeros 10 inscritos, gratis</span>
         <div class="price-week">Semana 1</div>
-        <div class="price-amount"><b>S/ 10</b><span>por estudiante</span></div>
-        <p class="price-note-small">Valor de lanzamiento. Los primeros 10 cupos en inscribirse no pagan.</p>
+        <div class="price-amount"><span class="price-was">S/ 40</span><b>S/ 10</b><span>por evaluación</span></div>
+        <p class="price-note-small">Valor de lanzamiento. Los primeros 10 alumnos inscritos en toda la campaña no pagan.</p>
       </div>
       <div class="price-card">
         <div class="price-week">Semana 2</div>
-        <div class="price-amount"><b>S/ 20</b><span>por estudiante</span></div>
+        <div class="price-amount"><span class="price-was">S/ 40</span><b>S/ 20</b><span>por evaluación</span></div>
         <p class="price-note-small">Cupos sujetos a la agenda disponible del equipo clínico.</p>
       </div>
       <div class="price-card">
         <div class="price-week">Semana 3</div>
-        <div class="price-amount"><b>S/ 30</b><span>por estudiante</span></div>
-        <p class="price-note-small">Última semana de inscripción del período vigente.</p>
+        <div class="price-amount"><span class="price-was">S/ 40</span><b>S/ 30</b><span>por evaluación</span></div>
+        <p class="price-note-small">Última semana de la campaña de lanzamiento.</p>
       </div>
     </div>
     <div class="price-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <p>¿Por qué sube el valor cada semana? Nuestro equipo de fisioterapeutas solo puede atender un número limitado de colegios por período. El precio aumenta a medida que se ocupan los cupos disponibles, por lo que inscribirse en la primera semana asegura el mejor valor y mayor disponibilidad de fechas para su colegio.</p>
+      <p>¿Por qué sube el valor cada semana? Estos precios corresponden a la campaña de lanzamiento del programa; el valor regular es de S/ 40 por evaluación. El descuento se reduce cada semana porque los cupos de nuestro equipo clínico son limitados, por lo que inscribirse antes asegura el mejor precio. Los primeros 10 alumnos en inscribirse a través del formulario —contando la campaña completa, no por colegio— reciben la evaluación sin costo.</p>
     </div>
   </div>
 </section>
@@ -1024,6 +1027,14 @@
         <button class="faq-q">¿Para qué cursos o niveles está pensado el programa?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
         <div class="faq-a"><p>Se adapta a los niveles que defina el colegio, desde educación básica hasta enseñanza media, según la etapa de crecimiento de cada grupo.</p></div>
       </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Quién paga la evaluación?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>El colegio no paga por el programa: cada evaluación la cubre el apoderado del alumno que se inscribe, a través del formulario de inscripción.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Los precios por semana son permanentes?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>No. Corresponden a la campaña de lanzamiento del programa. El valor regular es de S/ 40 por evaluación; inscribirse antes permite acceder a un precio preferencial.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1033,23 +1044,28 @@
   <div class="container">
     <div class="enroll-box">
       <span class="eyebrow">Inscripción</span>
-      <h2>Asegure el cupo de su colegio</h2>
-      <p style="color:var(--text-mid);font-size:15.5px;">Escríbanos por WhatsApp o complete el formulario de inscripción. Nuestro equipo confirmará el cupo, la fecha y el valor según la semana de inscripción.</p>
+      <h2>Inscriba a su colegio o a su hijo o hija</h2>
+      <p style="color:var(--text-mid);font-size:15.5px;">Nuestro equipo se contacta directamente con los colegios para coordinar el programa, pero la dirección del colegio o los propios padres también pueden escribirnos. Cada alumno se inscribe de forma individual en el formulario, y el apoderado cubre el valor de su evaluación.</p>
       <div class="enroll-actions">
-        <a
-          href="https://wa.me/51970899735?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Programa%20Salud%20en%20Aula%20para%20mi%20colegio"
-          class="btn btn-whatsapp btn-lg"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.5 8.5 0 0 1-11.8 7.8L3 21l1.7-6.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 10a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M8.7 10.3c.4 1.8 1.9 3.3 3.7 3.7M14.5 13a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>
-          Escribir por WhatsApp
-        </a>
-        <!-- TODO: reemplazar "#" por el link real del formulario de inscripción (Google Forms, Typeform, etc.) cuando esté disponible. -->
-        <a href="#" class="btn btn-outline btn-lg">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
-          Completar formulario de inscripción
-        </a>
+        <div class="enroll-action">
+          <a
+            href="https://wa.me/51970899735?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Programa%20Salud%20en%20Aula%20para%20mi%20colegio"
+            class="btn btn-whatsapp btn-lg"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.5 8.5 0 0 1-11.8 7.8L3 21l1.7-6.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 10a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M8.7 10.3c.4 1.8 1.9 3.3 3.7 3.7M14.5 13a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>
+            Escribir por WhatsApp
+          </a>
+          <span class="enroll-action-caption">Coordinación con el colegio</span>
+        </div>
+        <div class="enroll-action">
+          <a href="https://forms.gle/iuyfxQdfybTg1pXj6" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
+            Completar formulario de inscripción
+          </a>
+          <span class="enroll-action-caption">Inscripción y pago por alumno</span>
+        </div>
       </div>
       <div class="enroll-direct">
         <div class="enroll-direct-item">
