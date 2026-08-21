@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MEDIRAYN Escolar — Programa de Evaluación Postural y Musculoesquelética</title>
-<meta name="description" content="Programa de evaluación postural y musculoesquelética para colegios: kinesiólogos y médicos evalúan a cada estudiante en el establecimiento y entregan un informe individual a cada familia.">
+<meta name="description" content="Programa Salud en Aula: fisioterapeutas, supervisados por médico, evalúan a cada estudiante en el colegio y entregan un informe individual a cada familia.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F1F3D'/%3E%3Crect x='16' y='27' width='32' height='10' rx='3' fill='%230EA5E9'/%3E%3Crect x='27' y='16' width='10' height='32' rx='3' fill='%230EA5E9'/%3E%3C/svg%3E">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -465,6 +465,56 @@
   .trust-stat b { display: block; color: var(--teal); font-size: 13.5px; margin-bottom: 4px; }
   .trust-stat span { font-size: 12.3px; color: rgba(255,255,255,0.62); }
 
+  /* ─── PRECIOS ─────────────────────────────────────── */
+  #precios { background: var(--surface); }
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 760px) { .price-grid { grid-template-columns: 1fr; } }
+
+  .price-card {
+    position: relative;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px 26px;
+  }
+  .price-card.featured {
+    border-color: var(--teal);
+    box-shadow: 0 12px 30px rgba(14,165,233,0.14);
+  }
+  .price-badge {
+    position: absolute;
+    top: -13px; left: 26px;
+    background: var(--green);
+    color: var(--white);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 6px 12px;
+    border-radius: 100px;
+  }
+  .price-week { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 14px; }
+  .price-amount { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+  .price-amount b { font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
+  .price-amount span { font-size: 14px; color: var(--text-mid); }
+  .price-card p.price-note-small { font-size: 13px; color: var(--text-mid); }
+
+  .price-note {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(14,165,233,0.07);
+    border: 1px solid rgba(14,165,233,0.22);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .price-note svg { width: 20px; height: 20px; color: var(--teal-dark); flex-shrink: 0; margin-top: 1px; }
+  .price-note p { font-size: 13.5px; color: var(--navy); }
+
   /* ─── FAQ ─────────────────────────────────────── */
   #faq { background: var(--surface); }
   .faq-list {
@@ -501,62 +551,44 @@
   }
   .faq-a p { padding: 0 22px 20px; font-size: 14px; color: var(--text-mid); }
 
-  /* ─── CONTACT ─────────────────────────────────────── */
-  #contact { position: relative; }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: 50px;
-  }
-  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
-
-  .contact-info h2 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 14px; }
-  .contact-info p.lead { color: var(--text-mid); font-size: 15.5px; margin-bottom: 30px; }
-  .contact-channels { display: flex; flex-direction: column; gap: 16px; }
-  .contact-channel { display: flex; align-items: center; gap: 13px; }
-  .contact-channel .icon-box { width: 42px; height: 42px; flex-shrink: 0; }
-  .contact-channel .icon-box svg { width: 20px; height: 20px; }
-  .contact-channel b { display: block; font-size: 14px; color: var(--navy); }
-  .contact-channel span { font-size: 13px; color: var(--text-mid); }
-
-  .contact-form {
+  /* ─── INSCRIPCIÓN ─────────────────────────────────────── */
+  #inscripcion { position: relative; }
+  .enroll-box {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 34px;
+    border-radius: 24px;
+    padding: 52px 40px;
   }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
-  .field input, .field select, .field textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--white);
-    transition: border-color .15s ease;
+  .enroll-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 30px 0 26px;
   }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    outline: none;
-    border-color: var(--teal);
+  .btn-whatsapp {
+    background: #25D366;
+    color: var(--white);
+    box-shadow: 0 10px 24px rgba(37,211,102,0.28);
   }
-  .field textarea { resize: vertical; min-height: 90px; }
-  .form-note { font-size: 12px; color: var(--text-light); margin-top: 14px; text-align: center; }
+  .btn-whatsapp:hover { background: #1DA851; transform: translateY(-1px); }
+  .btn-lg { padding: 16px 28px; font-size: 15.5px; }
 
-  .form-success {
-    display: none;
-    text-align: center;
-    padding: 30px 10px;
+  .enroll-direct {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    padding-top: 26px;
+    border-top: 1px dashed var(--border);
   }
-  .form-success.show { display: block; }
-  .form-success .icon-box { margin: 0 auto 16px; width: 56px; height: 56px; }
-  .form-success .icon-box svg { width: 28px; height: 28px; }
-  .form-success h4 { font-size: 18px; margin-bottom: 8px; }
-  .form-success p { font-size: 13.8px; color: var(--text-mid); }
+  .enroll-direct-item { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--text-mid); }
+  .enroll-direct-item svg { width: 17px; height: 17px; color: var(--teal-dark); flex-shrink: 0; }
+  .enroll-direct-item a, .enroll-direct-item span { color: var(--text-mid); }
+  .enroll-direct-item a:hover { color: var(--teal-dark); }
 
   /* ─── CTA BAND ─────────────────────────────────────── */
   #cta-band {
@@ -616,10 +648,11 @@
       <a href="#scope">Qué evaluamos</a>
       <a href="#proceso">Cómo funciona</a>
       <a href="#benefits">Beneficios</a>
+      <a href="#precios">Cupos e inversión</a>
       <a href="#faq">Preguntas frecuentes</a>
     </nav>
     <div class="nav-actions">
-      <a href="#contact" class="btn btn-primary nav-cta">Solicitar información</a>
+      <a href="#inscripcion" class="btn btn-primary nav-cta">Solicitar información</a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
         <span></span><span></span><span></span>
       </button>
@@ -630,8 +663,9 @@
     <a href="#scope">Qué evaluamos</a>
     <a href="#proceso">Cómo funciona</a>
     <a href="#benefits">Beneficios</a>
+    <a href="#precios">Cupos e inversión</a>
     <a href="#faq">Preguntas frecuentes</a>
-    <a href="#contact" class="btn btn-primary btn-block">Solicitar información</a>
+    <a href="#inscripcion" class="btn btn-primary btn-block">Solicitar información</a>
   </div>
 </header>
 
@@ -639,17 +673,17 @@
 <section id="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">Salud escolar · Kinesiología y medicina preventiva</span>
+      <span class="eyebrow">Programa Salud en Aula</span>
       <h1>Detectamos a tiempo los problemas <em>posturales</em> y musculoesqueléticos de sus estudiantes</h1>
       <p class="lead">Un equipo clínico evalúa a cada estudiante dentro del colegio, sin trasladarlos a un centro médico, y entrega un informe individual y confidencial a cada familia.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">Solicitar evaluación para mi colegio</a>
+        <a href="#inscripcion" class="btn btn-primary">Solicitar evaluación para mi colegio</a>
         <a href="#proceso" class="btn btn-ghost-light">Ver cómo funciona</a>
       </div>
       <div class="hero-trust">
         <div class="hero-trust-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Equipo de kinesiólogos y médicos
+          Fisioterapeutas, supervisados por médico
         </div>
         <div class="hero-trust-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -682,7 +716,7 @@
       </div>
       <div class="hero-card-foot">
         <span>Duración por estudiante</span>
-        <b>≈ 5–8 min</b>
+        <b>8 – 10 min aprox.</b>
       </div>
     </div>
   </div>
@@ -792,7 +826,7 @@
       <div class="process-step">
         <div class="process-num">3</div>
         <h4>Jornada de evaluación</h4>
-        <p>Kinesiólogos y médicos evalúan a cada estudiante dentro del colegio, sin necesidad de trasladarlos.</p>
+        <p>Fisioterapeutas evalúan a cada estudiante dentro del colegio, bajo la supervisión de un médico, sin necesidad de trasladarlos.</p>
       </div>
       <div class="process-step">
         <div class="process-num">4</div>
@@ -885,11 +919,11 @@
     <div>
       <span class="eyebrow">Protocolo y respaldo clínico</span>
       <h2>Un equipo clínico a cargo, con protocolo estandarizado</h2>
-      <p style="color:var(--text-mid);font-size:15.5px;max-width:480px;">Cada evaluación es realizada por kinesiólogos y, cuando corresponde, médicos, siguiendo un protocolo clínico estandarizado y resguardando en todo momento la confidencialidad de la información de cada estudiante.</p>
+      <p style="color:var(--text-mid);font-size:15.5px;max-width:480px;">Cada evaluación es realizada por fisioterapeutas y supervisada por un médico, siguiendo un protocolo clínico estandarizado y resguardando en todo momento la confidencialidad de la información de cada estudiante.</p>
       <ul class="trust-list">
         <li>
           <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0"/><circle cx="12" cy="10" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div>
-          <div><b>Equipo clínico especializado</b><span>Kinesiólogos y médicos con experiencia en salud musculoesquelética infantil.</span></div>
+          <div><b>Equipo clínico especializado</b><span>Fisioterapeutas con experiencia en salud musculoesquelética infantil, supervisados por médico.</span></div>
         </li>
         <li>
           <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5.25 3.5 9.5 9 10 5.5-.5 9-4.75 9-10V6l-9-4Z"/><path d="m9 12 2 2 4-4"/></svg></div>
@@ -914,6 +948,39 @@
   </div>
 </section>
 
+<!-- ─── CUPOS E INVERSIÓN ─────────────────────────────────────── -->
+<section id="precios">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Cupos e inversión</span>
+      <h2>Cupos limitados por semana de inscripción</h2>
+      <p>El valor por estudiante depende de la semana en que su colegio se inscriba: los cupos de nuestro equipo clínico son limitados y se van reservando por orden de llegada.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card featured">
+        <span class="price-badge">Primeros 10 cupos, gratis</span>
+        <div class="price-week">Semana 1</div>
+        <div class="price-amount"><b>S/ 10</b><span>por estudiante</span></div>
+        <p class="price-note-small">Valor de lanzamiento. Los primeros 10 cupos en inscribirse no pagan.</p>
+      </div>
+      <div class="price-card">
+        <div class="price-week">Semana 2</div>
+        <div class="price-amount"><b>S/ 20</b><span>por estudiante</span></div>
+        <p class="price-note-small">Cupos sujetos a la agenda disponible del equipo clínico.</p>
+      </div>
+      <div class="price-card">
+        <div class="price-week">Semana 3</div>
+        <div class="price-amount"><b>S/ 30</b><span>por estudiante</span></div>
+        <p class="price-note-small">Última semana de inscripción del período vigente.</p>
+      </div>
+    </div>
+    <div class="price-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <p>¿Por qué sube el valor cada semana? Nuestro equipo de fisioterapeutas solo puede atender un número limitado de colegios por período. El precio aumenta a medida que se ocupan los cupos disponibles, por lo que inscribirse en la primera semana asegura el mejor valor y mayor disponibilidad de fechas para su colegio.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ─── CTA BAND ─────────────────────────────────────── -->
 <section id="cta-band">
   <div class="container cta-band-inner">
@@ -921,7 +988,7 @@
       <h3>¿Quiere llevar este programa a su colegio?</h3>
       <p>Coordinemos una reunión breve para revisar cursos, fechas y logística.</p>
     </div>
-    <a href="#contact" class="btn btn-primary">Solicitar información</a>
+    <a href="#inscripcion" class="btn btn-primary">Solicitar información</a>
   </div>
 </section>
 
@@ -935,7 +1002,7 @@
     <div class="faq-list" id="faqList">
       <div class="faq-item">
         <button class="faq-q">¿Cuánto dura la evaluación por estudiante?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        <div class="faq-a"><p>En promedio entre 5 y 8 minutos por estudiante. Es una evaluación externa, breve y no invasiva.</p></div>
+        <div class="faq-a"><p>En promedio entre 8 y 10 minutos por estudiante. Es una evaluación externa, breve y no invasiva.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Se requiere autorización de los padres o apoderados?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
@@ -961,83 +1028,38 @@
   </div>
 </section>
 
-<!-- ─── CONTACTO ─────────────────────────────────────── -->
-<section id="contact">
-  <div class="container contact-grid">
-    <div class="contact-info">
-      <span class="eyebrow">Contacto</span>
-      <h2>Coordinemos el programa para su colegio</h2>
-      <p class="lead">Complete el formulario y nuestro equipo se pondrá en contacto para coordinar una reunión y evaluar fechas.</p>
-      <div class="contact-channels">
-        <div class="contact-channel">
-          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="m22 6-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
-          <div><b>Correo</b><span>escolar@medirayn.cl</span></div>
-        </div>
-        <div class="contact-channel">
-          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-          <div><b>Teléfono</b><span>+56 9 0000 0000</span></div>
-        </div>
-        <div class="contact-channel">
-          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div><b>Cobertura</b><span>Región Metropolitana y regiones (a coordinar)</span></div>
-        </div>
+<!-- ─── INSCRIPCIÓN ─────────────────────────────────────── -->
+<section id="inscripcion">
+  <div class="container">
+    <div class="enroll-box">
+      <span class="eyebrow">Inscripción</span>
+      <h2>Asegure el cupo de su colegio</h2>
+      <p style="color:var(--text-mid);font-size:15.5px;">Escríbanos por WhatsApp o complete el formulario de inscripción. Nuestro equipo confirmará el cupo, la fecha y el valor según la semana de inscripción.</p>
+      <div class="enroll-actions">
+        <a
+          href="https://wa.me/51970899735?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20el%20Programa%20Salud%20en%20Aula%20para%20mi%20colegio"
+          class="btn btn-whatsapp btn-lg"
+          target="_blank"
+          rel="noopener"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.5 8.5 0 0 1-11.8 7.8L3 21l1.7-6.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 10a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M8.7 10.3c.4 1.8 1.9 3.3 3.7 3.7M14.5 13a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>
+          Escribir por WhatsApp
+        </a>
+        <!-- TODO: reemplazar "#" por el link real del formulario de inscripción (Google Forms, Typeform, etc.) cuando esté disponible. -->
+        <a href="#" class="btn btn-outline btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
+          Completar formulario de inscripción
+        </a>
       </div>
-    </div>
-
-    <div class="contact-form">
-      <form id="contactForm">
-        <div class="form-row">
-          <div class="field">
-            <label for="colegio">Nombre del colegio *</label>
-            <input type="text" id="colegio" name="colegio" required>
-          </div>
-          <div class="field">
-            <label for="comuna">Comuna / ciudad *</label>
-            <input type="text" id="comuna" name="comuna" required>
-          </div>
+      <div class="enroll-direct">
+        <div class="enroll-direct-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="m22 6-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+          <a href="mailto:medicomercial@medirayn.com">medicomercial@medirayn.com</a>
         </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="contactoNombre">Nombre de contacto *</label>
-            <input type="text" id="contactoNombre" name="contactoNombre" required>
-          </div>
-          <div class="field">
-            <label for="cargo">Cargo</label>
-            <input type="text" id="cargo" name="cargo" placeholder="Ej: Encargado(a) de convivencia">
-          </div>
+        <div class="enroll-direct-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Cel. 970 899 735</span>
         </div>
-        <div class="form-row">
-          <div class="field">
-            <label for="email">Correo electrónico *</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="field">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono">
-          </div>
-        </div>
-        <div class="field">
-          <label for="estudiantes">N° aproximado de estudiantes a evaluar</label>
-          <select id="estudiantes" name="estudiantes">
-            <option value="">Seleccione un rango</option>
-            <option value="1-50">1 – 50</option>
-            <option value="51-150">51 – 150</option>
-            <option value="151-400">151 – 400</option>
-            <option value="400+">Más de 400</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="mensaje">Mensaje (opcional)</label>
-          <textarea id="mensaje" name="mensaje" placeholder="Cuéntenos sobre los cursos o niveles que le interesa evaluar, fechas tentativas, etc."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Solicitar información</button>
-        <p class="form-note">Al enviar este formulario, un miembro de nuestro equipo se contactará dentro de los próximos días hábiles.</p>
-      </form>
-
-      <div class="form-success" id="formSuccess">
-        <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <h4>¡Solicitud enviada!</h4>
-        <p>Gracias por su interés. Nuestro equipo revisará la información y se pondrá en contacto a la brevedad.</p>
       </div>
     </div>
   </div>
@@ -1054,7 +1076,7 @@
           </span>
           <span class="logo-text"><b style="color:#fff;">MEDIRAYN</b><span>Programa Escolar</span></span>
         </div>
-        <p>Programa de evaluación postural y musculoesquelética para colegios, ejecutado por kinesiólogos y médicos.</p>
+        <p>Programa de evaluación postural y musculoesquelética para colegios, ejecutado por fisioterapeutas y supervisado por médico.</p>
       </div>
       <div class="footer-col">
         <h5>Programa</h5>
@@ -1062,18 +1084,19 @@
         <a href="#scope">Qué evaluamos</a>
         <a href="#proceso">Cómo funciona</a>
         <a href="#benefits">Beneficios</a>
+        <a href="#precios">Cupos e inversión</a>
       </div>
       <div class="footer-col">
         <h5>Información</h5>
         <a href="#protocolo">Protocolo clínico</a>
         <a href="#faq">Preguntas frecuentes</a>
-        <a href="#contact">Contacto</a>
+        <a href="#inscripcion">Inscripción</a>
       </div>
       <div class="footer-col">
-        <h5>Contacto</h5>
-        <span>escolar@medirayn.cl</span>
-        <span>+56 9 0000 0000</span>
-        <span>Chile</span>
+        <h5>Contacto MEDIRAYN</h5>
+        <a href="mailto:medicomercial@medirayn.com">medicomercial@medirayn.com</a>
+        <span>Cel. 970 899 735</span>
+        <span>Perú</span>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1115,19 +1138,6 @@
         a.style.maxHeight = a.scrollHeight + 'px';
       }
     });
-  });
-
-  // Formulario de contacto
-  // NOTA: este envío es solo de interfaz. Para producción, conectar este
-  // formulario a un backend (por ejemplo, una tabla de Supabase como la que
-  // ya usa el portal principal, o un servicio de email transaccional) que
-  // reciba los datos de "contactForm" y notifique al equipo comercial.
-  const contactForm = document.getElementById('contactForm');
-  const formSuccess = document.getElementById('formSuccess');
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    contactForm.style.display = 'none';
-    formSuccess.classList.add('show');
   });
 </script>
 
