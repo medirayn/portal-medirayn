@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIRAYN Escolar — Programa de Evaluación Postural y Musculoesquelética</title>
+<meta name="description" content="Programa de evaluación postural y musculoesquelética para colegios: kinesiólogos y médicos evalúan a cada estudiante en el establecimiento y entregan un informe individual a cada familia.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F1F3D'/%3E%3Crect x='16' y='27' width='32' height='10' rx='3' fill='%230EA5E9'/%3E%3Crect x='27' y='16' width='10' height='32' rx='3' fill='%230EA5E9'/%3E%3C/svg%3E">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --navy: #0F1F3D;
+    --navy-mid: #1A3260;
+    --navy-light: #243B6E;
+    --teal: #0EA5E9;
+    --teal-dark: #0284C7;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --surface: #F8FAFC;
+    --surface-2: #F1F5F9;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --text-mid: #475569;
+    --text-light: #94A3B8;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --shadow: 0 8px 30px rgba(15, 31, 61, 0.08);
+    --shadow-lg: 0 20px 60px rgba(15, 31, 61, 0.14);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--white);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section { padding: 96px 0; }
+  @media (max-width: 768px) { section { padding: 64px 0; } }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-dark);
+    background: rgba(14, 165, 233, 0.1);
+    padding: 7px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+
+  .section-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 36px); margin-bottom: 14px; }
+  .section-head p { color: var(--text-mid); font-size: 16.5px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--white);
+    box-shadow: 0 10px 24px rgba(14,165,233,0.28);
+  }
+  .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--navy);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal-dark); }
+  .btn-ghost-light {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.28);
+  }
+  .btn-ghost-light:hover { background: rgba(255,255,255,0.18); }
+  .btn-block { width: 100%; }
+
+  /* ─── NAV ─────────────────────────────────────── */
+  #nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-icon svg { width: 18px; height: 18px; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .logo-text b { font-size: 15.5px; font-weight: 800; letter-spacing: 0.03em; color: var(--navy); }
+  .logo-text span { font-size: 11px; color: var(--teal-dark); font-weight: 600; letter-spacing: 0.02em; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+  }
+  .nav-links a {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition: color .15s ease;
+  }
+  .nav-links a:hover { color: var(--navy); }
+
+  .nav-actions { display: flex; align-items: center; gap: 14px; }
+  .nav-cta { display: none; }
+  @media (min-width: 900px) { .nav-cta { display: inline-flex; } }
+
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 26px;
+  }
+  .nav-toggle span { display: block; height: 2px; background: var(--navy); border-radius: 2px; transition: transform .2s ease, opacity .2s ease; }
+  @media (min-width: 900px) { .nav-toggle { display: none; } }
+  @media (max-width: 899px) { .nav-links { display: none; } }
+
+  #mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    border-top: 1px solid var(--border);
+    background: var(--white);
+    padding: 10px 24px 20px;
+  }
+  #mobile-menu.open { display: flex; }
+  #mobile-menu a {
+    padding: 12px 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-mid);
+    border-bottom: 1px solid var(--surface-2);
+  }
+  #mobile-menu .btn { margin-top: 14px; }
+
+  /* ─── HERO ─────────────────────────────────────── */
+  #hero {
+    position: relative;
+    background: linear-gradient(155deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
+    overflow: hidden;
+    padding: 88px 0 100px;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,165,233,0.16);
+    top: -180px; right: -160px;
+  }
+  #hero::after {
+    content: '';
+    position: absolute;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,165,233,0.12);
+    bottom: -140px; left: -100px;
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .hero-copy .eyebrow { background: rgba(14,165,233,0.16); color: #7DD3FC; }
+  .hero-copy h1 {
+    font-size: clamp(30px, 4.4vw, 46px);
+    color: var(--white);
+    line-height: 1.18;
+    margin-bottom: 20px;
+  }
+  .hero-copy h1 em { font-style: normal; color: var(--teal); }
+  .hero-copy p.lead {
+    color: rgba(255,255,255,0.72);
+    font-size: 17px;
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 44px; }
+
+  .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px 30px;
+  }
+  .hero-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: rgba(255,255,255,0.78);
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .hero-trust-item svg { width: 18px; height: 18px; color: var(--teal); flex-shrink: 0; }
+
+  .hero-card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    padding: 30px;
+    position: relative;
+  }
+  .hero-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .hero-card-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+  .hero-card-head span { font-size: 13px; font-weight: 700; color: var(--navy); letter-spacing: 0.02em; text-transform: uppercase; }
+
+  .hero-check-list { display: flex; flex-direction: column; gap: 14px; }
+  .hero-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .hero-check svg { width: 20px; height: 20px; color: var(--teal-dark); flex-shrink: 0; margin-top: 1px; }
+  .hero-check b { display: block; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
+  .hero-check span { font-size: 12.5px; color: var(--text-mid); }
+
+  .hero-card-foot {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--text-mid);
+  }
+  .hero-card-foot b { color: var(--navy); }
+
+  /* ─── PROBLEM ─────────────────────────────────────── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 980px) { .problem-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .problem-grid { grid-template-columns: 1fr; } }
+
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+  }
+  .problem-card .icon-box { background: var(--white); }
+  .problem-card h4 { font-size: 15.5px; margin: 16px 0 8px; }
+  .problem-card p { font-size: 13.8px; color: var(--text-mid); }
+
+  .icon-box {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: rgba(14,165,233,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-box svg { width: 23px; height: 23px; color: var(--teal-dark); }
+  .icon-box.amber { background: rgba(245,158,11,0.12); }
+  .icon-box.amber svg { color: var(--amber); }
+  .icon-box.green { background: rgba(16,185,129,0.12); }
+  .icon-box.green svg { color: var(--green); }
+  .icon-box.navy { background: rgba(15,31,61,0.08); }
+  .icon-box.navy svg { color: var(--navy); }
+
+  /* ─── SCOPE (qué evaluamos) ─────────────────────────────────────── */
+  #scope { background: var(--surface); }
+  .scope-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 900px) { .scope-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .scope-grid { grid-template-columns: 1fr; } }
+
+  .scope-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .scope-item .icon-box { width: 40px; height: 40px; flex-shrink: 0; }
+  .scope-item .icon-box svg { width: 20px; height: 20px; }
+  .scope-item h4 { font-size: 15px; margin-bottom: 4px; }
+  .scope-item p { font-size: 13.3px; color: var(--text-mid); }
+
+  .scope-note {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(14,165,233,0.07);
+    border: 1px solid rgba(14,165,233,0.22);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .scope-note svg { width: 20px; height: 20px; color: var(--teal-dark); flex-shrink: 0; margin-top: 1px; }
+  .scope-note p { font-size: 13.5px; color: var(--navy); }
+
+  /* ─── PROCESS ─────────────────────────────────────── */
+  .process-list {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .process-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .process-list { grid-template-columns: 1fr; } }
+
+  .process-step { position: relative; }
+  .process-num {
+    width: 40px; height: 40px;
+    border-radius: 11px;
+    background: var(--navy);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    margin-bottom: 18px;
+  }
+  .process-step h4 { font-size: 16px; margin-bottom: 8px; }
+  .process-step p { font-size: 13.7px; color: var(--text-mid); }
+  .process-connector {
+    display: none;
+  }
+  @media (min-width: 901px) {
+    .process-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: calc(100% + 12px);
+      width: calc(24px - 12px);
+      border-top: 2px dashed var(--border);
+    }
+  }
+
+  /* ─── BENEFITS (tabs) ─────────────────────────────────────── */
+  #benefits { background: var(--surface); }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 11px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    color: var(--text-mid);
+    transition: all .15s ease;
+  }
+  .tab-btn.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeUp .25s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 900px) { .benefit-grid { grid-template-columns: 1fr; } }
+  .benefit-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+  }
+  .benefit-card svg { width: 22px; height: 22px; color: var(--green); margin-bottom: 14px; }
+  .benefit-card h4 { font-size: 15px; margin-bottom: 6px; }
+  .benefit-card p { font-size: 13.5px; color: var(--text-mid); }
+
+  /* ─── TRUST / PROTOCOL ─────────────────────────────────────── */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 56px;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .trust-grid { grid-template-columns: 1fr; } }
+
+  .trust-list { display: flex; flex-direction: column; gap: 20px; margin-top: 28px; }
+  .trust-list li { display: flex; gap: 14px; align-items: flex-start; }
+  .trust-list .icon-box { width: 38px; height: 38px; flex-shrink: 0; }
+  .trust-list .icon-box svg { width: 19px; height: 19px; }
+  .trust-list b { display: block; font-size: 14.5px; color: var(--navy); margin-bottom: 3px; }
+  .trust-list span { font-size: 13.3px; color: var(--text-mid); }
+
+  .trust-panel {
+    background: var(--navy);
+    border-radius: 20px;
+    padding: 34px;
+    color: var(--white);
+  }
+  .trust-panel h3 { color: var(--white); font-size: 20px; margin-bottom: 10px; }
+  .trust-panel p { color: rgba(255,255,255,0.68); font-size: 14px; margin-bottom: 26px; }
+  .trust-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .trust-stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .trust-stat b { display: block; color: var(--teal); font-size: 13.5px; margin-bottom: 4px; }
+  .trust-stat span { font-size: 12.3px; color: rgba(255,255,255,0.62); }
+
+  /* ─── FAQ ─────────────────────────────────────── */
+  #faq { background: var(--surface); }
+  .faq-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .faq-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 19px 22px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .faq-q svg { width: 18px; height: 18px; color: var(--text-light); flex-shrink: 0; transition: transform .2s ease; }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); color: var(--teal-dark); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+  }
+  .faq-a p { padding: 0 22px 20px; font-size: 14px; color: var(--text-mid); }
+
+  /* ─── CONTACT ─────────────────────────────────────── */
+  #contact { position: relative; }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 50px;
+  }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-info h2 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 14px; }
+  .contact-info p.lead { color: var(--text-mid); font-size: 15.5px; margin-bottom: 30px; }
+  .contact-channels { display: flex; flex-direction: column; gap: 16px; }
+  .contact-channel { display: flex; align-items: center; gap: 13px; }
+  .contact-channel .icon-box { width: 42px; height: 42px; flex-shrink: 0; }
+  .contact-channel .icon-box svg { width: 20px; height: 20px; }
+  .contact-channel b { display: block; font-size: 14px; color: var(--navy); }
+  .contact-channel span { font-size: 13px; color: var(--text-mid); }
+
+  .contact-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 34px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color .15s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .form-note { font-size: 12px; color: var(--text-light); margin-top: 14px; text-align: center; }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 30px 10px;
+  }
+  .form-success.show { display: block; }
+  .form-success .icon-box { margin: 0 auto 16px; width: 56px; height: 56px; }
+  .form-success .icon-box svg { width: 28px; height: 28px; }
+  .form-success h4 { font-size: 18px; margin-bottom: 8px; }
+  .form-success p { font-size: 13.8px; color: var(--text-mid); }
+
+  /* ─── CTA BAND ─────────────────────────────────────── */
+  #cta-band {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 64px 0;
+  }
+  .cta-band-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cta-band-inner h3 { color: var(--white); font-size: clamp(20px, 2.6vw, 27px); max-width: 520px; }
+  .cta-band-inner p { color: rgba(255,255,255,0.65); font-size: 14px; margin-top: 8px; }
+
+  /* ─── FOOTER ─────────────────────────────────────── */
+  footer { background: var(--navy); padding: 56px 0 28px; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 32px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 13.3px; margin-top: 14px; max-width: 280px; }
+  .footer-col h5 { color: var(--white); font-size: 13px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 16px; }
+  .footer-col a, .footer-col span { display: block; color: rgba(255,255,255,0.55); font-size: 13.7px; margin-bottom: 11px; }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: rgba(255,255,255,0.4);
+    font-size: 12.5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────── -->
+<header id="nav">
+  <div class="container nav-inner">
+    <a href="#hero" class="logo">
+      <span class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 2v20M2 12h20"/></svg>
+      </span>
+      <span class="logo-text"><b>MEDIRAYN</b><span>Programa Escolar</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#programa">Programa</a>
+      <a href="#scope">Qué evaluamos</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#benefits">Beneficios</a>
+      <a href="#faq">Preguntas frecuentes</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#contact" class="btn btn-primary nav-cta">Solicitar información</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu">
+    <a href="#programa">Programa</a>
+    <a href="#scope">Qué evaluamos</a>
+    <a href="#proceso">Cómo funciona</a>
+    <a href="#benefits">Beneficios</a>
+    <a href="#faq">Preguntas frecuentes</a>
+    <a href="#contact" class="btn btn-primary btn-block">Solicitar información</a>
+  </div>
+</header>
+
+<!-- ─── HERO ─────────────────────────────────────── -->
+<section id="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Salud escolar · Kinesiología y medicina preventiva</span>
+      <h1>Detectamos a tiempo los problemas <em>posturales</em> y musculoesqueléticos de sus estudiantes</h1>
+      <p class="lead">Un equipo clínico evalúa a cada estudiante dentro del colegio, sin trasladarlos a un centro médico, y entrega un informe individual y confidencial a cada familia.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Solicitar evaluación para mi colegio</a>
+        <a href="#proceso" class="btn btn-ghost-light">Ver cómo funciona</a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Equipo de kinesiólogos y médicos
+        </div>
+        <div class="hero-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Evaluación no invasiva, en el colegio
+        </div>
+        <div class="hero-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Informe individual por estudiante
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-head">
+        <span class="dot"></span>
+        <span>Informe de evaluación · Vista previa</span>
+      </div>
+      <div class="hero-check-list">
+        <div class="hero-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+          <div><b>Columna y test de Adams</b><span>Búsqueda de asimetrías y signos de escoliosis</span></div>
+        </div>
+        <div class="hero-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <div><b>Hombros, escápulas y pelvis</b><span>Alineación y simetría corporal</span></div>
+        </div>
+        <div class="hero-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M4 6h16M4 18h16"/></svg>
+          <div><b>Pie y marcha</b><span>Arco plantar y postura dinámica</span></div>
+        </div>
+      </div>
+      <div class="hero-card-foot">
+        <span>Duración por estudiante</span>
+        <b>≈ 5–8 min</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROBLEMA / CONTEXTO ─────────────────────────────────────── -->
+<section id="programa">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Por qué es importante</span>
+      <h2>La etapa escolar es la ventana clave para corregir a tiempo</h2>
+      <p>Mochilas mal cargadas, más horas sentados, pantallas y mobiliario que no se ajusta al crecimiento van generando hábitos posturales que, si no se detectan pronto, se estructuran con los años.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon-box amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+        </div>
+        <h4>Muchas veces son asintomáticas</h4>
+        <p>Una desviación de columna o una asimetría puede pasar inadvertida para la familia hasta etapas más avanzadas.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><rect x="4" y="8" width="16" height="13" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
+        </div>
+        <h4>Hábitos que se van acumulando</h4>
+        <p>Mochilas mal cargadas y jornadas largas sentados favorecen posturas compensatorias en pleno crecimiento.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon-box green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </div>
+        <h4>Ventana de crecimiento activo</h4>
+        <p>Intervenir mientras el sistema musculoesquelético aún se está formando permite correcciones más simples.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon-box navy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
+        </div>
+        <h4>Detección temprana, tratamiento simple</h4>
+        <p>Cuanto antes se identifica un hallazgo, más simple y efectiva suele ser la intervención posterior.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── QUÉ EVALUAMOS ─────────────────────────────────────── -->
+<section id="scope">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Alcance clínico</span>
+      <h2>Qué evaluamos en cada estudiante</h2>
+      <p>Un protocolo de tamizaje (screening) postural y musculoesquelético, aplicado de forma individual, breve y no invasiva.</p>
+    </div>
+    <div class="scope-grid">
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg></div>
+        <div><h4>Columna vertebral y escoliosis</h4><p>Test de Adams y búsqueda de asimetrías en la línea media.</p></div>
+      </div>
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg></div>
+        <div><h4>Hombros, escápulas y pelvis</h4><p>Alineación y simetría de referencias óseas principales.</p></div>
+      </div>
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c1-4 2-6 2-10a4 4 0 0 1 8 0v2a3 3 0 0 0 3 3h1"/><path d="M15 15v3a2 2 0 0 0 2 2h1"/></svg></div>
+        <div><h4>Pie plano y arco plantar</h4><p>Evaluación del apoyo plantar y su relación con la postura global.</p></div>
+      </div>
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l7 3"/></svg></div>
+        <div><h4>Movilidad y flexibilidad</h4><p>Rangos articulares generales y elasticidad muscular.</p></div>
+      </div>
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v18M20 8v13M6 13v8M3 21h18"/></svg></div>
+        <div><h4>Postura estática y marcha</h4><p>Observación de la postura en reposo y durante el desplazamiento.</p></div>
+      </div>
+      <div class="scope-item">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><rect x="4" y="8" width="16" height="13" rx="2"/></svg></div>
+        <div><h4>Uso de mochila y mobiliario</h4><p>Señales de sobrecarga asociadas a mochilas y bancos/mesas escolares.</p></div>
+      </div>
+    </div>
+    <div class="scope-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <p>Este programa corresponde a un tamizaje (screening) clínico preventivo, no reemplaza un diagnóstico médico. Los casos con hallazgos relevantes se derivan para una evaluación diagnóstica completa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CÓMO FUNCIONA ─────────────────────────────────────── -->
+<section id="proceso">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Cómo funciona</span>
+      <h2>De la coordinación con el colegio al informe familiar</h2>
+      <p>Un proceso simple, coordinado con el establecimiento, que minimiza la interrupción de la jornada académica.</p>
+    </div>
+    <div class="process-list">
+      <div class="process-step">
+        <div class="process-num">1</div>
+        <h4>Coordinación con el colegio</h4>
+        <p>Reunión con el establecimiento para definir fechas, cursos participantes y logística en terreno.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">2</div>
+        <h4>Consentimiento informado</h4>
+        <p>Se envía a los apoderados el consentimiento y una breve ficha de antecedentes por estudiante.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">3</div>
+        <h4>Jornada de evaluación</h4>
+        <p>Kinesiólogos y médicos evalúan a cada estudiante dentro del colegio, sin necesidad de trasladarlos.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-num">4</div>
+        <h4>Informe y seguimiento</h4>
+        <p>Cada familia recibe un informe individual; los casos que lo requieren se derivan con recomendaciones concretas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BENEFICIOS ─────────────────────────────────────── -->
+<section id="benefits">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Beneficios</span>
+      <h2>Un programa que aporta a todos los actores de la comunidad escolar</h2>
+      <p>Diseñado para integrarse a la gestión de bienestar del colegio, con valor directo para familias y estudiantes.</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="colegio">Para el colegio</button>
+      <button class="tab-btn" data-tab="familias">Para las familias</button>
+      <button class="tab-btn" data-tab="estudiantes">Para los estudiantes</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="colegio">
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          <h4>Política de bienestar estudiantil</h4>
+          <p>Aporta evidencia concreta al plan de convivencia y salud del establecimiento.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+          <h4>Informe agregado y anonimizado</h4>
+          <p>Datos de tendencias por curso o nivel, útiles para decisiones sobre mobiliario y actividad física.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <h4>Bajo impacto en la jornada</h4>
+          <p>Logística coordinada con el colegio para minimizar la interrupción de clases.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="familias">
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <h4>Tranquilidad e información clara</h4>
+          <p>Un informe individual, fácil de entender, sobre la salud postural de su hijo o hija.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+          <h4>Detección temprana</h4>
+          <p>Se identifican hallazgos antes de que se conviertan en alteraciones estructuradas.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4M9 11V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v7"/><path d="M9 11h9.5a2 2 0 0 1 2 2.24l-1 7A2 2 0 0 1 17.5 22H9"/></svg>
+          <h4>Orientación sobre próximos pasos</h4>
+          <p>Recomendaciones concretas y, si corresponde, derivación a un especialista.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="estudiantes">
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l7 3"/></svg>
+          <h4>Intervención simple y oportuna</h4>
+          <p>Mientras antes se detecta un hallazgo, más sencillo suele ser abordarlo.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v18M20 8v13M6 13v8M3 21h18"/></svg>
+          <h4>Hábitos posturales saludables</h4>
+          <p>Recomendaciones prácticas y aplicables a la vida escolar diaria.</p>
+        </div>
+        <div class="benefit-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>
+          <h4>Mejor calidad de vida</h4>
+          <p>Menos molestias asociadas a la postura durante la etapa escolar y a futuro.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROTOCOLO / CONFIANZA ─────────────────────────────────────── -->
+<section id="protocolo">
+  <div class="container trust-grid">
+    <div>
+      <span class="eyebrow">Protocolo y respaldo clínico</span>
+      <h2>Un equipo clínico a cargo, con protocolo estandarizado</h2>
+      <p style="color:var(--text-mid);font-size:15.5px;max-width:480px;">Cada evaluación es realizada por kinesiólogos y, cuando corresponde, médicos, siguiendo un protocolo clínico estandarizado y resguardando en todo momento la confidencialidad de la información de cada estudiante.</p>
+      <ul class="trust-list">
+        <li>
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0"/><circle cx="12" cy="10" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div>
+          <div><b>Equipo clínico especializado</b><span>Kinesiólogos y médicos con experiencia en salud musculoesquelética infantil.</span></div>
+        </li>
+        <li>
+          <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 5.25 3.5 9.5 9 10 5.5-.5 9-4.75 9-10V6l-9-4Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div><b>Confidencialidad de los datos</b><span>La información de cada estudiante se maneja de forma reservada y solo se comparte con su familia.</span></div>
+        </li>
+        <li>
+          <div class="icon-box amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div><b>Coordinación flexible</b><span>Fechas y logística se ajustan al calendario del colegio.</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="trust-panel">
+      <h3>Diseñado para integrarse a la rutina escolar</h3>
+      <p>El programa se adapta al tamaño y las necesidades de cada colegio, desde un curso piloto hasta la totalidad del establecimiento.</p>
+      <div class="trust-stats">
+        <div class="trust-stat"><b>En terreno</b><span>Evaluación dentro del colegio</span></div>
+        <div class="trust-stat"><b>Sin desvestir</b><span>Evaluación externa, no invasiva</span></div>
+        <div class="trust-stat"><b>Informe individual</b><span>Uno por cada estudiante evaluado</span></div>
+        <div class="trust-stat"><b>Con derivación</b><span>Cuando el caso lo requiere</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA BAND ─────────────────────────────────────── -->
+<section id="cta-band">
+  <div class="container cta-band-inner">
+    <div>
+      <h3>¿Quiere llevar este programa a su colegio?</h3>
+      <p>Coordinemos una reunión breve para revisar cursos, fechas y logística.</p>
+    </div>
+    <a href="#contact" class="btn btn-primary">Solicitar información</a>
+  </div>
+</section>
+
+<!-- ─── FAQ ─────────────────────────────────────── -->
+<section id="faq">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Preguntas frecuentes</span>
+      <h2>Resolvemos las dudas más comunes</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">¿Cuánto dura la evaluación por estudiante?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>En promedio entre 5 y 8 minutos por estudiante. Es una evaluación externa, breve y no invasiva.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Se requiere autorización de los padres o apoderados?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Sí. Antes de la jornada se envía a cada familia un consentimiento informado y una breve ficha de antecedentes, que debe estar aprobado para que el estudiante participe.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Qué pasa si se detecta una alteración?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Se informa directamente a la familia junto con recomendaciones concretas y, cuando corresponde, la derivación a un especialista para una evaluación diagnóstica completa.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Se interrumpen las clases?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>La logística se coordina con el colegio para minimizar el impacto en la jornada académica, evaluando por curso en espacios habilitados dentro del establecimiento.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Es un diagnóstico médico definitivo?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>No. Es un tamizaje (screening) clínico preventivo. Los casos con hallazgos se derivan para una evaluación diagnóstica completa con el especialista correspondiente.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Para qué cursos o niveles está pensado el programa?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="faq-a"><p>Se adapta a los niveles que defina el colegio, desde educación básica hasta enseñanza media, según la etapa de crecimiento de cada grupo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACTO ─────────────────────────────────────── -->
+<section id="contact">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <span class="eyebrow">Contacto</span>
+      <h2>Coordinemos el programa para su colegio</h2>
+      <p class="lead">Complete el formulario y nuestro equipo se pondrá en contacto para coordinar una reunión y evaluar fechas.</p>
+      <div class="contact-channels">
+        <div class="contact-channel">
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="m22 6-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
+          <div><b>Correo</b><span>escolar@medirayn.cl</span></div>
+        </div>
+        <div class="contact-channel">
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><b>Teléfono</b><span>+56 9 0000 0000</span></div>
+        </div>
+        <div class="contact-channel">
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><b>Cobertura</b><span>Región Metropolitana y regiones (a coordinar)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="colegio">Nombre del colegio *</label>
+            <input type="text" id="colegio" name="colegio" required>
+          </div>
+          <div class="field">
+            <label for="comuna">Comuna / ciudad *</label>
+            <input type="text" id="comuna" name="comuna" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="contactoNombre">Nombre de contacto *</label>
+            <input type="text" id="contactoNombre" name="contactoNombre" required>
+          </div>
+          <div class="field">
+            <label for="cargo">Cargo</label>
+            <input type="text" id="cargo" name="cargo" placeholder="Ej: Encargado(a) de convivencia">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono">
+          </div>
+        </div>
+        <div class="field">
+          <label for="estudiantes">N° aproximado de estudiantes a evaluar</label>
+          <select id="estudiantes" name="estudiantes">
+            <option value="">Seleccione un rango</option>
+            <option value="1-50">1 – 50</option>
+            <option value="51-150">51 – 150</option>
+            <option value="151-400">151 – 400</option>
+            <option value="400+">Más de 400</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="mensaje">Mensaje (opcional)</label>
+          <textarea id="mensaje" name="mensaje" placeholder="Cuéntenos sobre los cursos o niveles que le interesa evaluar, fechas tentativas, etc."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Solicitar información</button>
+        <p class="form-note">Al enviar este formulario, un miembro de nuestro equipo se contactará dentro de los próximos días hábiles.</p>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="icon-box green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h4>¡Solicitud enviada!</h4>
+        <p>Gracias por su interés. Nuestro equipo revisará la información y se pondrá en contacto a la brevedad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 2v20M2 12h20"/></svg>
+          </span>
+          <span class="logo-text"><b style="color:#fff;">MEDIRAYN</b><span>Programa Escolar</span></span>
+        </div>
+        <p>Programa de evaluación postural y musculoesquelética para colegios, ejecutado por kinesiólogos y médicos.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Programa</h5>
+        <a href="#programa">Por qué evaluar a tiempo</a>
+        <a href="#scope">Qué evaluamos</a>
+        <a href="#proceso">Cómo funciona</a>
+        <a href="#benefits">Beneficios</a>
+      </div>
+      <div class="footer-col">
+        <h5>Información</h5>
+        <a href="#protocolo">Protocolo clínico</a>
+        <a href="#faq">Preguntas frecuentes</a>
+        <a href="#contact">Contacto</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <span>escolar@medirayn.cl</span>
+        <span>+56 9 0000 0000</span>
+        <span>Chile</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MEDIRAYN. Todos los derechos reservados.</span>
+      <span>Programa de Evaluación Postural y Musculoesquelética Escolar</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Menú móvil
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  navToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // Tabs de beneficios
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.tab-panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Formulario de contacto
+  // NOTA: este envío es solo de interfaz. Para producción, conectar este
+  // formulario a un backend (por ejemplo, una tabla de Supabase como la que
+  // ya usa el portal principal, o un servicio de email transaccional) que
+  // reciba los datos de "contactForm" y notifique al equipo comercial.
+  const contactForm = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('formSuccess');
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    contactForm.style.display = 'none';
+    formSuccess.classList.add('show');
+  });
+</script>
+
+</body>
+</html>
