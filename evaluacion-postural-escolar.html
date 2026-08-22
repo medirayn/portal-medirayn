@@ -467,31 +467,6 @@
   .trust-stat b { display: block; color: var(--teal); font-size: 13.5px; margin-bottom: 4px; }
   .trust-stat span { font-size: 12.3px; color: rgba(255,255,255,0.62); }
 
-  /* ─── CUPOS DE LANZAMIENTO ─────────────────────────────────────── */
-  #precios { background: var(--surface); }
-  .offer-banner {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 30px;
-    align-items: center;
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-    border-radius: 20px;
-    padding: 36px 40px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 640px) { .offer-banner { grid-template-columns: 1fr; text-align: center; } }
-  .offer-number { font-size: 64px; font-weight: 800; color: var(--teal); line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
-  .offer-number span { display: block; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; }
-  .offer-banner-text h3 { color: var(--white); font-size: 20px; margin-bottom: 8px; }
-  .offer-banner-text p { color: rgba(255,255,255,0.68); font-size: 14.5px; }
-
-  .offer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  @media (max-width: 640px) { .offer-grid { grid-template-columns: 1fr; } }
-  .offer-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 22px; }
-  .offer-card .icon-box { margin-bottom: 14px; }
-  .offer-card h4 { font-size: 15px; margin-bottom: 6px; }
-  .offer-card p { font-size: 13.5px; color: var(--text-mid); }
-
   /* ─── FAQ ─────────────────────────────────────── */
   #faq { background: var(--surface); }
   .faq-list {
@@ -671,7 +646,6 @@
       <a href="#scope">Qué evaluamos</a>
       <a href="#proceso">Cómo funciona</a>
       <a href="#benefits">Beneficios</a>
-      <a href="#precios">Cupos de lanzamiento</a>
       <a href="#faq">Preguntas frecuentes</a>
     </nav>
     <div class="nav-actions">
@@ -686,7 +660,6 @@
     <a href="#scope">Qué evaluamos</a>
     <a href="#proceso">Cómo funciona</a>
     <a href="#benefits">Beneficios</a>
-    <a href="#precios">Cupos de lanzamiento</a>
     <a href="#faq">Preguntas frecuentes</a>
     <a href="#inscripcion" class="btn btn-primary btn-block">Solicitar información</a>
   </div>
@@ -1027,36 +1000,6 @@
   </div>
 </section>
 
-<!-- ─── CUPOS E INVERSIÓN ─────────────────────────────────────── -->
-<section id="precios">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow" style="color:var(--teal-dark);background:rgba(14,165,233,0.1);">Cupos de lanzamiento</span>
-      <h2>10 cupos gratuitos por colegio</h2>
-      <p>Por el lanzamiento de la Campaña Salud en Aula. Así funciona:</p>
-    </div>
-    <div class="offer-banner">
-      <div class="offer-number">10<span>cupos gratis</span></div>
-      <div class="offer-banner-text">
-        <h3>Sin costo para las familias</h3>
-        <p>Incluye la evaluación postural y musculoesquelética completa, con informe individual para cada estudiante inscrito.</p>
-      </div>
-    </div>
-    <div class="offer-grid">
-      <div class="offer-card">
-        <div class="icon-box amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
-        <h4>Cómo se asignan</h4>
-        <p>Los cupos se confirman según el orden en que cada colegio coordina la fecha de la jornada con nuestro equipo.</p>
-      </div>
-      <div class="offer-card">
-        <div class="icon-box navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h4>¿Necesita más cupos?</h4>
-        <p>Coordinamos directamente con la dirección del colegio la evaluación del resto de los estudiantes.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── CTA BAND ─────────────────────────────────────── -->
 <section id="cta-band">
   <div class="container cta-band-inner">
@@ -1100,14 +1043,6 @@
         <button class="faq-q">¿Para qué grados o niveles está pensado el programa?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
         <div class="faq-a"><p>Se adapta a los niveles que defina el colegio, desde educación básica hasta enseñanza media, según la etapa de crecimiento de cada grupo.</p></div>
       </div>
-      <div class="faq-item">
-        <button class="faq-q">¿Cuánto cuesta la evaluación?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        <div class="faq-a"><p>Por el lanzamiento del programa, cada colegio cuenta con 10 cupos sin costo para las familias. Para el resto de los alumnos del colegio, coordine directamente con nuestro equipo.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">¿Los 10 cupos gratuitos son permanentes?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        <div class="faq-a"><p>Corresponden a la campaña de lanzamiento del programa. Se asignan por orden de coordinación con cada colegio, así que conviene contactarnos apenas le interese sumarse.</p></div>
-      </div>
     </div>
   </div>
 </section>
@@ -1118,7 +1053,7 @@
     <div class="enroll-box">
       <span class="eyebrow">Inscripción</span>
       <h2>Coordinemos la Campaña Salud en Aula en su colegio</h2>
-      <p style="color:var(--text-mid);font-size:15.5px;">Escríbanos por WhatsApp o complete el formulario. Primero coordinamos una reunión con la dirección del colegio para definir fechas y grados, y desde ahí damos inicio a la campaña con sus 10 cupos gratuitos.</p>
+      <p style="color:var(--text-mid);font-size:15.5px;">Escríbanos por WhatsApp o complete el formulario. Primero coordinamos una reunión con la dirección del colegio para definir fechas y grados, y desde ahí damos inicio a la Campaña Salud en Aula.</p>
       <div class="enroll-actions">
         <div class="enroll-action">
           <a
@@ -1217,7 +1152,6 @@
         <a href="#scope">Qué evaluamos</a>
         <a href="#proceso">Cómo funciona</a>
         <a href="#benefits">Beneficios</a>
-        <a href="#precios">Cupos de lanzamiento</a>
       </div>
       <div class="footer-col">
         <h5>Información</h5>
